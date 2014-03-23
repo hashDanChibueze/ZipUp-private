@@ -14,6 +14,7 @@ var app = express();                    // create an express app
 var db = require('./db');
 var routes = require('./routes');
 var user = require('./routes/user');
+var pass = require('./config/passport');
 
 /**
  * Express configuration.
@@ -68,6 +69,12 @@ app.post('/signup', user.signup);
 // log a user in
 app.post('/signin', user.signin);
 
+// logout a logged in user
+app.get('/signout', user.signout);
+
+// get details about logged in user
+app.get('/user', pass.isAuthenticated, user.userDetails);
+
 // app.get('/addBathroom', function(req, res) {
 //     res.sendfile('addBathroom.html');
 // }); // add new bathroom
@@ -78,8 +85,6 @@ app.post('/signin', user.signin);
 
 // app.post('/add/review/:bid', routes.addReview); // post a new review at a post
 // app.get('/get/reviews/:bid', routes.getReviews); // get reviews for a bathroom
-
-require('./config/passport');
 
 app.listen(app.get('port'));
 

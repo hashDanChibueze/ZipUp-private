@@ -57,3 +57,18 @@ exports.signin = function(req, res, next) {
         });
     })(req, res, next);
 };
+
+// sign out a logged in user
+exports.signout = function(req, res) {
+    req.logout();
+    return res.json({'status': 'ok'});
+};
+
+// get details about the logged in user
+exports.userDetails = function(req, res) {
+    if (req.user) {
+        return res.json({'status': 'ok', 'user': req.user});
+    } else {
+        return res.json({'status': 'fail'});
+    }
+}

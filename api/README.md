@@ -53,6 +53,34 @@ Make sure you have mongodb installed.
         }
     }
 
+### `GET /signout`
+
+**Success JSON:**
+
+    {
+        "status": "ok"
+    }
+
+### `GET /user`
+
+Get details about the logged in user
+
+**Success JSON:**
+
+    {
+        "status": "ok",
+        "user": {
+            "email": "test@test.com",
+            "password": "$2a$05$P0kkoScYQ1ra5c/Qy1741uEsKAgbkrFFW/xdXY8e0nHrgGyi2Lp0e",
+            "_id": "532e822cd7f5a20000000002",
+            "__v": 0,
+            "profile": {
+                "location": "",
+                "name": ""
+            }
+        }
+    }
+
 `/get/bathrooms/`
 return all bathrooms near passed location
 
