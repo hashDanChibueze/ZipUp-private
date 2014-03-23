@@ -72,3 +72,41 @@ exports.userDetails = function(req, res) {
         return res.json({'status': 'fail'});
     }
 }
+
+// update general profile info
+exports.postUpdateProfile = function(req, res, next) {
+    User.findById(req.user.id, function(err, user) {
+        if (err) return next(err);
+        user.email = req.body.email || '';
+        user.profile.name = req.body.name || '';
+        user.profile.location = req.body.location || '';
+
+        user.save(function(err) {
+            if (err) return next(err);
+            return res.json({'status': 'ok', 'user': user});
+        });
+    });
+};
+
+// change password for logged in user
+exports.postUpdatePassword = function(req, res, next) {
+    req.assert('password', 'Password must be at least 4 characters long').len(4);
+    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        return res.json({'status': 'fail', 'errors': errors});
+    }
+
+    User.findById(req.user.id, function(err, user) {
+        if (err) return next(err);
+
+        user.password = req.body.password;
+
+        user.save(function(err) {
+            if (err) return next(err);
+            return res.json({'status': 'ok'});
+        });
+    });
+};

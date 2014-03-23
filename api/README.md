@@ -61,7 +61,7 @@ Make sure you have mongodb installed.
         "status": "ok"
     }
 
-### `GET /user`
+### `GET /account`
 
 Get details about the logged in user
 
@@ -80,6 +80,24 @@ Get details about the logged in user
             }
         }
     }
+
+### `POST /account/profile`
+
+Change profile info
+
+Returns same object as above.
+
+### `POST /account/password`
+
+Change password
+
+**Success JSON:**
+
+    {
+        "status": "ok"
+    }
+
+-----------------
 
 `/get/bathrooms/`
 return all bathrooms near passed location

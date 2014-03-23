@@ -56,24 +56,30 @@ if ('development' == app.get('env')) {
 }
 
 /*
-    URL routes
-*/
+ * URL routes
+ */
 
 app.get('/', function(req, res) {
     res.send('Great!');
 });
 
+
+/*
+ * All user API end points.
+ */
+
 // register a new user
 app.post('/signup', user.signup);
-
 // log a user in
 app.post('/signin', user.signin);
-
 // logout a logged in user
 app.get('/signout', user.signout);
-
 // get details about logged in user
-app.get('/user', pass.isAuthenticated, user.userDetails);
+app.get('/account', pass.isAuthenticated, user.userDetails);
+// update general profile info
+app.post('/account/profile', pass.isAuthenticated, user.postUpdateProfile);
+// change password
+app.post('/account/password', pass.isAuthenticated, user.postUpdatePassword);
 
 // app.get('/addBathroom', function(req, res) {
 //     res.sendfile('addBathroom.html');
