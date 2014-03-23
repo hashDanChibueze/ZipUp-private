@@ -2,40 +2,48 @@
     Module dependencies
 */
 
-var express = require('express'),       // the main ssjs framework
-    path = require('path'),             // for path manipulation
-    mongoose = require('mongoose'),
-    app = express();                    // create an express app
+var express = require('express');       // the main ssjs framework
+var path = require('path');             // for path manipulation
+var mongoose = require('mongoose');
+var passport = require('passport');
+var RedisStore = require('connect-redis')(express);
+
+var app = express();                    // create an express app
 
 var db = require('./db');
 var routes = require('./routes');       // by default, brings in routes/index.js
 
-/*
-    Configure environments
-*/
+/**
+ * Express configuration.
+ */
 
-app.configure(function(){
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(app.router);
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
+var hour = 3600000;
+var day = (hour * 24);
+var month = (day * 30);
 
-// Add headers
-app.use(function (req, res, next) {
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    // Pass to next layer of middleware
+app.set('port', process.env.PORT || 3000);
+app.use(express.compress());
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.cookieParser());
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
+app.use(express.session({
+    secret: 'secretsecretsecretsecret',
+    store: new RedisStore({ host: 'localhost', port: 6379 })
+}));
+app.use(express.csrf());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(function(req, res, next) {
+    res.locals.user = req.user;
+    res.locals.token = req.csrfToken();
+    res.locals.secrets = secrets;
     next();
 });
+app.use(app.router);
+app.use(express.errorHandler());
 
 
 // development only
@@ -50,6 +58,7 @@ if ('development' == app.get('env')) {
 app.get('/', function(req, res) {
     res.sendfile('index.html');
 });
+
 app.get('/addBathroom', function(req, res) {
     res.sendfile('addBathroom.html');
 }); // add new bathroom
@@ -63,4 +72,4 @@ app.get('/get/reviews/:bid', routes.getReviews); // get reviews for a bathroom
 
 app.listen(8888);
 
-console.log('Express server listening on port 8888');
+console.log('Express server listening on port ' + app.get('port'));

@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 
-var dbURI = 'mongodb://localhost/zip';
+var dbURI = 'mongodb://localhost/zipup-api';
 mongoose.connect(dbURI);
 
 // when connected with db

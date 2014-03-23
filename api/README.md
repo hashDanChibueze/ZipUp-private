@@ -6,10 +6,12 @@ Make sure you have mongodb installed.
     mongod --dbpath data/
     node app.js
 
+#### All API methods require a valid user session.
 
 ### API methods:
+
 `/get/bathrooms/`
-return all bathrooms in db (uuhhhhh)!!!!
+return all bathrooms near passed location
 
 `/b/:id`
 return specific bathroom details

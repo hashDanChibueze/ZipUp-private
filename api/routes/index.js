@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-//var Bathroom = require('./../models/bathroom');
+
 var Bathroom = mongoose.model('Bathroom');
 var Review = mongoose.model('Review');
 
