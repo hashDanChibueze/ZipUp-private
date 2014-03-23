@@ -8,6 +8,11 @@
     "mongoose": "3.8.3",
     "passport": "~0.2.0",
     "passport-local": "~1.0.0",
-    "connect-redis": "~1.4.7"
+    "connect-redis": "~1.4.7",
+    "bcrypt-nodejs": "0.0.3",
+    "crypto": "0.0.3",
+    "async": "~0.2.10",
+    "nodemailer": "~0.6.1",
+    "express-validator": "~2.1.1"
   }
 }

@@ -7,11 +7,13 @@ var path = require('path');             // for path manipulation
 var mongoose = require('mongoose');
 var passport = require('passport');
 var RedisStore = require('connect-redis')(express);
+var expressValidator = require('express-validator');
 
 var app = express();                    // create an express app
 
 var db = require('./db');
-var routes = require('./routes');       // by default, brings in routes/index.js
+var routes = require('./routes');
+var user = require('./routes/user');
 
 /**
  * Express configuration.
@@ -28,18 +30,19 @@ app.use(express.logger('dev'));
 app.use(express.cookieParser());
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(expressValidator());
 app.use(express.methodOverride());
 app.use(express.session({
     secret: 'secretsecretsecretsecret',
     store: new RedisStore({ host: 'localhost', port: 6379 })
 }));
-app.use(express.csrf());
+//app.use(express.csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
     res.locals.user = req.user;
-    res.locals.token = req.csrfToken();
-    res.locals.secrets = secrets;
+    //res.locals.token = req.csrfToken();
+    //res.locals.secrets = secrets;
     next();
 });
 app.use(app.router);
@@ -56,20 +59,28 @@ if ('development' == app.get('env')) {
 */
 
 app.get('/', function(req, res) {
-    res.sendfile('index.html');
+    res.send('Great!');
 });
 
-app.get('/addBathroom', function(req, res) {
-    res.sendfile('addBathroom.html');
-}); // add new bathroom
+// register a new user
+app.post('/signup', user.signup);
 
-app.get('/get/bathrooms/', routes.getAll); // get all bathrooms
-app.post('/add/bathroom', routes.addBathroom); // add a new bathroom
-app.get('/b/:id', routes.getBathroom); // get details about a bathroom
+// log a user in
+app.post('/signin', user.signin);
 
-app.post('/add/review/:bid', routes.addReview); // post a new review at a post
-app.get('/get/reviews/:bid', routes.getReviews); // get reviews for a bathroom
+// app.get('/addBathroom', function(req, res) {
+//     res.sendfile('addBathroom.html');
+// }); // add new bathroom
 
-app.listen(8888);
+// app.get('/get/bathrooms/', routes.getAll); // get all bathrooms
+// app.post('/add/bathroom', routes.addBathroom); // add a new bathroom
+// app.get('/b/:id', routes.getBathroom); // get details about a bathroom
+
+// app.post('/add/review/:bid', routes.addReview); // post a new review at a post
+// app.get('/get/reviews/:bid', routes.getReviews); // get reviews for a bathroom
+
+require('./config/passport');
+
+app.listen(app.get('port'));
 
 console.log('Express server listening on port ' + app.get('port'));
