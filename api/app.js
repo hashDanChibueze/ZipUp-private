@@ -43,8 +43,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
     res.locals.user = req.user;
-    //res.locals.token = req.csrfToken();
-    //res.locals.secrets = secrets;
+    // res.locals.token = req.csrfToken();
+    // res.locals.secrets = secrets;
     next();
 });
 app.use(app.router);

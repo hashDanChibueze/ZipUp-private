@@ -47,7 +47,7 @@ exports.signin = function(req, res, next) {
         return res.json({'status': 'fail', 'errors': errors});
     }
 
-    passport.authenticate('local', function(err, user, info) {
+    passport.authenticate('local', { session: false }, function(err, user, info) {
         if (err) return next(err);
         if (!user) {
             return res.json({'status': 'fail', 'errors': [info.message]});
@@ -67,9 +67,12 @@ exports.signout = function(req, res) {
 
 // get details about the logged in user
 exports.userDetails = function(req, res) {
+    console.log("in here");
     if (req.user) {
+        console.log("in if");
         return res.json({'status': 'ok', 'user': req.user});
     } else {
+        console.log("in false");
         return res.json({'status': 'fail'});
     }
 }
@@ -193,9 +196,6 @@ exports.getReset = function(req, res) {
 exports.postReset = function(req, res, next) {
     req.assert('password', 'Password must be at least 4 characters long.').len(4);
     req.assert('confirmPassword', 'Passwords must match.').equals(req.body.password);
-
-    console.log(req.body.password);
-    console.log(req.body.confirmPassword);
 
     var errors = req.validationErrors();
 
