@@ -1,8 +1,9 @@
 // Established database connection
 
 var mongoose = require('mongoose');
+var secrets = require('./config/secrets');
 
-var dbURI = 'mongodb://localhost/zipup-api';
+var dbURI = secrets.db;
 mongoose.connect(dbURI);
 
 // when connected with db

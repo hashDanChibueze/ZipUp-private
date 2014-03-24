@@ -3,6 +3,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
+var secrets = require('./../config/secrets');
 
 // register a new user.
 exports.signup = function(req, res, next) {
@@ -110,3 +111,122 @@ exports.postUpdatePassword = function(req, res, next) {
         });
     });
 };
+
+// reset the password
+exports.resetPassword = function(req, res, next) {
+    req.assert('email', 'Please enter a valid email address.').isEmail();
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        return res.json({'status': 'fail', 'errors': errors});
+    }
+
+    async.waterfall([
+        function(done) {
+            crypto.randomBytes(16, function(err, buf) {
+                var token = buf.toString('hex');
+                done(err, token);
+            });
+        },
+        function(token, done) {
+            User.findOne({ email: req.body.email.toLowerCase() }, function(err, user) {
+                if (!user) {
+                    return res.json({'status': 'fail', 'errors': ['No account with that email address exists.']});
+                }
+
+                user.resetPasswordToken = token;
+                user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+                user.save(function(err) {
+                    done(err, token, user);
+                });
+            });
+        },
+        function(token, user, done) {
+            var smtpTransport = nodemailer.createTransport('SMTP', {
+                host: secrets.resetPassword.hostName, // hostname
+                secureConnection: secrets.resetPassword.secureConnection, // use SSL
+                port: secrets.resetPassword.portN, // port for secure SMTP
+                auth: {
+                    user: secrets.resetPassword.user.username,
+                    pass: secrets.resetPassword.user.password
+                }
+            });
+            var mailOptions = {
+                to: user.email,
+                from: 'no-reply@zipup.com',
+                subject: 'Reset your password on ZipUp',
+                text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+            };
+            smtpTransport.sendMail(mailOptions, function(err) {
+                done(err, 'done');
+            });
+        }
+    ], function(err) {
+        if (err) return next(err);
+        return res.json({'status': 'ok'});
+    });
+}
+
+// password reset page checks for validity of token
+exports.getReset = function(req, res) {
+    if (req.isAuthenticated()) {
+        return res.json({'status': 'ok'});
+    }
+
+    User
+        .findOne({ resetPasswordToken: req.params.token })
+        .where('resetPasswordExpires').gt(Date.now())
+        .exec(function(err, user) {
+            if (!user) {
+                return res.json({'status': 'fail', 'errors': ['Password reset token is invalid or has expired.']});
+            }
+            return res.json({'status': 'ok'});
+        });
+};
+
+// process password reset request, and save user if all valid
+exports.postReset = function(req, res, next) {
+    req.assert('password', 'Password must be at least 4 characters long.').len(4);
+    req.assert('confirmPassword', 'Passwords must match.').equals(req.body.password);
+
+    console.log(req.body.password);
+    console.log(req.body.confirmPassword);
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        return res.json({'status': 'fail', 'errors': errors});
+    }
+
+    async.waterfall([
+        function(done) {
+            User
+                .findOne({ resetPasswordToken: req.params.token })
+                .where('resetPasswordExpires').gt(Date.now())
+                .exec(function(err, user) {
+                    if (!user) {
+                        return res.json({'status': 'fail', 'errors': ['Password reset token is invalid or has expired.']});
+                    }
+
+                    user.password = req.body.password;
+                    user.resetPasswordToken = undefined;
+                    user.resetPasswordExpires = undefined;
+
+                    user.save(function(err) {
+                        if (err) return next(err);
+                        req.logIn(user, function(err) {
+                            done(err, user);
+                        });
+                    });
+                });
+        }
+    ], function(err) {
+        if (err) return next(err);
+        return res.json({'status': 'ok'});
+    });
+}

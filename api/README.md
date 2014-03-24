@@ -97,6 +97,39 @@ Change password
         "status": "ok"
     }
 
+### `POST /forgot`
+
+    email
+
+Generate a token and send email to user with reset instructions.
+
+**Success JSON:**
+
+    {
+        "status": "ok"
+    }
+
+### `GET /reset/:token`
+
+Users click on this is the email, checks if token is valid or not. If valid, 
+
+    {
+        "status": "ok"
+    }
+
+### `POST /reset/:token`
+
+    password
+    confirmPassword
+
+Reset the user's password to given password.
+
+**Success JSON:**
+
+    {
+        "status": "ok"
+    }
+
 -----------------
 
 `/get/bathrooms/`

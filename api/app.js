@@ -15,6 +15,7 @@ var db = require('./db');
 var routes = require('./routes');
 var user = require('./routes/user');
 var pass = require('./config/passport');
+var secrets = require('./config/secrets');
 
 /**
  * Express configuration.
@@ -34,7 +35,7 @@ app.use(express.urlencoded());
 app.use(expressValidator());
 app.use(express.methodOverride());
 app.use(express.session({
-    secret: 'secretsecretsecretsecret',
+    secret: secrets.sessionSecret,
     store: new RedisStore({ host: 'localhost', port: 6379 })
 }));
 //app.use(express.csrf());
@@ -80,6 +81,10 @@ app.get('/account', pass.isAuthenticated, user.userDetails);
 app.post('/account/profile', pass.isAuthenticated, user.postUpdateProfile);
 // change password
 app.post('/account/password', pass.isAuthenticated, user.postUpdatePassword);
+// reset password
+app.post('/forgot', user.resetPassword);
+app.get('/reset/:token', user.getReset);
+app.post('/reset/:token', user.postReset);
 
 // app.get('/addBathroom', function(req, res) {
 //     res.sendfile('addBathroom.html');
