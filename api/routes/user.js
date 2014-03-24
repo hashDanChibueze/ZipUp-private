@@ -67,12 +67,9 @@ exports.signout = function(req, res) {
 
 // get details about the logged in user
 exports.userDetails = function(req, res) {
-    console.log("in here");
     if (req.user) {
-        console.log("in if");
         return res.json({'status': 'ok', 'user': req.user});
     } else {
-        console.log("in false");
         return res.json({'status': 'fail'});
     }
 }
@@ -81,12 +78,17 @@ exports.userDetails = function(req, res) {
 exports.postUpdateProfile = function(req, res, next) {
     User.findById(req.user.id, function(err, user) {
         if (err) return next(err);
-        user.email = req.body.email || '';
-        user.profile.name = req.body.name || '';
-        user.profile.location = req.body.location || '';
+        user.email = req.body.email || user.email;
+        user.profile.name = req.body.name || user.profile.name;
+        user.profile.location = req.body.location || user.profile.name;
 
         user.save(function(err) {
-            if (err) return next(err);
+            if (err) {
+                if (11000 === err.code || 11001 === err.code) {
+                    return res.json({'status': 'fail', 'errors': ['Email is associated with another user.']});
+                }
+                return next(err);
+            }
             return res.json({'status': 'ok', 'user': user});
         });
     });
