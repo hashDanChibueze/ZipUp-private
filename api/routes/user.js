@@ -2,7 +2,8 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
-var User = require('../models/User');
+
+var User = require('../models/user');
 var secrets = require('./../config/secrets');
 
 // register a new user.
@@ -14,7 +15,11 @@ exports.signup = function(req, res, next) {
     var errors = req.validationErrors();
 
     if (errors) {
-        return res.json({'status': 'fail', 'errors': errors});
+        var err = [];
+        errors.forEach(function(e) {
+            err.push(e['msg']);
+        });
+        return next(err);
     }
 
     var user = new User({
@@ -25,7 +30,9 @@ exports.signup = function(req, res, next) {
     user.save(function(err) {
         if (err) {
             if (err.code === 11000) {
-                return res.json({'status': 'fail', 'errors': ['User with that email already exists']});
+                console.log("duplicate thing");
+                return next(['User with that email already exists']);
+                //return res.json({'status': 'fail', 'errors': ['User with that email already exists']});
             }
         }
         req.logIn(user, function(err) {
@@ -44,13 +51,17 @@ exports.signin = function(req, res, next) {
     var errors = req.validationErrors();
 
     if (errors) {
-        return res.json({'status': 'fail', 'errors': errors});
+        var err = [];
+        errors.forEach(function(e) {
+            err.push(e['msg']);
+        });
+        return next(err);
     }
 
     passport.authenticate('local', { session: false }, function(err, user, info) {
         if (err) return next(err);
         if (!user) {
-            return res.json({'status': 'fail', 'errors': [info.message]});
+            return next([info.message]);
         }
         req.logIn(user, function(err) {
             if (err) return next(err);
@@ -70,7 +81,7 @@ exports.userDetails = function(req, res) {
     if (req.user) {
         return res.json({'status': 'ok', 'user': req.user});
     } else {
-        return res.json({'status': 'fail'});
+        return req.next(['Please sign in first']);
     }
 }
 
@@ -85,7 +96,7 @@ exports.postUpdateProfile = function(req, res, next) {
         user.save(function(err) {
             if (err) {
                 if (11000 === err.code || 11001 === err.code) {
-                    return res.json({'status': 'fail', 'errors': ['Email is associated with another user.']});
+                    return next(['Email is associated with another user.'])
                 }
                 return next(err);
             }
@@ -102,7 +113,11 @@ exports.postUpdatePassword = function(req, res, next) {
     var errors = req.validationErrors();
 
     if (errors) {
-        return res.json({'status': 'fail', 'errors': errors});
+        var err = [];
+        errors.forEach(function(e) {
+            err.push(e['msg']);
+        });
+        return next(err);
     }
 
     User.findById(req.user.id, function(err, user) {
@@ -124,7 +139,11 @@ exports.resetPassword = function(req, res, next) {
     var errors = req.validationErrors();
 
     if (errors) {
-        return res.json({'status': 'fail', 'errors': errors});
+        var err = [];
+        errors.forEach(function(e) {
+            err.push(e['msg']);
+        });
+        return next(err);
     }
 
     async.waterfall([
@@ -188,7 +207,8 @@ exports.getReset = function(req, res) {
         .where('resetPasswordExpires').gt(Date.now())
         .exec(function(err, user) {
             if (!user) {
-                return res.json({'status': 'fail', 'errors': ['Password reset token is invalid or has expired.']});
+                ret
+                return next(['Password reset token is invalid or has expired.']);
             }
             return res.json({'status': 'ok'});
         });
@@ -202,7 +222,11 @@ exports.postReset = function(req, res, next) {
     var errors = req.validationErrors();
 
     if (errors) {
-        return res.json({'status': 'fail', 'errors': errors});
+        var err = [];
+        errors.forEach(function(e) {
+            err.push(e['msg']);
+        });
+        return next(err);
     }
 
     async.waterfall([
@@ -212,7 +236,7 @@ exports.postReset = function(req, res, next) {
                 .where('resetPasswordExpires').gt(Date.now())
                 .exec(function(err, user) {
                     if (!user) {
-                        return res.json({'status': 'fail', 'errors': ['Password reset token is invalid or has expired.']});
+                        return next(['Password reset token is invalid or has expired.']);
                     }
 
                     user.password = req.body.password;

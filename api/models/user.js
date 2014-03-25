@@ -2,14 +2,33 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 
+var Bathroom = require('./bathroom.js');
+
 var userSchema = new mongoose.Schema({
-    email: { type: String, unique: true, lowercase: true },
-    password: String,
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    email: {
+        type: String, 
+        unique: true, 
+        lowercase: true 
+    },
+    password: {
+        type: String,
+        required: true
+    },
 
     profile: {
         name: { type: String, default: '' },
         location: { type: String, default: '' }
     },
+
+    // list of bathroom user has voted on
+    voted_bathrooms: [{
+        type: mongoose.Schema.Types.ObjectId , 
+        ref: Bathroom
+    }],
 
     resetPasswordToken: String,
     resetPasswordExpires: Date

@@ -28,7 +28,3 @@ process.on('SIGINT', function() {
         process.exit(0);
     });
 });
-
-// bring in all models
-require('./models/bathroom');
-require('./models/review');

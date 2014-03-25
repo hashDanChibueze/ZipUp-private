@@ -188,6 +188,25 @@ Users click on this is the email, checks if token is valid or not. If valid,
         "status": "ok"
     }
 
+## Working with bathrooms
+
+### Add a new bathroom
+
+`POST /addbathroom`
+
+    **Parameters**
+
+    | Field | Value | Description | Required |
+    | ----- | ----- | ------------ | --------|
+    | lat | Number | Latitude of location | Y |
+    | lng | Number | Longitude of location | Y |
+    | name | String | Location name | N |
+    | bathroom_access | String | 0 public, 1 private | Y |
+    | gender | String | 0 male, 1 female, 2 unisex | Y |
+    | smell | String | 0-5 rating | N |
+    | cleanliness | String | 0-5 rating | N |
+    | voteDir | String | -1 or 1 | Y |
+
 -----------------
 
 `/get/bathrooms/`

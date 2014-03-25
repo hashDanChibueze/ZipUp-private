@@ -11,11 +11,14 @@ var expressValidator = require('express-validator');
 
 var app = express();                    // create an express app
 
-var db = require('./db');
-var routes = require('./routes');
-var user = require('./routes/user');
 var pass = require('./config/passport');
 var secrets = require('./config/secrets');
+
+var db = require('./db');
+
+var routes = require('./routes');
+var user = require('./routes/user');
+var bathroom = require('./routes/bathroom');
 
 /**
  * Express configuration.
@@ -48,7 +51,15 @@ app.use(function(req, res, next) {
     next();
 });
 app.use(app.router);
-app.use(express.errorHandler());
+//app.use(express.errorHandler());
+app.use(function(err, req, res, next) {
+    // only handle `next(err)` calls
+    res.json({
+        'status': 'fail',
+        'errors': err
+    })
+    //console.log(err);
+});
 
 
 // development only
@@ -91,11 +102,15 @@ app.post('/reset/:token', user.postReset);
 // }); // add new bathroom
 
 // app.get('/get/bathrooms/', routes.getAll); // get all bathrooms
-// app.post('/add/bathroom', routes.addBathroom); // add a new bathroom
+// add a new bathroom
+app.post('/addbathroom', bathroom.addBathroom);
+//app.post('/')
 // app.get('/b/:id', routes.getBathroom); // get details about a bathroom
 
 // app.post('/add/review/:bid', routes.addReview); // post a new review at a post
 // app.get('/get/reviews/:bid', routes.getReviews); // get reviews for a bathroom
+
+// vote
 
 app.listen(app.get('port'));
 

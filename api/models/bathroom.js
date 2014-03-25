@@ -1,21 +1,37 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var mongoose = require('mongoose');
 
-var BathroomSchema = new Schema({
-    added_at: {
-        // auto added timestamp for creation of bathroom entry
+var bathroomSchema = new mongoose.Schema({
+    created_at: {
         type: Date,
         default: Date.now
     },
-    loc: {
+    location: {
         "lat": Number,
         "lng": Number
     },
-    name: String,
-    floor: String,
-    requirements: Number, // 0 public, 1 private, 2 purchase reqd
+    name: {    // name of the place
+        type: String,
+        required: false
+    },
+    upvotes: Number,
+    downvotes: Number,
+    access: Number, // 0 public, 1 private
     gender: Number, // 0 male, 1 female, 2 unisex
-    stall_count: Number
+    smell: {    // how much smell
+        type: Number, 
+        min: 0, max: 5, 
+        required: false
+    },
+    cleanliness: {  // how clean
+        type: Number, 
+        min: 0, max: 5, 
+        required: false
+    }
 });
 
-module.exports = mongoose.model('Bathroom', BathroomSchema);
+bathroomSchema.virtual('netvotes').get(function () {
+    var net = this.upvotes - this.downvotes;
+    return (net >= 0 ? net : 0);
+});
+
+module.exports = mongoose.model('Bathroom', bathroomSchema);
