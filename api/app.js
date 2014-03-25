@@ -51,16 +51,6 @@ app.use(function(req, res, next) {
     next();
 });
 app.use(app.router);
-//app.use(express.errorHandler());
-app.use(function(err, req, res, next) {
-    // only handle `next(err)` calls
-    res.json({
-        'status': 'fail',
-        'errors': err
-    })
-    //console.log(err);
-});
-
 
 // development only
 if ('development' == app.get('env')) {
@@ -96,6 +86,8 @@ app.post('/account/password', pass.isAuthenticated, user.postUpdatePassword);
 app.post('/forgot', user.resetPassword);
 app.get('/reset/:token', user.getReset);
 app.post('/reset/:token', user.postReset);
+
+// TODO restrict access here
 
 // app.get('/addBathroom', function(req, res) {
 //     res.sendfile('addBathroom.html');

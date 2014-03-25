@@ -207,6 +207,12 @@ Users click on this is the email, checks if token is valid or not. If valid,
     | cleanliness | String | 0-5 rating | N |
     | voteDir | String | -1 or 1 | Y |
 
+**Success JSON:**
+
+    {
+        "status": "ok"
+    }
+
 -----------------
 
 `/get/bathrooms/`

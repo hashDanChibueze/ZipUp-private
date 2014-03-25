@@ -26,11 +26,10 @@ exports.addBathroom = function(req, res, next) {
     var errors = req.validationErrors();
 
     if (errors) {
-        var err = [];
-        errors.forEach(function(e) {
-            err.push(e['msg']);
-        });
-        return next(err);
+        return res.send(400, {
+            'response': 'fail',
+            'errors': 'Invalid values passed, please fix these.'
+            });
     }
 
     async.waterfall([
@@ -57,7 +56,7 @@ exports.addBathroom = function(req, res, next) {
                 newBathroom.upvotes = 0;
                 newBathroom.downvotes = 1;
             } else {
-                done(['Invalid vote.']);
+                done('Invalid vote sent.');
             }
             done(null, newBathroom)
         },
@@ -65,7 +64,7 @@ exports.addBathroom = function(req, res, next) {
         function(newBathroom, done) {
             newBathroom.save(function(err) {
                 if (err) {
-                    done(['Invalid bathroom.']);
+                    done('Invalid bathroom accessed.');
                 }
                 done(null, newBathroom);
             });
@@ -79,9 +78,13 @@ exports.addBathroom = function(req, res, next) {
             });
         }
     ], function(err) {
-        console.log("final fn called");
-        if (err) return res.json({'status': 'fail', 'errors': err});
-        return res.json({'status': 'ok'});
+        if (err) {
+            return res.send(400, {
+                'response': 'fail',
+                'errors': 'Invalid values passed, please fix these.'
+            });
+        }
+        return res.json({'response': 'ok'});
     });
 }
 
