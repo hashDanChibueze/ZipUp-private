@@ -25,12 +25,11 @@ Make sure you have mongodb installed.
 | ----- | ----- | ------------ | --------|
 | email | String | The email of the user | Y |
 | password | String | Password to use | Y |
-| confirmPassword | String | Password confirmation | Y |
 
 **Success JSON:**
 
     {
-        "status": "ok",
+        "response": "ok",
         "user": {
             "__v": 0,
             "email": "test@test.com",
@@ -57,7 +56,7 @@ Make sure you have mongodb installed.
 **Success JSON:**
 
     {
-        "status": "ok",
+        "response": "ok",
         "user": {
             "email": "test@test.com",
             "password": "$2a$05$P0kkoScYQ1ra5c/Qy1741uEsKAgbkrFFW/xdXY8e0nHrgGyi2Lp0e",
@@ -77,7 +76,7 @@ Make sure you have mongodb installed.
 **Success JSON:**
 
     {
-        "status": "ok"
+        "response": "ok"
     }
 
 ### Get details about the logged in user
@@ -87,7 +86,7 @@ Make sure you have mongodb installed.
 **Success JSON:**
 
     {
-        "status": "ok",
+        "response": "ok",
         "user": {
             "email": "test@test.com",
             "password": "$2a$05$P0kkoScYQ1ra5c/Qy1741uEsKAgbkrFFW/xdXY8e0nHrgGyi2Lp0e",
@@ -115,7 +114,7 @@ Make sure you have mongodb installed.
 **Success JSON:**
 
     {
-        "status": "ok",
+        "response": "ok",
         "user": {
             "email": "test@test.com",
             "password": "$2a$05$P0kkoScYQ1ra5c/Qy1741uEsKAgbkrFFW/xdXY8e0nHrgGyi2Lp0e",
@@ -137,12 +136,11 @@ Make sure you have mongodb installed.
 | Field | Value | Description | Required |
 | ----- | ----- | ------------ | --------|
 | password | String | Password to use | Y |
-| confirmPassword | String | Password confirmation | Y |
 
 **Success JSON:**
 
     {
-        "status": "ok"
+        "response": "ok"
     }
 
 ### Generate a token and send email to user with reset instructions.
@@ -158,7 +156,7 @@ Make sure you have mongodb installed.
 **Success JSON:**
 
     {
-        "status": "ok"
+        "response": "ok"
     }
 
 ### Checks if token valid or not
@@ -168,7 +166,7 @@ Make sure you have mongodb installed.
 Users click on this is the email, checks if token is valid or not. If valid, 
 
     {
-        "status": "ok"
+        "response": "ok"
     }
 
 ### Reset the user's password to given password.
@@ -180,12 +178,11 @@ Users click on this is the email, checks if token is valid or not. If valid,
 | Field | Value | Description | Required |
 | ----- | ----- | ------------ | --------|
 | password | String | Password to use | Y |
-| confirmPassword | String | Password confirmation | Y |
 
 **Success JSON:**
 
     {
-        "status": "ok"
+        "response": "ok"
     }
 
 ## Working with bathrooms
@@ -210,7 +207,7 @@ Users click on this is the email, checks if token is valid or not. If valid,
 **Success JSON:**
 
     {
-        "status": "ok"
+        "response": "ok"
     }
 
 -----------------
@@ -249,4 +246,3 @@ post a review to id bathroom
     | ----- | ----- | ------------ | --------|
     | email | String | The email of the user | Y |
     | password | String | Password to use | Y |
-    | confirmPassword | String | Password confirmation | Y |

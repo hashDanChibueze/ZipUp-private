@@ -10,7 +10,6 @@ var secrets = require('./../config/secrets');
 exports.signup = function(req, res, next) {
     req.assert('email', 'Email is not valid.').isEmail();
     req.assert('password', 'Password must be at least 4 characters long').len(4);
-    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
     var errors = req.validationErrors();
 
@@ -27,8 +26,9 @@ exports.signup = function(req, res, next) {
     });
 
     user.save(function(err) {
+        console.log(err);
         if (err) {
-            if (err.code === 11000) {
+            if (err.code === 11000 || err.code === 11001) {
                 return res.send(400, {
                     'response': 'fail',
                     'errors': 'User with that email already exists.'
@@ -139,7 +139,6 @@ exports.postUpdateProfile = function(req, res, next) {
 // change password for logged in user
 exports.postUpdatePassword = function(req, res, next) {
     req.assert('password', 'Password must be at least 4 characters long').len(4);
-    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
     var errors = req.validationErrors();
 
@@ -266,7 +265,6 @@ exports.getReset = function(req, res) {
 // process password reset request, and save user if all valid
 exports.postReset = function(req, res, next) {
     req.assert('password', 'Password must be at least 4 characters long.').len(4);
-    req.assert('confirmPassword', 'Passwords must match.').equals(req.body.password);
 
     var errors = req.validationErrors();
 
