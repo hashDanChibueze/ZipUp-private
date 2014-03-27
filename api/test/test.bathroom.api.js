@@ -254,4 +254,43 @@ describe('Bathroom', function() {
         });
     });
 
+    describe('Get reviews', function(done) {
+
+        it('should add and get exactly one review', function(done) {
+            request(api)
+                .post('/signup')
+                .send(user)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    var cookie = res.headers['set-cookie'];
+                    request(api)
+                        .post('/addbathroom')
+                        .send(bathroom)
+                        .set('cookie', cookie)
+                        .end(function(e, r) {
+                            r.should.have.status(200);
+                            r.body.should.have.property('response', 'ok');
+                            request(api)
+                                .post('/addreview')
+                                .send({'bid': r.body.bathroom._id, 'cleanliness': 4, 'review': 'this was awesome'})
+                                .set('cookie', cookie)
+                                .end(function(e2, r2) {
+                                    r2.should.have.status(200);
+                                    r2.body.bathroom.reviews.should.have.length(1);
+                                    request(api)
+                                        .get('/getreviews/'+r.body.bathroom._id)
+                                        .set('cookie', cookie)
+                                        .end(function(e3, r3) {
+                                            r3.should.have.status(200);
+                                            r3.body.bathroom.reviews.should.have.length(1);
+                                            r3.body.bathroom.reviews[0].left_by.should.include(res.body.user._id);
+                                            done();
+                                        });
+                                });
+                        });
+                });
+        });
+
+    });
+
 });

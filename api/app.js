@@ -97,7 +97,8 @@ app.post('/addbathroom', pass.isAuthenticated, bathroom.addBathroom);
 app.post('/addvote', pass.isAuthenticated, bathroom.addVote);
 // post a new review for the bathroom
 app.post('/addreview', pass.isAuthenticated, bathroom.addReview);
-// app.get('/get/reviews/:bid', routes.getReviews); // get reviews for a bathroom
+// get reviews for a bathroom
+app.get('/getreviews/:bid', pass.isAuthenticated, bathroom.getReviews);
 
 // vote
 

@@ -191,7 +191,7 @@ exports.addReview = function(req, res, next) {
     });
 
     // find the bathroom
-    Bathroom.findOne({'_id': bathroomID}, function(err, bathroom) {
+    Bathroom.findOne({'_id': bathroomID}).populate('reviews').exec(function(err, bathroom) {
         if (err) {
             return res.send(400, {
                 'response': 'fail',
@@ -226,6 +226,26 @@ exports.addReview = function(req, res, next) {
                 });
             });
 
+        });
+    });
+
+}
+
+exports.getReviews = function(req, res) {
+
+    var bathroomID = req.params.bid;
+
+    Bathroom.findOne({'_id': bathroomID}).populate('reviews').exec(function(err, bathroom) {
+        if (err) {
+            return res.send(400, {
+                'response': 'fail',
+                'errors': 'Invalid bathroom.'
+            });
+        }
+
+        res.send(200, {
+            'response': 'ok',
+            'bathroom': bathroom
         });
     });
 

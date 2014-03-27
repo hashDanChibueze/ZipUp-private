@@ -301,6 +301,42 @@ Users click on this is the email, checks if token is valid or not. If valid,
         }
     }
 
+### Get all reviews for the bathroom
+
+`GET /getreviews/:bid`
+
+**Success JSON**
+
+    {
+        "response": "ok",
+        "bathroom": {
+            "__v": 0,
+            "_id": "5334b3a5a34df3111c000002",
+            "access": 0,
+            "downvotes": 1,
+            "gender": 0,
+            "name": "adaa",
+            "upvotes": 0,
+            "reviews": [
+                {
+                    "cleanliness": 3,
+                    "review": "Awesome teooooo",
+                    "_id": "5334b3b1a34df3111c000003",
+                    "__v": 0,
+                    "left_by": [
+                        "5334b3a2a34df3111c000001"
+                    ],
+                    "created_at": "2014-03-27T23:26:41.433Z"
+                }
+            ],
+            "location": {
+                "lat": 123.2,
+                "lng": 232
+            },
+            "created_at": "2014-03-27T23:26:29.547Z"
+        }
+    }
+
 -----------------
 
 `/get/bathrooms/`
