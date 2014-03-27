@@ -40,13 +40,15 @@ describe('Bathroom', function() {
 
     before(function(done) {
         mongoose.connect(secrets.db);
-        Bathroom.remove();
-        User.remove(done);
+        Bathroom.remove({}, function(err) {
+            User.remove(done);
+        });
     });
 
     afterEach(function(done) {
-        Bathroom.remove();
-        User.remove(done);
+        Bathroom.remove({}, function(err) {
+            User.remove(done);
+        });
     });
 
     after(function(done) {
