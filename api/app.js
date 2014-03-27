@@ -87,7 +87,8 @@ app.post('/forgot', user.resetPassword);
 app.get('/reset/:token', user.getReset);
 app.post('/reset/:token', user.postReset);
 
-// TODO restrict access here
+
+// TODO get all bathrooms near a location
 
 // get details about a single bathroom
 app.get('/getbathroom/:bid', pass.isAuthenticated, bathroom.getBathroom);

@@ -338,22 +338,6 @@ Users click on this is the email, checks if token is valid or not. If valid,
         }
     }
 
------------------
-
-`/get/bathrooms/`
-return all bathrooms near passed location
-
-`/b/:id`
-return specific bathroom details
-
-`/add/bathroom`
-Add a new bathroom
-
-`/get/reviews/:id`
-returns reviews of the bathroom
-
-`/add/review/:id`
-post a review to id bathroom
 
 ---------------------
 
