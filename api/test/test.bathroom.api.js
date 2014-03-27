@@ -188,6 +188,40 @@ describe('Bathroom', function() {
                 });
         });
 
+        it('should throw a 400 error because of invalis vote', function(done) {
+            request(api)
+                .post('/signup')
+                .send(user)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    var cookie = res.headers['set-cookie'];
+                    request(api)
+                        .post('/addbathroom')
+                        .send(bathroom)
+                        .set('cookie', cookie)
+                        .end(function(e, r) {
+                            r.should.have.status(200);
+                            r.body.should.have.property('response', 'ok');
+                            request(api)
+                                .post('/signup/')
+                                .send(user2)
+                                .end(function(e2, r2) {
+                                    r2.should.have.status(200);
+                                    var cookie = res.headers['set-cookie'];
+                                    request(api)
+                                        .post('/addvote')
+                                        .send({'bid': r.body.bathroom._id, 'voteDir': 2})
+                                        .set('cookie', cookie)
+                                        .end(function(e3, r3) {
+                                            r3.should.have.status(400);
+                                            r3.body.should.have.property('response', 'fail');
+                                            done();
+                                        });
+                                });
+                        });
+                });
+        });
+
     });
 
 });
