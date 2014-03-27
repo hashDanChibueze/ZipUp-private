@@ -93,9 +93,10 @@ app.post('/reset/:token', user.postReset);
 //     res.sendfile('addBathroom.html');
 // }); // add new bathroom
 
-// app.get('/get/bathrooms/', routes.getAll); // get all bathrooms
+// get details about a single bathroom
+app.get('/getbathroom/:bid', bathroom.getBathroom);
 // add a new bathroom
-app.post('/addbathroom', bathroom.addBathroom);
+app.post('/addbathroom', pass.isAuthenticated, bathroom.addBathroom);
 //app.post('/')
 // app.get('/b/:id', routes.getBathroom); // get details about a bathroom
 

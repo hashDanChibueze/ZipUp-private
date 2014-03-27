@@ -11,22 +11,22 @@ var bathroomSchema = new mongoose.Schema({
     },
     name: {    // name of the place
         type: String,
-        required: false
+        required: true
     },
     upvotes: Number,
     downvotes: Number,
-    access: Number, // 0 public, 1 private
-    gender: Number, // 0 male, 1 female, 2 unisex
-    smell: {    // how much smell
-        type: Number, 
-        min: 0, max: 5, 
-        required: false
+    access: {   // 0 public, 1 private
+        type: Number,
+        required: true
     },
-    cleanliness: {  // how clean
-        type: Number, 
-        min: 0, max: 5, 
-        required: false
-    }
+    gender: {   // 0 male, 1 female, 2 unisex
+        type: Number,
+        required: true
+    },
+    reviews: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Review'
+    }]
 });
 
 bathroomSchema.virtual('netvotes').get(function () {

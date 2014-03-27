@@ -4,23 +4,28 @@ var async = require('async');
 var Bathroom = require('../models/bathroom');
 var User = require('../models/user');
 
-// exports.getAll = function(req, res) {
-//     Bathroom.find({}, function(err, all) {
-//         if (err) {
-//             res.json({'Error': 'Something went wrong'})
-//         } else {
-//             res.json({'bathrooms': all});
-//         }
-//     })
-// }
+// get details about a single bathroom
+exports.getBathroom = function(req, res) {
+    Bathroom.findOne({'_id': req.params.bid}, function(err, bathroom) {
+        if (err) {
+            return res.send(400, {
+                'response': 'fail',
+                'errors': 'Invalid bathroom requested.'
+            });
+        } else {
+            return res.json({'response': 'ok', 'bathroom': bathroom});
+        }
+    });
+}
 
 // add a new bathroom to the database
 exports.addBathroom = function(req, res, next) {
 
     req.assert('lat', 'Location has to be complete.').notEmpty();
     req.assert('lng', 'Location has to be complete.').notEmpty();
-    req.assert('access', 'Access should be 1 or 2.').isInt();
-    req.assert('gender', 'Gender should be 1 or 2 or 3.').isInt();
+    req.assert('bathroom_name', 'Name has to be complete.').notEmpty();
+    req.assert('bathroom_access', 'Access should be 1 or 2.').isInt();
+    req.assert('gender', 'Gender must be provided.').isInt();
     req.assert('voteDir', 'Vote can be +1 or -1 only.').isInt();
 
     var errors = req.validationErrors();
@@ -33,7 +38,6 @@ exports.addBathroom = function(req, res, next) {
     }
 
     async.waterfall([
-
         // build object
         function(done) {
             var newBathroom = new Bathroom({
@@ -43,9 +47,7 @@ exports.addBathroom = function(req, res, next) {
                 },
                 "name": req.body.bathroom_name || '',
                 "access": +req.body.bathroom_access,
-                "gender": +req.body.gender,
-                "smell": +req.body.smell || 0,
-                "cleanliness": +req.body.cleanliness || 0
+                "gender": +req.body.gender
             });
 
             voteDir = +req.body.voteDir;
@@ -64,7 +66,7 @@ exports.addBathroom = function(req, res, next) {
         function(newBathroom, done) {
             newBathroom.save(function(err) {
                 if (err) {
-                    done('Invalid bathroom accessed.');
+                    done('Invalid bathroom.');
                 }
                 done(null, newBathroom);
             });
@@ -73,7 +75,6 @@ exports.addBathroom = function(req, res, next) {
         function(newBathroom, done) {
             var user = req.user;
             User.update({_id: user._id}, {$push: {'voted_bathrooms': user}}, function(err, result) {
-                console.log(err);
                 done(err);
             });
         }
@@ -84,7 +85,12 @@ exports.addBathroom = function(req, res, next) {
                 'errors': 'Invalid values passed, please fix these.'
             });
         }
-        return res.json({'response': 'ok'});
+        Bathroom.findOne({'name': req.body.bathroom_name,
+                        'location.lat': req.body.lat,
+                        'location.lng': req.body.lng}, function(err, b) {
+            return res.json({'response': 'ok', 'bathroom': b});
+        });
+        //return res.json({'response': 'ok'});
     });
 }
 

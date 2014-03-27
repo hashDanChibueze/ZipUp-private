@@ -1,18 +1,24 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var mongoose = require('mongoose');
 
-var ReviewSchema = new Schema({
-    added_at: {
+var reviewSchema = new mongoose.Schema({
+    created_at: {
         // auto added timestamp for creation of bathroom entry
         type: Date,
         default: Date.now
     },
-    rating: Number, // 1-5
-    cleanliness: Number, // 0 = false, 1 = true
-    aroma: Number, // 0 = false, 1 = true
-    amenities: Number, // 0 = false, 1 = trues
-    review: String, // body of review
-    bathroom: String // id of the bathroom
+    cleanliness: {
+        type: Number,
+        required: false
+    },
+    smell: {
+        type: Number,
+        required: false
+    },
+    amenities: {
+        type: Number,
+        required: false
+    },
+    review: String // body of review
 });
 
-module.exports = mongoose.model('Review', ReviewSchema);
+module.exports = mongoose.model('Review', reviewSchema);

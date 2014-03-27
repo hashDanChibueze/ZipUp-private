@@ -197,17 +197,39 @@ Users click on this is the email, checks if token is valid or not. If valid,
     | ----- | ----- | ------------ | --------|
     | lat | Number | Latitude of location | Y |
     | lng | Number | Longitude of location | Y |
-    | name | String | Location name | N |
+    | bathroom_name | String | Location name | Y |
     | bathroom_access | String | 0 public, 1 private | Y |
     | gender | String | 0 male, 1 female, 2 unisex | Y |
-    | smell | String | 0-5 rating | N |
-    | cleanliness | String | 0-5 rating | N |
     | voteDir | String | -1 or 1 | Y |
 
 **Success JSON:**
 
     {
         "response": "ok"
+    }
+
+### Get details of a particular bathroom
+
+`GET /getbathroom/:id`
+
+**Success JSON**
+
+    {
+        "response": "ok",
+        "bathroom": {
+            "downvotes": 0,
+            "upvotes": 1,
+            "name": "xyz",
+            "access": 0,
+            "_id": "5333cd6f91eec30000000001",
+            "reviews": [],
+            "__v": 0,
+            "location": {
+                "lat": 123.2,
+                "lng": 232
+            },
+            "created_at": "2014-03-27T07:04:15.522Z"
+        }
     }
 
 -----------------
