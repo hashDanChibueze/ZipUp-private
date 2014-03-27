@@ -11,6 +11,7 @@ Make sure you have mongodb installed.
 # API methods:
 
 - [User authentication and account management](#user-authentication-and-account-management)
+- [Working with bathroom and reviews](#working-with-bathrooms)
 
 
 ## User authentication and account management
