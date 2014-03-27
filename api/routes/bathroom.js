@@ -90,7 +90,72 @@ exports.addBathroom = function(req, res, next) {
                         'location.lng': req.body.lng}, function(err, b) {
             return res.json({'response': 'ok', 'bathroom': b});
         });
-        //return res.json({'response': 'ok'});
+    });
+}
+
+// add vote to an existing bathroom
+exports.addVote = function(req, res, next) {
+    var bathroomID = req.body.bid;
+    var voteDir = +req.body.voteDir;
+
+    console.log(typeof(voteDir));
+    console.log(voteDir);
+
+    if ((voteDir !== -1) && (voteDir !== 1)) {
+        return res.send(400, {
+                'response': 'fail',
+                'errors': 'Invalid vote sent.'
+            });
+    }
+
+    // find the bathroom
+    Bathroom.findOne({'_id': bathroomID}, function(err, bathroom) {
+        if (err) {
+            return res.send(400, {
+                'response': 'fail',
+                'errors': 'Invalid bathroom.'
+            });
+        }
+
+        // check if user has not voted for this bathroom before
+        User.findOne({'_id': req.user._id, 'voted_bathrooms': bathroom._id}, function(err, user) {
+            if (user) {
+                return res.send(500, {
+                    'response': 'fail',
+                    'errors': 'You have voted here already.'
+                });
+            }
+
+            // update the values depending on vote direction
+            if (voteDir === 1) bathroom.upvotes += 1
+            else bathroom.downvotes += 1
+
+            // update the document in db
+            bathroom.save(function(err) {
+                if (err) {
+                    return res.send(500, {
+                        'response': 'fail',
+                        'errors': 'Something went wrong.'
+                    });
+                }
+
+                // now update the user
+                User.update({'_id': req.user._id}, { $push: { voted_bathrooms: bathroom } }, 
+                    function(err) {
+                    if (err) console.log(err);
+
+                    User.findOne({'_id': req.user._id}, function(err, user) {
+                        return res.send(200, {
+                            'response': 'ok',
+                            'user': user
+                        });
+                    });
+                });
+
+            });
+
+        });
+
     });
 }
 

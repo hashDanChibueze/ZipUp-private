@@ -232,6 +232,39 @@ Users click on this is the email, checks if token is valid or not. If valid,
         }
     }
 
+### Add a vote by the current logged in user to the bathroom
+
+`POST /addvote`
+
+**Parameters**
+
+| Field | Value | Description | Required |
+| ----- | ----- | ------------ | --------|
+| bid | String | ID of the bathroom | Y |
+| voteDir | String | The direction of vote (1/-1) | Y |
+
+**Success JSON**
+
+    {
+        "response": "ok",
+        "user": {
+            "__v": 0,
+            "_id": "533487c02be76b0000000011",
+            "email": "test1@test.com",
+            "password": "$2a$05$U8VghFfYJpKLbHq6m.aaUuNT.KEbKww0FKeKQhcmLuzGiLejMBqIi",
+            "voted_bathrooms": [
+                "533487c02be76b0000000011",
+                "533488652be76b0000000014",
+                "5333d5165553830000000006"
+            ],
+            "profile": {
+                "location": "",
+                "name": ""
+            },
+            "created_at": "2014-03-27T20:19:12.784Z"
+        }
+    }
+
 -----------------
 
 `/get/bathrooms/`

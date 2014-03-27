@@ -16,6 +16,11 @@ describe('Bathroom', function() {
         password: 'password'
     };
 
+    var user2 = {
+        email: 'test2@test.com',
+        password: 'password'
+    };
+
     var bathroom = {
         "lat": 123.45,
         "lng": -12.43,
@@ -144,4 +149,43 @@ describe('Bathroom', function() {
         });
 
     });
+
+    describe('Add vote', function(done) {
+
+        it('should add a vote by user2', function(done) {
+            request(api)
+                .post('/signup')
+                .send(user)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    var cookie = res.headers['set-cookie'];
+                    request(api)
+                        .post('/addbathroom')
+                        .send(bathroom)
+                        .set('cookie', cookie)
+                        .end(function(e, r) {
+                            r.should.have.status(200);
+                            r.body.should.have.property('response', 'ok');
+                            request(api)
+                                .post('/signup/')
+                                .send(user2)
+                                .end(function(e2, r2) {
+                                    r2.should.have.status(200);
+                                    var cookie = res.headers['set-cookie'];
+                                    request(api)
+                                        .post('/addvote')
+                                        .send({'bid': r.body.bathroom._id, 'voteDir': 1})
+                                        .set('cookie', cookie)
+                                        .end(function(e3, r3) {
+                                            r3.should.have.status(200);
+                                            r3.body.user.voted_bathrooms.should.include(r.body.bathroom._id);
+                                            done();
+                                        });
+                                });
+                        });
+                });
+        });
+
+    });
+
 });

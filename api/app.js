@@ -94,10 +94,11 @@ app.post('/reset/:token', user.postReset);
 // }); // add new bathroom
 
 // get details about a single bathroom
-app.get('/getbathroom/:bid', bathroom.getBathroom);
+app.get('/getbathroom/:bid', pass.isAuthenticated, bathroom.getBathroom);
 // add a new bathroom
 app.post('/addbathroom', pass.isAuthenticated, bathroom.addBathroom);
-//app.post('/')
+// vote on a bathroom
+app.post('/addvote', pass.isAuthenticated, bathroom.addVote);
 // app.get('/b/:id', routes.getBathroom); // get details about a bathroom
 
 // app.post('/add/review/:bid', routes.addReview); // post a new review at a post
