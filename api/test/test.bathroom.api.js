@@ -224,4 +224,34 @@ describe('Bathroom', function() {
 
     });
 
+    describe('Add review', function(done) {
+
+        it('should add a review for the current user', function(done) {
+            request(api)
+                .post('/signup')
+                .send(user)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    var cookie = res.headers['set-cookie'];
+                    request(api)
+                        .post('/addbathroom')
+                        .send(bathroom)
+                        .set('cookie', cookie)
+                        .end(function(e, r) {
+                            r.should.have.status(200);
+                            r.body.should.have.property('response', 'ok');
+                            request(api)
+                                .post('/addreview')
+                                .send({'bid': r.body.bathroom._id, 'cleanliness': 4, 'review': 'this was awesome'})
+                                .set('cookie', cookie)
+                                .end(function(e2, r2) {
+                                    r2.should.have.status(200);
+                                    r2.body.bathroom.reviews.should.have.length(1);
+                                    done();
+                                });
+                        });
+                });
+        });
+    });
+
 });

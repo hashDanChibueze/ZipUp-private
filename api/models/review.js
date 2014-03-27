@@ -6,19 +6,20 @@ var reviewSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    cleanliness: {
+    cleanliness: {  // rating 1-5
         type: Number,
-        required: false
+        required: true,
+        min: 1,
+        max: 5
     },
-    smell: {
-        type: Number,
-        required: false
+    review: {   // body of review
+        type: String,
+        required: true
     },
-    amenities: {
-        type: Number,
-        required: false
-    },
-    review: String // body of review
+    left_by: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User'
+    }]
 });
 
 module.exports = mongoose.model('Review', reviewSchema);

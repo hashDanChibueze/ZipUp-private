@@ -3,6 +3,7 @@ var async = require('async');
 
 var Bathroom = require('../models/bathroom');
 var User = require('../models/user');
+var Review = require('../models/review');
 
 // get details about a single bathroom
 exports.getBathroom = function(req, res) {
@@ -142,7 +143,12 @@ exports.addVote = function(req, res, next) {
                 // now update the user
                 User.update({'_id': req.user._id}, { $push: { voted_bathrooms: bathroom } }, 
                     function(err) {
-                    if (err) console.log(err);
+                    if (err) {
+                        return res.send(500, {
+                            'response': 'fail',
+                            'errors': 'Something went wrong.'
+                        });
+                    }
 
                     User.findOne({'_id': req.user._id}, function(err, user) {
                         return res.send(200, {
@@ -157,6 +163,72 @@ exports.addVote = function(req, res, next) {
         });
 
     });
+}
+
+// add a review for the given bathroom
+exports.addReview = function(req, res, next) {
+
+    req.assert('cleanliness', 'Rating can only be from 1 to 5.').isInt();
+    req.assert('review', 'Review must be 10-2000 characters.').len(10, 2000);
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        return res.send(400, {
+            'response': 'fail',
+            'errors': 'Invalid values passed, please fix these.'
+            });
+    }
+
+    var bathroomID = req.body.bid;
+    var cleanliness = req.body.cleanliness;
+    var review = req.body.review;
+
+    var review = new Review({
+        'cleanliness': cleanliness,
+        'review': review,
+        'left_by': req.user
+    });
+
+    // find the bathroom
+    Bathroom.findOne({'_id': bathroomID}, function(err, bathroom) {
+        if (err) {
+            return res.send(400, {
+                'response': 'fail',
+                'errors': 'Invalid bathroom.'
+            });
+        }
+
+        // save the review
+        review.save(function(err) {
+            if (err) {
+                return res.send(500, {
+                    'response': 'fail',
+                    'errors': 'Something went wrong.'
+                });
+            }
+
+            // now add the relationship from bathroom -> review
+            Bathroom.update({'_id': bathroomID}, { $push: { reviews: review } }, 
+                function(err) {
+                if (err) {
+                    return res.send(500, {
+                        'response': 'fail',
+                        'errors': 'Something went wrong.'
+                    });
+                }
+
+                Bathroom.findOne({'_id': bathroomID}, function(err, b) {
+                    return res.send(200, {
+                        'response': 'ok',
+                        'bathroom': b
+                    });
+                });
+            });
+
+        });
+    });
+
 }
 
 // exports.getBathroom = function(req, res) {

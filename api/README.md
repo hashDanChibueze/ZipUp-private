@@ -265,6 +265,42 @@ Users click on this is the email, checks if token is valid or not. If valid,
         }
     }
 
+### Add a review to a bathroom
+
+`POST /addreview`
+
+**Parameters**
+
+| Field | Value | Description | Required |
+| ----- | ----- | ------------ | --------|
+| bid | String | ID of the bathroom | Y |
+| cleanliness | String | Amount of cleanliness (1-5) | Y |
+| review | String | The review (10-2000 chars) | Y |
+
+**Success JSON**
+
+    {
+        "response": "ok",
+        "bathroom": {
+            "__v": 0,
+            "_id": "53349c4b9ac7a50000000018",
+            "access": 0,
+            "downvotes": 1,
+            "gender": 0,
+            "name": "adaa",
+            "upvotes": 0,
+            "reviews": [
+                "53349c629ac7a50000000019",
+                "5334a16505ae858802000001"
+            ],
+            "location": {
+                "lat": 123.2,
+                "lng": 232
+            },
+            "created_at": "2014-03-27T21:46:51.414Z"
+        }
+    }
+
 -----------------
 
 `/get/bathrooms/`

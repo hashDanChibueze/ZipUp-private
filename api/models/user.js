@@ -18,7 +18,6 @@ var userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
     profile: {
         name: { type: String, default: '' },
         location: { type: String, default: '' }
