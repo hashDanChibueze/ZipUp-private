@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Yelp for Bathrooms",
   "scripts": {
-      "test": "make test"
+    "test": "make test"
   },
   "main": "app.js",
   "dependencies": {
@@ -18,7 +18,8 @@
     "async": "~0.2.10",
     "nodemailer": "~0.6.1",
     "express-validator": "~2.1.1",
-    "newrelic": "1.4.0"
+    "newrelic": "1.4.0",
+    "redis": "~0.10.1"
   },
   "devDependencies": {
     "should": "~3.2.0-beta1",

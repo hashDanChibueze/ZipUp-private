@@ -25,9 +25,15 @@ var bathroom = require('./routes/bathroom');
  * Express configuration.
  */
 
-var hour = 3600000;
-var day = (hour * 24);
-var month = (day * 30);
+if (process.env.REDISTOGO_URL) {
+    console.log("using reditogo");
+    rtg   = require('url').parse(process.env.REDISTOGO_URL);
+    redis = require('redis').createClient(rtg.port, rtg.hostname);
+    redis.auth(rtg.auth.split(':')[1]); // auth 1st part is username and 2nd is password separated by ":"
+} else {
+    console.log("using local redis");
+    redis = require("redis").createClient();
+}
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.compress());
@@ -40,7 +46,7 @@ app.use(expressValidator());
 app.use(express.methodOverride());
 app.use(express.session({
     secret: secrets.sessionSecret,
-    store: new RedisStore({ host: 'localhost', port: 6379 })
+    store: new RedisStore({ client: redis })
 }));
 //app.use(express.csrf());
 app.use(passport.initialize());
