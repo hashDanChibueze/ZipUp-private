@@ -88,10 +88,8 @@ app.get('/reset/:token', user.getReset);
 app.post('/reset/:token', user.postReset);
 
 
-// TODO get all bathrooms near a location
-
 // get details about a single bathroom
-app.get('/getbathroom/:bid', pass.isAuthenticated, bathroom.getBathroom);
+app.get('/getbathroom/:bid', bathroom.getBathroom);
 // add a new bathroom
 app.post('/addbathroom', pass.isAuthenticated, bathroom.addBathroom);
 // vote on a bathroom
@@ -99,9 +97,9 @@ app.post('/addvote', pass.isAuthenticated, bathroom.addVote);
 // post a new review for the bathroom
 app.post('/addreview', pass.isAuthenticated, bathroom.addReview);
 // get reviews for a bathroom
-app.get('/getreviews/:bid', pass.isAuthenticated, bathroom.getReviews);
-
-// vote
+app.get('/getreviews/:bid', bathroom.getReviews);
+// get all bathrooms near the passed coordinate
+app.get('/getallnear/:lat,:lng', bathroom.getAllNear);
 
 app.listen(app.get('port'));
 

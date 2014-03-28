@@ -338,6 +338,48 @@ Users click on this is the email, checks if token is valid or not. If valid,
         }
     }
 
+### Get all bathrooms near a coordinate
+
+`GET /getallnear/lat,lng`
+
+***Success JSON**
+
+    {
+        "response": "ok",
+        "bathrooms": [
+            {
+                "downvotes": 1,
+                "upvotes": 0,
+                "name": "UW 1",
+                "access": 0,
+                "gender": 0,
+                "_id": "5335cf187f6b7d6f4a000002",
+                "__v": 0,
+                "reviews": [],
+                "location": {
+                    "lat": 47.654395,
+                    "lng": -122.309332
+                },
+                "created_at": "2014-03-28T19:35:52.440Z"
+            },
+            {
+                "downvotes": 1,
+                "upvotes": 0,
+                "name": "UW 2",
+                "access": 0,
+                "gender": 0,
+                "_id": "5335cf327f6b7d6f4a000003",
+                "__v": 0,
+                "reviews": [],
+                "location": {
+                    "lat": 47.654705,
+                    "lng": -122.308259
+                },
+                "created_at": "2014-03-28T19:36:18.007Z"
+            },
+            ......
+        ]
+    }
 
 ---------------------
 

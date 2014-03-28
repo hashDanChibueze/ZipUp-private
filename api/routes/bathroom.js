@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var async = require('async');
 
+var secrets = require('./../config/secrets');
 var Bathroom = require('../models/bathroom');
 var User = require('../models/user');
 var Review = require('../models/review');
@@ -251,42 +252,65 @@ exports.getReviews = function(req, res) {
 
 }
 
-// exports.getBathroom = function(req, res) {
-//     Bathroom.findById(req.params.id, function(err, bathroom) {
-//         if (!err) {
-//             return res.json(bathroom);
-//         } else {
-//             console.log(err);
-//         }
-//     })
-// }
+// get all bathrooms near the passed coordinate
+exports.getAllNear = function(req, res) {
 
-// exports.getReviews = function(req, res) {
-//     Review.find({"bathroom": req.params.bid}, function(err, result) {
-//         if (!err) {
-//             return res.json(result);
-//         } else {
-//             console.log(err)
-//         }
-//     });
-// }
+    req.assert('lat', 'Rating can only be from 1 to 5.').isFloat();
+    req.assert('lng', 'Review must be 10-2000 characters.').isFloat();
 
-// exports.addReview = function(req, res) {
-//     var newReview = new Review({
-//         "rating": req.body.rating,
-//         "cleanliness": req.body.clean,
-//         "aroma": req.body.aroma,
-//         "amenities": req.body.amenities,
-//         "review": req.body.review,
-//         "bathroom": req.params.bid
-//     });
+    var errors = req.validationErrors();
 
-//     newReview.save(function(err, review) {
-//         if (!err) {
-//             return console.log('created');
-//         } else {
-//             return console.log(err);
-//         }
-//     });
-//     return res.send(newReview);
-// }
+    if (errors) {
+        return res.send(400, {
+            'response': 'fail',
+            'errors': 'Latitude and longitude must be numbers.'
+            });
+    }
+
+    var lat = +req.params.lat;
+    var lng = +req.params.lng;
+
+    Bathroom.find(function(err, bathrooms) {
+        if (err) {
+            return res.send(500, {
+                'response': 'fail',
+                'errors': 'Something went wrong. Please try again later.'
+            });
+        }
+
+        var result = [];
+
+        for (var i = 0; i < bathrooms.length; i++) {
+            var curBathroom = bathrooms[i];
+            if (getDistanceFromLatLonInM(lat, lng, curBathroom.location.lat, 
+                    curBathroom.location.lng) <= secrets.maxDistance) {
+                result.push(curBathroom);
+            }
+        }
+
+        res.send(200, {
+            'response': 'ok',
+            'bathrooms': result
+        });
+
+    });
+
+}
+
+// return the distance between two coordinates in metres
+function getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1); // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d * 1000;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180)
+}
