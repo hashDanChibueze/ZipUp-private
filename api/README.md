@@ -8,6 +8,8 @@ Make sure you have mongodb installed.
 
 #### All API methods require a valid user session.
 
+**API base URL: [http://z-api.herokuapp.com/](http://z-api.herokuapp.com/)**
+
 # API methods:
 
 - [User authentication and account management](#user-authentication-and-account-management)

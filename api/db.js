@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var secrets = require('./config/secrets');
 
-var dbURI = secrets.db;
+var dbURI = process.env.MONGOLAB_URI || secrets.db;
 mongoose.connect(dbURI);
 
 // when connected with db
