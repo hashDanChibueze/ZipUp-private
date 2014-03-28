@@ -10,11 +10,13 @@ Helping your business go down. Will be deployed on the interwebz when we work to
 - **Backend**: node, express, mongodb
 - **Frontend**: jQuery, Knockout.js
 
+API base URL: [http://z-api.herokuapp.com/](http://z-api.herokuapp.com/)
+
 ### Directory Structure
 
 #### `api`
 
-Holds all files for the API we use
+Holds all files for the API we use.
 
 #### `client/www`
 

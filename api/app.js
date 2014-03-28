@@ -1,3 +1,4 @@
+require('newrelic');
 /*
     Module dependencies
 */
@@ -58,17 +59,12 @@ if ('development' == app.get('env')) {
 }
 
 /*
- * URL routes
+ * All user API end points.
  */
 
 app.get('/', function(req, res) {
-    res.send('Great!');
-});
-
-
-/*
- * All user API end points.
- */
+    res.sendfile('./public/index.html');
+})
 
 // register a new user
 app.post('/signup', user.signup);
