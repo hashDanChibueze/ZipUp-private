@@ -13,5 +13,8 @@ module.exports = {
             username: 'karan@goel.im',
             password: 'pass3309'
         }
-    }
+    },
+
+    // distance in meters for the range of search
+    maxDistance: 500
 };
