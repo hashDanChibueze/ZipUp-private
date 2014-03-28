@@ -1,11 +1,10 @@
 var app = {
-    viewModel : null,
     server : 'http://z-api.herokuapp.com',
-    uuid : window.device.uuid,
-    map : null,
+    //uuid : window.device.uuid,
     // Application Constructor
     initialize: function() {
         this.bindEvents();
+        
     },
     // Bind Event Listeners
     //
@@ -21,8 +20,6 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        app.uuid = window.device.uuid;
-        app.viewModel = new ViewModel();
         
     },
     // Update DOM on a Received Event
@@ -30,3 +27,49 @@ var app = {
         
     }
 };
+
+ko.bindingHandlers.map = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        var mapObj = ko.utils.unwrapObservable(valueAccessor());
+        var latLng = new google.maps.LatLng(
+            ko.utils.unwrapObservable(mapObj.lat),
+            ko.utils.unwrapObservable(mapObj.lng));
+        var mapOptions = { center: latLng,
+                          zoom: 17, 
+                          mapTypeId: google.maps.MapTypeId.ROADMAP};
+        
+        mapObj.googleMap = new google.maps.Map(element, mapOptions);
+        
+        mapObj.marker = new google.maps.Marker({
+            map: mapObj.googleMap,
+            position: latLng,
+            title: "You Are Here",
+            draggable: true
+        });     
+        
+        mapObj.onChangedCoord = function(newValue) {
+            var latLng = new google.maps.LatLng(
+                ko.utils.unwrapObservable(mapObj.lat),
+                ko.utils.unwrapObservable(mapObj.lng));
+            mapObj.googleMap.setCenter(latLng);                 
+        };
+        
+        mapObj.onMarkerMoved = function(dragEnd) {
+            var latLng = mapObj.marker.getPosition();
+            mapObj.lat(latLng.lat());
+            mapObj.lng(latLng.lng());
+        };
+        
+        mapObj.lat.subscribe(mapObj.onChangedCoord);
+        mapObj.lng.subscribe(mapObj.onChangedCoord);  
+        
+        google.maps.event.addListener(mapObj.marker, 'dragend', mapObj.onMarkerMoved);
+        
+        $("#" + element.getAttribute("id")).data("mapObj",mapObj);
+    }
+};
+var viewModel = new ViewModel();
+
+$(document).ready(function () {   
+   ko.applyBindings(viewModel);
+});

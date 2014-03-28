@@ -14,7 +14,9 @@
             <div class="contents" data-role="tabs">
                 <div data-role="ui-content" id="map-page">
                     <div class="fullscreen">
-                        <div id="map_canvas"></div>
+                        <div id="map_canvas" data-bind="map:mapOne"></div>
+                        <input data-bind="value: mapOne().lat" />
+<input data-bind="value: mapOne().lng" />
                     </div>
                 </div>
                 <div data-role="ui-content" id="add-page">
@@ -42,7 +44,7 @@
                 <div id="footing" data-role="footer" data-position="fixed" data-tap-toggle="false">
                     <div data-role="navbar">
                         <ul>
-                            <li><a id="map-page-link" href="#map-page" data-bind="click: goToMap" class="ui-btn-active ui-state-persist ui-icon-map ui-btn-icon-top">Map</a></li>
+                            <li><a id="map-page-link" href="#map-page"  class="ui-btn-active ui-state-persist ui-icon-map ui-btn-icon-top">Map</a></li>
                             <li><a id="add-page-link" href="#add-page" class="ui-btn-active ui-state-persist ui-icon-add ui-btn-icon-top">Add</a></li>
                             <li><a id="account-page-link" href="#account-page" class="ui-btn-active ui-state-persist ui-icon-account ui-btn-icon-top">Me</a></li>
                         </ul>
@@ -50,14 +52,16 @@
                 </div>
             </div>
         </div>
-
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3clVyH1hk4gVznz4GfXv-gV0_ciXwv_w&sensor=false"></script>
+        <script type="text/javascript" src="js/cordova.js"></script>
         <script type="text/javascript" src="js/lib/jquery-2.1.0.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery.mobile-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/lib/knockout-3.1.0.js"></script>
-        <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3clVyH1hk4gVznz4GfXv-gV0_ciXwv_w&sensor=false">
+        <script type="text/javascript" src="js/viewmodel.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        
+      
         <script type="text/javascript">
             app.initialize();
         </script>
