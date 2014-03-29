@@ -1,12 +1,19 @@
 var ViewModel = function(init) {
+    console.log("in view model");
     var self = this;
     self.markers = [];
-    self.mapOne = ko.observable({
-        lat: ko.observable(12.24),
-        lng: ko.observable(24.54)
-    });
-    self.infowindow = null;
 
+    // navigator.geolocation.getCurrentPosition(function(p) {
+    //     self.initialCoordinates.lat = p.coords.latitude;
+    //     self.initialCoordinates.lng = p.coords.longitude
+    // });
+
+    // self.initialCoordinates = ko.observable({
+    //     lat: ko.observable(position.coords.latitude),
+    //     lng: ko.observable(position.coords.longitude)
+    // });
+    //self.initialCoordinates = ko.observable();
+    self.infowindow = null;
     
     // var showOnMap = function(position) {
     //     var pinColor = "EEEEEE";
