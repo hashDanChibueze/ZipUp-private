@@ -50,10 +50,7 @@ $(document).on('pageinit', '#signup', function(e) {
         if (email.length > 0 && pass.length > 0) {
             $.post(baseUrl+"signup", {email: email, password: pass}, function(res) {
                 console.log("signup success");
-                window.localStorage['email'] = email;
-                window.localStorage['password'] = pass;
-                window.localStorage['passwordChanged'] = "false"; // in case user later chances password
-                $.mobile.changePage("map.html"); // send user to the map
+                storeCredsAndRedirect(email, pass);
             })
             .fail(function(err) {
                 console.log("error");
@@ -85,10 +82,7 @@ $(document).on('pageinit', '#signin', function(e) {
         if (email.length > 0 && pass.length > 0) {
             $.post(baseUrl+"signin", {email: email, password: pass}, function(res) {
                 console.log("signin success");
-                window.localStorage['email'] = email;
-                window.localStorage['password'] = pass;
-                window.localStorage['passwordChanged'] = "false"; // in case user later chances password
-                $.mobile.changePage("map.html"); // send user to the map
+                storeCredsAndRedirect(email, pass);
             })
             .fail(function(err) {
                 console.log("error");
@@ -100,3 +94,11 @@ $(document).on('pageinit', '#signin', function(e) {
         return false;
     });
 });
+
+function storeCredsAndRedirect(email, pass) {
+    console.log("storing creds and redirecting");
+    window.localStorage['email'] = email;
+    window.localStorage['password'] = pass;
+    window.localStorage['passwordChanged'] = "false"; // in case user later chances password
+    $.mobile.changePage("map.html"); // send user to the map
+}
