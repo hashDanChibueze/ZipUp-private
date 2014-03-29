@@ -13,6 +13,18 @@ h1 {
     text-shadow: none;
 }
 
+.center-wrapper{
+text-align: center;
+}
+.center-wrapper * {
+margin: 0 auto;
+}
+
+#login-page {
+    background-color: #DDDDDD;
+    color: #111111;
+}
+
 .ui-body-c, .ui-overlay-c, .ui-page {
     background: #fff;
 }

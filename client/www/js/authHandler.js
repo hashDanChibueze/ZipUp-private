@@ -27,6 +27,16 @@ $(document).on('pageinit', '#homepage', function() {
 
 $(document).on('pageinit', '#signup', function() {
     console.log("singup page loaded");
+
+    if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
+        console.log("on device");
+        // document.addEventListener("deviceready", this.onDeviceReady, true);
+        alert = navigator.notification.alert;
+    } else {
+        console.log("on desktop");
+        // $(document).ready(this.onDeviceReady);
+    }
+
     $("#submitButton").bind('touchdown mousedown', function(e) {
         e.stopImmediatePropagation();
         e.preventDefault();
@@ -34,26 +44,27 @@ $(document).on('pageinit', '#signup', function() {
         var pass = $("#password").val();
         if (email.length > 0 && pass.length > 0) {
             $.ajax({
-                cache : false,
                 url: baseUrl+"signup",
+                type: 'POST',
                 data: {email: email, password: pass},
-                type: 'post',
-                async: false,
-                dataType: 'json',
-                success: function(result) {
+                contentType: 'application/json; charset=utf-8',
+                success: function(result, status) {
                     // everything successful, save credentials, and send user to map
                     $.mobile.changePage("map.html");
                     window.localStorage['email'] = email;
                     window.localStorage['password'] = pass;
                     window.localStorage['passwordChanged'] = false;
                 },
-                error: function(err, exception) {
-                    $(".error").text(err.responseJSON.errors);
+                error: function(err, textStatus, exception) {
+                    alert(err.responseJSON.errors, null);
+                    //$(".error").text(err.responseJSON.errors);
                 }
             });
         } else {
-            $(".error").text('Please enter an email and password.');
+            alert('Please enter an email and password', null);
+            // $(".error").text('Please enter an email and password.');
         }
         return false;
     });
+
 });
