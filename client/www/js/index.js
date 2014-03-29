@@ -1,10 +1,6 @@
 var app = {
-    server : 'http://z-api.herokuapp.com',
-    //uuid : window.device.uuid,
-
     // Application Constructor
     initialize: function() {
-        console.log("initialize");
         this.bindEvents();
     },
 
@@ -12,9 +8,8 @@ var app = {
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
-
     bindEvents: function() {
-        console.log("bind events");
+        console.log("binding");
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
             console.log("on device");
             document.addEventListener("deviceready", this.onDeviceReady, true);
@@ -25,11 +20,20 @@ var app = {
     },
 
     // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        console.log("on deviceready");
+        console.log("in onDeviceReady");
         navigator.geolocation.getCurrentPosition(showOnMap);
+    },
+
+    // Update DOM on a Received Event
+    receivedEvent: function(id) { // I didn't really use this, yet I left it in here as it's in the demo
+        
     }
 };
+
 
 var showOnMap = function(position) {
     console.log("showing map");
@@ -106,6 +110,7 @@ var showOnMap = function(position) {
 //         // $("#" + element.getAttribute("id")).data("mapObj",mapObj);
 //     }
 // };
+
 var viewModel = new ViewModel();
 
 $(document).ready(function () {
