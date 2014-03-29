@@ -42,7 +42,7 @@ $(document).on('pageinit', '#signup', function() {
                 dataType: 'json',
                 success: function(result) {
                     // everything successful, save credentials, and send user to map
-                    $.mobile.changePage("#main-app");
+                    $.mobile.changePage("map.html");
                     window.localStorage['email'] = email;
                     window.localStorage['password'] = pass;
                     window.localStorage['passwordChanged'] = false;
@@ -53,7 +53,6 @@ $(document).on('pageinit', '#signup', function() {
             });
         } else {
             $(".error").text('Please enter an email and password.');
-            return false;
         }
         return false;
     });
