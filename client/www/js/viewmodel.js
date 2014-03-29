@@ -2,8 +2,8 @@ var ViewModel = function(init) {
     var self = this;
     self.markers = [];
     self.mapOne = ko.observable({
-        lat: ko.observable(12.24),
-        lng: ko.observable(24.54)
+        lat: ko.observable(47.6097),
+        lng: ko.observable(-122.3331)
     });
     self.infowindow = null;
 

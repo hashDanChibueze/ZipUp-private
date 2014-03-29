@@ -12,9 +12,9 @@
     <body>
         <div id="main-app" class="app" data-role="page">
             <div class="contents" data-role="tabs">
-                <div data-role="ui-content" id="map-page">
+                <div data-role="ui-content" id="map-page" class="fullscreen">
                     <div class="fullscreen">
-                        <div id="map_canvas" data-bind="map:mapOne"></div>
+                        <div id="map_canvas" class="fullscreen" data-bind="map:mapOne"></div>
                         <input data-bind="value: mapOne().lat" />
 <input data-bind="value: mapOne().lng" />
                     </div>
