@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -15,6 +20,11 @@ h1 {
 .ui-tabs {
     position: static; 
     padding: .2em;
+}
+
+#header {
+    margin: 0;
+    padding: 0;
 }
 
 #map-page {
