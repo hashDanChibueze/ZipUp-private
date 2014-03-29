@@ -40,8 +40,12 @@ $(document).on('pageinit', '#signup', function(e) {
         e.stopImmediatePropagation();
         e.preventDefault();
 
-        var email = $("#email").val();
-        var pass = $("#password").val();
+        var form = $("#signup-form");
+
+        var email = $("#email", form).val();
+        var pass = $("#password", form).val();
+
+        console.log(email + " " + pass);
 
         if (email.length > 0 && pass.length > 0) {
             $.post(baseUrl+"signup", {email: email, password: pass}, function(res) {
@@ -53,12 +57,46 @@ $(document).on('pageinit', '#signup', function(e) {
             })
             .fail(function(err) {
                 console.log("error");
-                $(".error").text(err.responseJSON.errors);
+                $(".error", form).text(err.responseJSON.errors);
             });
         } else {
-            $(".error").text('Please enter an email and password.');
+            $(".error", form).text('Please enter an email and password.');
         }
         return false;
     });
+});
 
+// Handles signing in the user. On successful sign in, saves credentials in
+// local storage
+$(document).on('pageinit', '#signin', function(e) {
+    console.log("singin page loaded");
+
+    $("#signin-form").submit(function(e) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+
+        var form = $("#signin-form");
+
+        var email = $("#email", form).val();
+        var pass = $("#password", form).val();
+
+        console.log(email + " " + pass);
+
+        if (email.length > 0 && pass.length > 0) {
+            $.post(baseUrl+"signin", {email: email, password: pass}, function(res) {
+                console.log("signin success");
+                window.localStorage['email'] = email;
+                window.localStorage['password'] = pass;
+                window.localStorage['passwordChanged'] = "false"; // in case user later chances password
+                $.mobile.changePage("map.html"); // send user to the map
+            })
+            .fail(function(err) {
+                console.log("error");
+                $(".error").text(err.responseJSON.errors);
+            });
+        } else {
+            $(".error", form).text('Please enter an email and password.');
+        }
+        return false;
+    });
 });

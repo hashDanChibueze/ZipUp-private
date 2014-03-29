@@ -47,8 +47,18 @@
         <div data-role="page" id="signin" class="center-wrapper">
             <div data-role="header" data-add-back-btn="true"><h3>Sign in</h3></div>
             <div data-role="content">
-                
-
+                <form id="signin-form">
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="email" value="" placeholder="Email" />
+                    </div>
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" value="" placeholder="Password" />
+                    </div>
+                    <div class="error"></div>
+                    <input type="submit" value="Sign in" id="submitButton">
+                </form>
             </div>
         </div>
 
