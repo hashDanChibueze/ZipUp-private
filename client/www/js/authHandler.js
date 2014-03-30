@@ -4,6 +4,8 @@ $(document).bind("mobileinit", function() {
     console.log("in mobileinit");
     $.support.cors = true;
     $.mobile.allowCrossDomainPages = true;
+    //$.mobile.linkBindingEnabled = true;
+    //$.mobile.ajaxEnabled = false;
 });
 
 $(document).ajaxStart(function() {
@@ -112,5 +114,7 @@ function storeCredsAndRedirect(email, pass) {
     window.localStorage['email'] = email;
     window.localStorage['password'] = pass;
     window.localStorage['passwordChanged'] = "false"; // in case user later chances password
-    $.mobile.changePage("map.html"); // send user to the map
+    // $("body").pagecontainer({defaults: true});
+    // $("body").pagecontainer("change", "map.html");
+    window.location.href = "map.html";
 }

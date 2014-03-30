@@ -17,22 +17,22 @@
 
             <div class="contents" data-role="tabs">
 
-                <div id="header" data-role="header" data-position="fixed" data-tap-toggle="false" class="ui-body-b ui-body">
+                <div id="header" data-role="header" data-position="fixed" data-tap-toggle="false" class="ui-body-a ui-body">
                     <div data-role="navbar">
                         <ul>
-                            <li><a id="map-page-link" href="#map-page"  class="ui-btn-active" data-icon="navigation">Find</a></li>
-                            <li><a id="add-page-link" href="#map-page" data-icon="plus">Add</a></li>
-                            <li><a id="account-page-link" href="#account-page" data-icon="user">Me</a></li>
+                            <li><a id="map-page-link" href="#map-page"  class="ui-btn-active ui-state-persist" data-icon="navigation">Find</a></li>
+                            <li><a id="add-page-link" href="#map-page"  data-icon="plus" class="">Add</a></li>
+                            <li><a id="account-page-link" href="#account-page"  data-icon="user" class="">Me</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <div data-role="ui-content" id="map-page">
+                <div data-role="main" class="ui-body-d ui-content" id="map-page">
                     <div id="map_canvas"></div>
                 </div>
 
-                <div data-role="ui-content" id="account-page">
-                    <div id="account">
+                <div id="account-page">
+                    <div id="account" data-role="content">
                         <h3>Email</h3>
                         <div id="email"></div>
                         <h3>Review Count</h3>
@@ -47,63 +47,69 @@
                         <div id="awards">
                             <p>Award: reviewed one bathroom (bronze star)</p>
                         </div>
-                        <a href="#changeinfo" style="text-decoration: none"data-transition="slide"><button value="Update profile" id="update-profile-link" data-icon="arrow-r" >Update Profile</button></a>
-                        <a href="#signout" style="text-decoration: none"><button id="signout-link" data-icon="arrow-d">Sign out</button></a>
-                        <!-- <a href="#changeinfo" id="update-profile-link" data-transition="slide">Update profile</a> -->
+                        <p>
+                            <a href="#changeinfo" id="update-profile-link" data-role="button" data-icon="arrow-r" data-transition="slide">Update Profile</a>
+                        </p>
+                        <p>
+                            <a href="#" id="signout-link" data-role="button" data-icon="arrow-d">Sign out</a>
+                        </p>
+                        
                     </div>
                 </div>
-                
-
-
-        </div>
+            </div> <!-- tabs -->
             <!-- details after hitting yes sure when adding bathroom -->
+        </div><!-- main app -->
+
+        <div data-role="page" id="add-details-page">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                <h3>Bathroom details</h3>
             </div>
-                <div data-role="page" id="add-details-page">
-                    <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
-                        <h3>Bathroom details</h3>
-                    </div>
-                    <div data-role="content" class="form-box">
-                        <form id="add-form">
-                            <input type="text" placeholder="Name" name="name" id="add-name">
-                            <label><input type="radio" name="gender" value="0" required="required">Male</label>
-                            <label><input type="radio" name="gender" value="1">Female</label>
-                            <label><input type="radio" name="gender" value="2">Unisex</label>
-                            <br>
-                            <label><input type="radio" name="access" value="0" required="required">Public</label>
-                            <label><input type="radio" name="access" value="1">Private</label>
-                            <br>
-                            <label><input type="radio" name="rating" value="1" required="required">Good</label>
-                            <label><input type="radio" name="rating" value="-1">Bad</label>
-                            <br>
-                            <div class="error"></div>
-                            <input type="submit" id="add-button" name="Add" value="Add">
-                        </form>
-                    </div>
-                </div>
+            <div data-role="content" class="form-box">
+                <form id="add-form">
+                    <div class="ui-field-contain">
+                        <input type="text" placeholder="Name" name="name" id="add-name">
+                        <label><input type="radio" name="gender" value="0" required="required">Male</label>
+                        <label><input type="radio" name="gender" value="1">Female</label>
+                        <label><input type="radio" name="gender" value="2">Unisex</label>
+                        <br>
+                        <label><input type="radio" name="access" value="0" required="required">Public</label>
+                        <label><input type="radio" name="access" value="1">Private</label>
+                        <br>
+                        <label><input type="radio" name="rating" value="1" required="required">Good</label>
+                        <label><input type="radio" name="rating" value="-1">Bad</label>
+                        <br>
+                        <div class="error"></div>
+                        <input type="submit" id="add-button" name="Add" value="Add">
+                    </div>  
+                </form>
+            </div>
+        </div>
         <!-- The page to change account info -->
-                <div data-role="page" id="changeinfo" class="center-wrapper">
-                    <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
-                        <h3>Update Profile</h3>
+        <div data-role="page" id="changeinfo" class="center-wrapper">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                <h3>Update Profile</h3>
+            </div>
+            <div data-role="content">
+                <form id="change-profile-form">
+                <div class="ui-field-contain">
+                    <fieldset data-role="fieldcontain" class="ui-hide-label">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="update-email" value="" placeholder="Email" />
+                    </fieldset>
+                    <fieldset data-role="fieldcontain" class="ui-hide-label">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="update-password" value="" placeholder="Password" />
+                    </fieldset>
+                    <fieldset data-role="fieldcontain" class="ui-hide-label">
+                        <label for="name">Name:</label>
+                        <input type="text" name="name" id="update-name" value="" placeholder="Name" />
+                    </fieldset>
+                    <div class="error"></div>
+                    <input type="submit" value="Update" id="update-submit" data-icon="arrow-l">
                     </div>
-                    <div data-role="content">
-                        <form id="change-profile-form">
-                            <fieldset data-role="fieldcontain" class="ui-hide-label">
-                                <label for="email">Email:</label>
-                                <input type="email" name="email" id="update-email" value="" placeholder="Email" />
-                            </fieldset>
-                            <fieldset data-role="fieldcontain" class="ui-hide-label">
-                                <label for="password">Password:</label>
-                                <input type="password" name="password" id="update-password" value="" placeholder="Password" />
-                            </fieldset>
-                            <fieldset data-role="fieldcontain" class="ui-hide-label">
-                                <label for="name">Name:</label>
-                                <input type="text" name="name" id="update-name" value="" placeholder="Name" />
-                            </fieldset>
-                            <div class="error"></div>
-                            <input type="submit" value="Update" id="update-submit" data-icon="arrow-l">
-                        </form>
-                    </div>
-                </div>
+                </form>
+            </div>
+        </div>
         <script type="text/javascript"
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3clVyH1hk4gVznz4GfXv-gV0_ciXwv_w&sensor=true"></script>
         <script type="text/javascript" src="js/cordova.js"></script>

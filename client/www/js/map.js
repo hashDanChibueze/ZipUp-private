@@ -24,6 +24,21 @@ $(document).on('pageinit', '#main-app', function() {
     console.log("map page loaded");
     // $("#map-page").click();
     navigator.geolocation.getCurrentPosition(showOnMap);
+    $('#map-page-link').click(function() {
+        console.log("in click func");
+        $('#header ul li a').removeClass("ui-state-persist");
+        $('#map-page-link').addClass("ui-state-persist");
+    });
+    $('#add-page-link').click(function() {
+        console.log("in click func");
+        $('#header ul li a').removeClass("ui-state-persist");
+        $('#add-page-link').addClass("ui-state-persist");
+    });
+    $('#account-page-link').click(function() {
+        console.log("in click func");
+        $('#header ul li a').removeClass("ui-state-persist");
+        $('#account-page-link').addClass("ui-state-persist");
+    });
 });
 
 
@@ -113,13 +128,19 @@ var getBathrooms = function(position, map) {
                         map: map,
                         title: name
                     });
-
+                    var netVotes = upvotes - downvotes;
+                    var style = "";
+                    if (netVotes > 0) {
+                        style = "color: green;";
+                    } else if (netVotes < 0) {
+                        style = "color: red;";
+                    }
                     var content = '<div class="content">' +
                         '<h3 class="firstHeading">' + name + '</h3>' +
                         '<div id="bodyContent">' +
                         '<p>Gender: ' + gender + '<br/>' +
-                        'Upvotes: ' + upvotes + '<br/>' +
-                        'Downvotes: ' + downvotes + '<br/>' +'</p></div></div>';
+                        'Rating: <span style="' +style+'">' + netVotes +
+                        '</span></p></div></div>';
 
                     google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
                         return function() {
