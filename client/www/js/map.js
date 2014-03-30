@@ -59,7 +59,7 @@ var showOnMap = function(position) {
     });
 };
 var getBathrooms = function() {
-    $.get("/getallnear/?lat=" + self.position.coords.latitude + "&lng=" + self.position.coords.longitude,
+    $.get(baseUrl + "getallnear/?lat=" + self.position.coords.latitude + "&lng=" + self.position.coords.longitude,
         function (data, status) {
 
         for (var i = 0; i < data.bathrooms.length; i++) {
