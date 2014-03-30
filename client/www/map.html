@@ -53,12 +53,38 @@
                         <h3>Review Count</h3>
                         <h3>Challenges</h3>
                         <h3>Awards</h3>
+                        <a href="#changeinfo" data-transition="slide">Update profile</a>
                     </div>
                 </div>
+                
 
             </div>
+
         </div>
-        
+        <!-- The page to change account info -->
+                <div data-role="page" id="changeinfo" class="center-wrapper">
+                    <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                        <h3>Update Profile</h3>
+                    </div>
+                    <div data-role="content">
+                        <form id="change-profile-form">
+                            <fieldset data-role="fieldcontain" class="ui-hide-label">
+                                <label for="email">Email:</label>
+                                <input type="email" name="email" id="update-email" value="" placeholder="Email" />
+                            </fieldset>
+                            <fieldset data-role="fieldcontain" class="ui-hide-label">
+                                <label for="password">Password:</label>
+                                <input type="password" name="password" id="update-password" value="" placeholder="Password" />
+                            </fieldset>
+                            <fieldset data-role="fieldcontain" class="ui-hide-label">
+                                <label for="name">Name:</label>
+                                <input type="text" name="name" id="update-name" value="" placeholder="Name" />
+                            </fieldset>
+                            <div class="error"></div>
+                            <input type="submit" value="Update" id="update-submit" data-icon="arrow-r">
+                        </form>
+                    </div>
+                </div>
         <script type="text/javascript"
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3clVyH1hk4gVznz4GfXv-gV0_ciXwv_w&sensor=true"></script>
         <script type="text/javascript" src="js/cordova.js"></script>
