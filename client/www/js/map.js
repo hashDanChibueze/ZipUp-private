@@ -1,5 +1,6 @@
 var baseUrl = "http://z-api.herokuapp.com/";
 var map; // global for use in add.js may need to refactor
+var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key (jeff's acc)
 
 $(document).bind("mobileinit", function() {
     console.log("in mobileinit");
@@ -60,7 +61,9 @@ var showOnMap = function(position) {
         mapTypeControl: false,
         streetViewControl: false,
         panControl: false,
-        zoom: 17
+        zoom: 17,
+        tilt: 45,
+        
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),
         mapOptions);
