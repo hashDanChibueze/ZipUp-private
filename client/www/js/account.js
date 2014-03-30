@@ -52,3 +52,6 @@ var onSubmitProfileUpdate = function() {
         });
     }
 };
+$('#account-page-link').click(getAndShowAccountInfo);
+$('#update-profile-link').click(onUpdateProfileClick);
+$('#update-submit').click(onSubmitProfileUpdate);

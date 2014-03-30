@@ -21,7 +21,7 @@
                     <div data-role="navbar">
                         <ul>
                             <li><a id="map-page-link" href="#map-page"  class="ui-btn-active" data-icon="navigation">Map</a></li>
-                            <li><a id="add-page-link" href="#add-page" data-icon="plus">Add Bathroom</a></li>
+                            <li><a id="add-page-link" href="#map-page" data-icon="plus">Add Bathroom</a></li>
                             <li><a id="account-page-link" href="#account-page" data-icon="user">Account</a></li>
                         </ul>
                     </div>
@@ -31,7 +31,7 @@
                     <div id="map_canvas"></div>
                 </div>
 
-                <div data-role="ui-content" id="add-page">
+                <div data-role="page" id="add-page">
                     <div class="form-box">
                         <form id="add-form">
                             <input type="text" placeholder="Name" name="name">
@@ -49,11 +49,23 @@
 
                 <div data-role="ui-content" id="account-page">
                     <div id="account">
-                        <h3>Username</h3>
+                        <h3>Email</h3>
+                        <div id="email"></div>
                         <h3>Review Count</h3>
+                        <div id="reviewcount"></div>
                         <h3>Challenges</h3>
+                        <div id="challenges">
+                            <p>Review a bathroom!</p>
+                            <p>Review 3 bathrooms!</p>
+                            <p>Review 10 bathrooms!</p>
+                        </div>
                         <h3>Awards</h3>
-                        <a href="#changeinfo" data-transition="slide">Update profile</a>
+                        <div id="awards">
+                            <p>Award: reviewed one bathroom (bronze star)</p>
+                        </div>
+                        <a href="#changeinfo" style="text-decoration: none"><button value="Update profile" id="update-profile-link" data-icon="arrow-r">Update Profile</button></a>
+                        <a href="#signout" style="text-decoration: none"><button id="signout-link" data-icon="arrow-r">Sign out</button></a>
+                        <!-- <a href="#changeinfo" id="update-profile-link" data-transition="slide">Update profile</a> -->
                     </div>
                 </div>
                 
@@ -92,6 +104,8 @@
         <script type="text/javascript" src="js/lib/jquery.mobile-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/lib/knockout-3.1.0.js"></script>
         <script type="text/javascript" src="js/map.js"></script>
+        <script type="text/javascript" src="js/account.js"></script>
+        <script type="text/javascript" src="js/add.js"></script>
 
     </body>
 
