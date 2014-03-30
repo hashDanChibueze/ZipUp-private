@@ -117,7 +117,8 @@ var getBathrooms = function(position, map) {
                         '<h3 class="firstHeading">' + name + '</h3>' +
                         '<div id="bodyContent">' +
                         '<p>Gender: ' + gender + '<br/>' +
-                        'Type: ' + type + '</p></div></div>';
+                        'Upvotes: ' + upvotes + '<br/>' +
+                        'Downvotes: ' + downvotes + '<br/>' +'</p></div></div>';
 
                     google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
                         return function() {
