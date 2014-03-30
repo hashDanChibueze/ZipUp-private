@@ -52,6 +52,13 @@ var onSubmitProfileUpdate = function() {
         });
     }
 };
+var onSignout = function() {
+    window.localStorage['email'] = null;
+    window.localStorage['password'] = null;
+    $.mobile.changePage("index.html");
+};
+
 $('#account-page-link').click(getAndShowAccountInfo);
 $('#update-profile-link').click(onUpdateProfileClick);
 $('#update-submit').click(onSubmitProfileUpdate);
+$('#signout-link').click(onSignout);
