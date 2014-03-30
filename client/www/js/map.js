@@ -1,4 +1,5 @@
 var baseUrl = "http://z-api.herokuapp.com/";
+var map; // global for use in add.js may need to refactor
 
 $(document).bind("mobileinit", function() {
     console.log("in mobileinit");
@@ -44,9 +45,9 @@ var showOnMap = function(position) {
         mapTypeControl: false,
         streetViewControl: false,
         panControl: false,
-        zoom: 16
+        zoom: 17
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),
+    map = new google.maps.Map(document.getElementById("map_canvas"),
         mapOptions);
 
     var infowindow = new google.maps.InfoWindow({

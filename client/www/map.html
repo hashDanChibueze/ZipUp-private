@@ -20,31 +20,15 @@
                 <div id="header" data-role="header" data-position="fixed" data-tap-toggle="false" class="ui-body-b ui-body">
                     <div data-role="navbar">
                         <ul>
-                            <li><a id="map-page-link" href="#map-page"  class="ui-btn-active" data-icon="navigation">Map</a></li>
-                            <li><a id="add-page-link" href="#map-page" data-icon="plus">Add Bathroom</a></li>
-                            <li><a id="account-page-link" href="#account-page" data-icon="user">Account</a></li>
+                            <li><a id="map-page-link" href="#map-page"  class="ui-btn-active" data-icon="navigation">Find</a></li>
+                            <li><a id="add-page-link" href="#map-page" data-icon="plus">Add</a></li>
+                            <li><a id="account-page-link" href="#account-page" data-icon="user">Me</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div data-role="ui-content" id="map-page">
                     <div id="map_canvas"></div>
-                </div>
-
-                <div data-role="page" id="add-page">
-                    <div class="form-box">
-                        <form id="add-form">
-                            <input type="text" placeholder="Name" name="name">
-                            <br>
-                            <label><input type="radio" name="gender" value="male">Male</label>
-                            <label><input type="radio" name="gender" value="female">Female</label>
-                            <br>
-                            <label><input type="radio" name="rating" value="up">Up</label>
-                            <label><input type="radio" name="rating" value="down">Down</label>
-                            <br>
-                            <input type="submit" name="Add" value="Add">
-                        </form>
-                    </div>
                 </div>
 
                 <div data-role="ui-content" id="account-page">
@@ -70,9 +54,32 @@
                 </div>
                 
 
-            </div>
 
         </div>
+            <!-- details after hitting yes sure when adding bathroom -->
+            </div>
+                <div data-role="page" id="add-details-page">
+                    <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                        <h3>Bathroom details</h3>
+                    </div>
+                    <div data-role="content" class="form-box">
+                        <form id="add-form">
+                            <input type="text" placeholder="Name" name="name" id="add-name">
+                            <label><input type="radio" name="gender" value="0" required="required">Male</label>
+                            <label><input type="radio" name="gender" value="1">Female</label>
+                            <label><input type="radio" name="gender" value="2">Unisex</label>
+                            <br>
+                            <label><input type="radio" name="access" value="0" required="required">Public</label>
+                            <label><input type="radio" name="access" value="1">Private</label>
+                            <br>
+                            <label><input type="radio" name="rating" value="1" required="required">Good</label>
+                            <label><input type="radio" name="rating" value="-1">Bad</label>
+                            <br>
+                            <div class="error"></div>
+                            <input type="submit" id="add-button" name="Add" value="Add">
+                        </form>
+                    </div>
+                </div>
         <!-- The page to change account info -->
                 <div data-role="page" id="changeinfo" class="center-wrapper">
                     <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">

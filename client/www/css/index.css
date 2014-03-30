@@ -16,6 +16,9 @@ html, body {
 h1 {
     text-shadow: none;
 }
+.green {
+    color:green;
+}
 
 .center-wrapper{
     text-align: center;
