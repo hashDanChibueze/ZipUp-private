@@ -9,7 +9,7 @@ $(document).bind("mobileinit", function() {
 $(document).ajaxStart(function() {
     console.log("in loading animation");
     $.mobile.loading('show', {
-        text: "Signing up..."
+        text: "Fetching..."
     });
 });
 
@@ -41,9 +41,12 @@ var showOnMap = function(position) {
     var location = latitude + "," + longitude;
     var mapOptions = {
         center: myLatlng,
-        zoom: 17
+        mapTypeControl: false,
+        streetViewControl: false,
+        panControl: false,
+        zoom: 16
     };
-    map = new google.maps.Map(document.getElementById("map_canvas"),
+    var map = new google.maps.Map(document.getElementById("map_canvas"),
         mapOptions);
 
     var infowindow = new google.maps.InfoWindow({
@@ -57,54 +60,73 @@ var showOnMap = function(position) {
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,marker);
     });
+
+    getBathrooms(position, map);
 };
-var getBathrooms = function() {
-    $.get(baseUrl + "getallnear/?lat=" + self.position.coords.latitude + "&lng=" + self.position.coords.longitude,
+
+var getBathrooms = function(position, map) {
+    console.log("getting nearby bathrooms");
+    $.get(baseUrl+"getallnear/"+position.coords.latitude+","+position.coords.longitude, 
         function (data, status) {
-
-        for (var i = 0; i < data.bathrooms.length; i++) {
-
-          if (data.bathrooms[i]["loc"] != undefined) {
-            console.log("creating bathroom: " + data.bathrooms[i]["name"]);
-            var lat = data.bathrooms[i].location.lat;
-            var lng = data.bathrooms[i].location.lng;
-            var name = data.bathrooms[i].name;
-            var genderNum = data.bathrooms[i].gender;
-            var gender;
-            var typeNum = data.bathrooms[i].access;
-            var type;
-            var b_id = data.bathrooms[i]._id;
-            if (genderNum == 0) {
-              gender = "Men's";
-            } else if (genderNum == 1) {
-              gender = "Women's";
-            } else {
-              gender = "Unisex";
-            }
-            if (typeNum == 0) {
-              type = "Public";
-            } else if (typeNum == 1) {
-              type = "Private";
-            } else {
-              type = "Customers Only";
-            }
-            var newBathPos = new google.maps.LatLng(lat, lng);
-            var nearby = new google.maps.Marker({
-                position: newBathPos,
-                map: self.map,
-                title: name
-            });
-            var contentString = '<div class="content">' +
-                '<h3 class="firstHeading">' + name + '</h3>' +
-                '<div id="bodyContent">' +
-                '<p>Gender: ' + gender + '<br/>' + /* Put restroom specific information in this message*/
-                'Type: ' + type + '</p></div></div>';
-            nearby.html = contentString;
-            nearby.b_id = b_id;
-            nearby.b_data = data.bathrooms[i];
-            self.markers.push(nearby);
             
-          }
-        }
+            var infowindow = new google.maps.InfoWindow();
+            var marker;
+
+            for (var i = 0; i < data.bathrooms.length; i++) {
+                var currentB = data.bathrooms[i];
+                if (currentB["location"] != undefined) {
+                    console.log("creating bathroom: " + data.bathrooms[i]["name"]);
+                    
+                    // get details about each bathroom
+                    var lat = currentB.location.lat;
+                    var lng = currentB.location.lng;
+                    var name = currentB.name;
+                    var genderNum = currentB.gender;
+                    var upvotes = currentB.upvotes;
+                    var downvotes = currentB.downvotes;
+                    var gender;
+                    var typeNum = currentB.access;
+                    var type;
+                    var b_id = currentB._id;
+
+                    if (genderNum == 0) {
+                        gender = "Men's";
+                    } else if (genderNum == 1) {
+                        gender = "Women's";
+                    } else {
+                        gender = "Unisex";
+                    }
+                    
+                    if (typeNum == 0) {
+                        type = "Public";
+                    } else if (typeNum == 1) {
+                        type = "Private";
+                    } else {
+                        type = "Customers Only";
+                    }
+
+                    var newBathPos = new google.maps.LatLng(lat, lng);
+                    
+                    marker = new google.maps.Marker({
+                        position: newBathPos,
+                        map: map,
+                        title: name
+                    });
+
+                    var content = '<div class="content">' +
+                        '<h3 class="firstHeading">' + name + '</h3>' +
+                        '<div id="bodyContent">' +
+                        '<p>Gender: ' + gender + '<br/>' +
+                        'Type: ' + type + '</p></div></div>';
+
+                    google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+                        return function() {
+                            infowindow.setContent(content);
+                            infowindow.open(map,marker);
+                        };
+                    })(marker,content,infowindow));
+                }
+
+            }
     });
 };
