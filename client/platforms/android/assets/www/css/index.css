@@ -34,7 +34,7 @@ h1 {
 }
 
 .error {
-    font-weight: 300;
+    font-weight: bold;
     margin-top: 20px;
     margin-bottom: 20px;
     color: #FF4136;

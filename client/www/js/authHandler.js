@@ -6,6 +6,18 @@ $(document).bind("mobileinit", function() {
     $.mobile.allowCrossDomainPages = true;
 });
 
+$(document).ajaxStart(function() {
+    console.log("in loading animation");
+    $.mobile.loading('show', {
+        text: "Signing up..."
+    });
+});
+
+$(document).ajaxStop(function() {
+    console.log("in stop animation");
+    $.mobile.loading('hide');
+});
+
 // This is the homepage handler, that either shows the homepage,
 // or redirects user to the homepage if the user is able to successfully login
 $(document).on('pageinit', '#homepage', function() {
