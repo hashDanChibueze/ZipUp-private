@@ -9,24 +9,35 @@ html, body {
     padding: 0;
 }
 
+* {
+    font-family: Calibri,Helvetica,Arial,sans-serif!important;
+}
+
 h1 {
     text-shadow: none;
 }
 
 .center-wrapper{
-text-align: center;
+    text-align: center;
 }
 .center-wrapper * {
-margin: 0 auto;
+    margin: 0 auto;
 }
 
-#login-page {
-    background-color: #DDDDDD;
+#home-signin {
+    margin-top: 30px;
+}
+
+#home-signin > a {
     color: #111111;
+    font-weight: 300;
 }
 
-.ui-body-c, .ui-overlay-c, .ui-page {
-    background: #fff;
+.error {
+    font-weight: 300;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #FF4136;
 }
 
 .ui-tabs {
@@ -62,11 +73,6 @@ margin: 0 auto;
 
 #add-page > div > li {
     margin-bottom: 20px;
-}
-
-
-body > div.ui-page.ui-page-theme-a.ui-page-header-fixed.ui-page-footer-fixed.ui-page-active > div > div.contents.ui-tabs.ui-widget.ui-widget-content.ui-corner-all {
-    padding: 15px 10px;
 }
 
 

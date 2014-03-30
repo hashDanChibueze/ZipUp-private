@@ -1,51 +1,61 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>ZipUp</title>
+
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
         <link rel="stylesheet" type="text/css" href="css/lib/jquery.mobile-1.4.2.min.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>ZipUp</title>
+
     </head>
     <body>
         
         <!-- The main auth part of the app -->
         <div id="homepage" class="center-wrapper" data-role="page">
             <!-- User sees the into homepage first -->
-            <div data-role="content" id="home">
-                <h1>ZipUp</h1>
-                <h2>1 line description here.</h2>
-                <a href="#signup" class="ui-btn ui-btn-b ui-btn-inline" data-transition="slide">Sign up</a>
-                <p><a href="#signin" data-transition="slide">I already have an account</a></p>
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
+                <h3>ZipUp</h3>
             </div>
-            <div data-role="footer">
-                <p><a href="#resetPassword" data-transition="slide">Forgot password</a></p>
+            <div data-role="content">
+                <img src="http://i.imgur.com/yMw8MWH.png" style="height:250px">
+                <p>
+                    <a href="#signup" data-role="button" data-icon="user" data-transition="slide">Sign up</a>
+                </p>
+                <p id="home-signin">
+                    <a href="#signin" data-transition="slide">I already have an account</a>
+                </p>
             </div>
         </div>
 
         <!-- The page that shows and works on sign up -->
         <div data-role="page" id="signup" class="center-wrapper">
-            <div data-role="header" data-add-back-btn="true"><h3>Sign up</h3></div>
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                <h3>Sign up</h3>
+            </div>
             <div data-role="content">
                 <form id="signup-form">
-                    <div data-role="fieldcontain" class="ui-hide-label">
+                    <fieldset data-role="fieldcontain" class="ui-hide-label">
                         <label for="email">Email:</label>
                         <input type="email" name="email" id="email" value="" placeholder="Email" />
-                    </div>
-                    <div data-role="fieldcontain" class="ui-hide-label">
+                    </fieldset>
+                    <fieldset data-role="fieldcontain" class="ui-hide-label">
                         <label for="password">Password:</label>
                         <input type="password" name="password" id="password" value="" placeholder="Password" />
-                    </div>
+                    </fieldset>
                     <div class="error"></div>
-                    <input type="submit" value="Sign up" id="submitButton">
+                    <input type="submit" value="Sign up" id="submitButton" data-icon="user">
                 </form>
             </div>
         </div>
 
         <!-- The page that shows and works on sign in -->
         <div data-role="page" id="signin" class="center-wrapper">
-            <div data-role="header" data-add-back-btn="true"><h3>Sign in</h3></div>
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                <h3>Sign in</h3>
+            </div>
             <div data-role="content">
                 <form id="signin-form">
                     <div data-role="fieldcontain" class="ui-hide-label">
@@ -57,7 +67,7 @@
                         <input type="password" name="password" id="password" value="" placeholder="Password" />
                     </div>
                     <div class="error"></div>
-                    <input type="submit" value="Sign in" id="submitButton">
+                    <input type="submit" value="Sign in" id="submitButton" data-icon="arrow-r">
                 </form>
             </div>
         </div>
