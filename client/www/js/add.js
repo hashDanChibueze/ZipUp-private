@@ -211,7 +211,10 @@ $('#add-form').submit(function (e) {
     var bathroom_access = $('input[name="access"]:checked').val();
     var gender = $('input[name="gender"]:checked').val();
     var voteDir = $('input[name="rating"]:checked').val();
-    
+    if (!addMarker) { // make sure user entered the page by selecting a marker
+        $(".error", form).text("Please go back and select a marker.");
+        return;
+    }
     var postData = {
         "lat": addMarker.getPosition().lat(),
         "lng": addMarker.getPosition().lng(),

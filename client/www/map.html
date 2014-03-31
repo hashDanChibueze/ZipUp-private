@@ -33,20 +33,17 @@
 
                 <div id="account-page">
                     <div id="account" data-role="content">
-                        <h3>Email</h3>
-                        <div id="email"></div>
-                        <h3>Review Count</h3>
-                        <div id="reviewcount"></div>
-                        <h3>Challenges</h3>
-                        <div id="challenges">
-                            <p>Review a bathroom!</p>
-                            <p>Review 3 bathrooms!</p>
-                            <p>Review 10 bathrooms!</p>
-                        </div>
-                        <h3>Awards</h3>
-                        <div id="awards">
-                            <p>Award: reviewed one bathroom (bronze star)</p>
-                        </div>
+                        <ul data-role="listview">
+                            <li data-role="list-divider">Email</li>
+                            <li id="uemail"></li>
+                            <li data-role="list-divider">Review Count</li>
+                            <li id="ureviewcount">0</li>
+                            <li data-role="list-divider">Challenges</li>
+                            <li id="uchallenges">Review a bathroom</li>
+                            <li data-role="list-divider">Awards</li>
+                            <li id="uawards">None</li>
+                        </ul>
+                        <br>
                         <p>
                             <a href="#changeinfo" id="update-profile-link" data-role="button" data-icon="arrow-r" data-transition="slide">Update Profile</a>
                         </p>

@@ -40,6 +40,7 @@ $(document).on('pageinit', '#main-app', function() {
         $('#header ul li a').removeClass("ui-state-persist");
         $('#account-page-link').addClass("ui-state-persist");
     });
+    $('#uemail').text(window.localStorage.email); // set user email on account page
 });
 
 
@@ -83,6 +84,7 @@ var showOnMap = function(position) {
     getBathrooms(position, map);
 };
 
+// 
 var getBathrooms = function(position, map) {
     console.log("getting nearby bathrooms");
     $.get(baseUrl+"getallnear/"+position.coords.latitude+","+position.coords.longitude, 
@@ -144,13 +146,13 @@ var getBathrooms = function(position, map) {
                         '<p>Gender: ' + gender + '<br/>' +
                         'Rating: <span style="' +style+'">' + netVotes +
                         '</span></p></div></div>';
-
-                    google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+                    var markerClickCallback = function (marker, content, infowindow) {
                         return function() {
                             infowindow.setContent(content);
-                            infowindow.open(map,marker);
+                            infowindow.open(map, marker);
                         };
-                    })(marker,content,infowindow));
+                    };
+                    google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, infowindow));
                 }
 
             }
