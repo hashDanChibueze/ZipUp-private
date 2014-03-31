@@ -4,7 +4,7 @@ var addMarker;
 var placesService;
 var addListener;
 var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key (jeff's acc)
-
+var MAX_PLACE_DISTANCE = 160;
 
 // Initalizes an event listener for dropping pins
 var addInit = function () {
@@ -133,24 +133,49 @@ function fillNamePlaces() {
         'university',
         'veterinary_care',
         'zoo'];
+    var curPos = addMarker.getPosition();
     var request = {
-        location: addMarker.getPosition(),
+        location: curPos,
         rankBy: google.maps.places.RankBy.DISTANCE,
         //radius: '20',
         types: placeTypes
     };
     placesService.nearbySearch(request, function (results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            console.log(results);
-            for (var i = 0; i < results.length; i++) {
+            var topResult = results[0];
+            $('#add-name').val(topResult.name);
+            var distance = getDistanceFromLatLonInKm(curPos.lat(), curPos.lng(),
+                topResult.geometry.location.lat(), topResult.geometry.location.lng()) * 1000;
+            if (distance >= MAX_PLACE_DISTANCE) { // remove if distance is too great
+                $('#add-name').val("");
+                console.log("distance too great");
+            }
+            console.log("Top results:");
+            for (var i = 0; i < Math.min(results.length, 3); i++) {
                 console.log(results[i].name);
             }
-            $('#add-name').val(results[0].name);
         } else {
-            console.log("error places " + status);
             $('#add-name').val("");
+            console.log("error places " + status);
         }
     })
+};
+
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLon = deg2rad(lon2 - lon1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d;
+};
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180)
 };
 
 function fillNameGeocoding() {
