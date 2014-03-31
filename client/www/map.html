@@ -67,17 +67,22 @@
             <div data-role="content" class="form-box">
                 <form id="add-form">
                     <div class="ui-field-contain">
+                        <fieldset data-role="controlgroup">
                         <input type="text" placeholder="Name" name="name" id="add-name">
                         <label><input type="radio" name="gender" value="0" required="required">Male</label>
                         <label><input type="radio" name="gender" value="1">Female</label>
                         <label><input type="radio" name="gender" value="2">Unisex</label>
+                        </fieldset>
                         <br>
-                        <label><input type="radio" name="access" value="0" required="required">Public</label>
+                        <fieldset data-role="controlgroup">
+                        <label><input type="radio" name="access" checked="checked" value="0" required="required">Public</label>
                         <label><input type="radio" name="access" value="1">Private</label>
+                        </fieldset>
                         <br>
+                        <fieldset data-role="controlgroup">
                         <label><input type="radio" name="rating" value="1" required="required">Good</label>
                         <label><input type="radio" name="rating" value="-1">Bad</label>
-                        <br>
+                        </fieldset>
                         <div class="error"></div>
                         <input type="submit" id="add-button" name="Add" value="Add">
                     </div>  
