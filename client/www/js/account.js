@@ -53,8 +53,6 @@ var onSubmitProfileUpdate = function() {
     }
 };
 var onSignout = function() {
-    e.stopImmediatePropagation();
-    e.preventDefault();
     window.localStorage['email'] = null;
     window.localStorage['password'] = null;
     window.location.href = "/";
@@ -63,4 +61,4 @@ var onSignout = function() {
 $('#account-page-link').click(getAndShowAccountInfo);
 $('#update-profile-link').click(onUpdateProfileClick);
 $('#update-submit').click(onSubmitProfileUpdate);
-$('#signout-link').submit(onSignout);
+$('#signout-link').click(onSignout);

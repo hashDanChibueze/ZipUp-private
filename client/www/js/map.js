@@ -26,21 +26,25 @@ $(document).on('pageinit', '#main-app', function() {
     // $("#map-page").click();
     navigator.geolocation.getCurrentPosition(showOnMap);
     $('#map-page-link').click(function() {
-        console.log("in click func");
+        if ($('#account-page-link').hasClass("ui-state-persist")) {
+            google.maps.event.trigger(map, 'resize');
+        }
         $('#header ul li a').removeClass("ui-state-persist");
         $('#map-page-link').addClass("ui-state-persist");
     });
     $('#add-page-link').click(function() {
-        console.log("in click func");
+        if ($('#account-page-link').hasClass("ui-state-persist")) {
+            google.maps.event.trigger(map, 'resize');
+        }
         $('#header ul li a').removeClass("ui-state-persist");
         $('#add-page-link').addClass("ui-state-persist");
     });
     $('#account-page-link').click(function() {
-        console.log("in click func");
         $('#header ul li a').removeClass("ui-state-persist");
         $('#account-page-link').addClass("ui-state-persist");
     });
     $('#uemail').text(window.localStorage.email); // set user email on account page
+    $('#update-email').val(window.localStorage.email);
 });
 
 

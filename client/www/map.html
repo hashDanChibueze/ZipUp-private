@@ -35,20 +35,24 @@
                     <div id="account" data-role="content">
                         <ul data-role="listview">
                             <li data-role="list-divider">Email</li>
-                            <li id="uemail"></li>
+                            <li data-icon="false"><a id="uemail" data-transition="pop"  href="#changeinfo"></a></li>
                             <li data-role="list-divider">Review Count</li>
-                            <li id="ureviewcount">0</li>
+                            <li id="ureviewcount">0</li> <!-- TODO make this count up from 0 animated --><!-- TODO Gold stars and stuff for > 50 or something -->
+                            <li data-role="list-divider">Bathrooms added</li>
+                            <li id="ubathroomcount">0 <span style="font-weight: normal;"> (that have been reviewed)</span></li>
                             <li data-role="list-divider">Challenges</li>
-                            <li id="uchallenges">Review a bathroom</li>
+                            
+                            <li><h4 class="ui-li-heading">Review a bathroom</h4><p class="ui-li-desc">Just one bathroom!</p></li>
+                            <li><!-- <a href="#"> --><h4>Full list</h4><p>Not yet implemented</p><!-- </a> --></li>
                             <li data-role="list-divider">Awards</li>
-                            <li id="uawards">None</li>
+                            <li id="uawards"><h4>None</h4><p>Not yet implemented</p></li>
                         </ul>
                         <br>
-                        <p>
+                        <!-- <p>
                             <a href="#changeinfo" id="update-profile-link" data-role="button" data-icon="arrow-r" data-transition="slide">Update Profile</a>
-                        </p>
+                        </p> -->
                         <p>
-                            <a href="#" id="signout-link" data-role="button" data-icon="arrow-d">Sign out</a>
+                            <a href="#" id="signout-link" data-role="button" data-icon="back">Sign out</a>
                         </p>
                         
                     </div>
@@ -89,25 +93,25 @@
         <!-- The page to change account info -->
         <div data-role="page" id="changeinfo" class="center-wrapper">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
-                <h3>Update Profile</h3>
+                <h3>Change your email</h3>
             </div>
             <div data-role="content">
                 <form id="change-profile-form">
                 <div class="ui-field-contain">
                     <fieldset data-role="fieldcontain" class="ui-hide-label">
-                        <label for="email">Email:</label>
-                        <input type="email" name="email" id="update-email" value="" placeholder="Email" />
+                        <label for="email">New email:</label>
+                        <input type="email" name="email" id="update-email" value="" placeholder="New email" />
                     </fieldset>
-                    <fieldset data-role="fieldcontain" class="ui-hide-label">
+                    <!-- <fieldset data-role="fieldcontain" class="ui-hide-label">
                         <label for="password">Password:</label>
-                        <input type="password" name="password" id="update-password" value="" placeholder="Password" />
+                        <input type="password" name="password" id="update-password" value="" placeholder="current password" />
                     </fieldset>
                     <fieldset data-role="fieldcontain" class="ui-hide-label">
                         <label for="name">Name:</label>
                         <input type="text" name="name" id="update-name" value="" placeholder="Name" />
-                    </fieldset>
+                    </fieldset> -->
                     <div class="error"></div>
-                    <input type="submit" value="Update" id="update-submit" data-icon="arrow-l">
+                    <input type="submit" value="Update" id="update-submit" data-icon="check">
                     </div>
                 </form>
             </div>
