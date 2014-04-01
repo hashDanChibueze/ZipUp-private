@@ -1,4 +1,3 @@
-// sorry about global variables cannot think of how to do this better atm
 // TODO fix global variables
 var addMarker;
 var placesService;
@@ -12,9 +11,9 @@ var addInit = function () {
         var addinfowindow = new google.maps.InfoWindow();
         // TODO clean up contentstring button link is messy
         var content = '<div class="content">' +
-            '<div id="place-name"></div><h3 class="firstHeading">Are you sure?</h3>' +
+            '<div id="place-name"></div>' +
             '<div id="bodyContent">' +
-            "<a href='#add-details-page' id='add-confirm' onclick='fillNamePlaces()' data-role='button' data-transition='slide' style='text-decoration:none;'><button style='color: green;' class=' ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all green' data-icon='arrow-r'>Yes</button></a>" + '</div></div>'
+            "<a href='#add-details-page' id='add-confirm' data-theme='b' style='color:green;' role='button' data-icon='check' class='ui-link ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all' onclick='fillNamePlaces()' data-role='button' data-transition='slide'>Confirm</a>" + '</div></div>'
         addinfowindow.setContent(content);
         
         addListener = google.maps.event.addListener(map, "click", function (event) {
@@ -36,103 +35,7 @@ var addInit = function () {
     }
 };
 function fillNamePlaces() {
-    var placeTypes = [
-        'accounting',
-        'airport',
-        'amusement_park',
-        'aquarium',
-        'art_gallery',
-        'atm',
-        'bakery',
-        'bank',
-        'bar',
-        'beauty_salon',
-        'bicycle_store',
-        'book_store',
-        'bowling_alley',
-        'bus_station',
-        'cafe',
-        'campground',
-        'car_dealer',
-        'car_rental',
-        'car_repair',
-        'car_wash',
-        'casino',
-        'cemetery',
-        'church',
-        'city_hall',
-        'clothing_store',
-        'convenience_store',
-        'courthouse',
-        'dentist',
-        'department_store',
-        'doctor',
-        'electrician',
-        'electronics_store',
-        'embassy',
-        'establishment',
-        'finance',
-        'fire_station',
-        'florist',
-        'food',
-        'funeral_home',
-        'furniture_store',
-        'gas_station',
-        'general_contractor',
-        'grocery_or_supermarket',
-        'gym',
-        'hair_care',
-        'hardware_store',
-        'health',
-        'hindu_temple',
-        'home_goods_store',
-        'hospital',
-        'insurance_agency',
-        'jewelry_store',
-        'laundry',
-        'lawyer',
-        'library',
-        'liquor_store',
-        'local_government_office',
-        'locksmith',
-        'lodging',
-        'meal_delivery',
-        'meal_takeaway',
-        'mosque',
-        'movie_rental',
-        'movie_theater',
-        'moving_company',
-        'museum',
-        'night_club',
-        'painter',
-        'park',
-        'parking',
-        'pet_store',
-        'pharmacy',
-        'physiotherapist',
-        'place_of_worship',
-        'plumber',
-        'police',
-        'post_office',
-        'real_estate_agency',
-        'restaurant',
-        'roofing_contractor',
-        'rv_park',
-        'school',
-        'shoe_store',
-        'shopping_mall',
-        'spa',
-        'stadium',
-        'storage',
-        'store',
-        'subway_station',
-        'synagogue',
-        'taxi_stand',
-        'train_station',
-        'travel_agency',
-        'university',
-        'veterinary_care',
-        'zoo'];
+    var placeTypes = [ 'accounting', 'airport', 'amusement_park', 'aquarium', 'art_gallery', 'atm', 'bakery', 'bank', 'bar', 'beauty_salon', 'bicycle_store', 'book_store', 'bowling_alley', 'bus_station', 'cafe', 'campground', 'car_dealer', 'car_rental', 'car_repair', 'car_wash', 'casino', 'cemetery', 'church', 'city_hall', 'clothing_store', 'convenience_store', 'courthouse', 'dentist', 'department_store', 'doctor', 'electrician', 'electronics_store', 'embassy', 'establishment', 'finance', 'fire_station', 'florist', 'food', 'funeral_home', 'furniture_store', 'gas_station', 'general_contractor', 'grocery_or_supermarket', 'gym', 'hair_care', 'hardware_store', 'health', 'hindu_temple', 'home_goods_store', 'hospital', 'insurance_agency', 'jewelry_store', 'laundry', 'lawyer', 'library', 'liquor_store', 'local_government_office', 'locksmith', 'lodging', 'meal_delivery', 'meal_takeaway', 'mosque', 'movie_rental', 'movie_theater', 'moving_company', 'museum', 'night_club', 'painter', 'park', 'parking', 'pet_store', 'pharmacy', 'physiotherapist', 'place_of_worship', 'plumber', 'police', 'post_office', 'real_estate_agency', 'restaurant', 'roofing_contractor', 'rv_park', 'school', 'shoe_store', 'shopping_mall', 'spa', 'stadium', 'storage', 'store', 'subway_station', 'synagogue', 'taxi_stand', 'train_station', 'travel_agency', 'university', 'veterinary_care', 'zoo'];
     var curPos = addMarker.getPosition();
     var request = {
         location: curPos,
@@ -183,7 +86,7 @@ function fillNameGeocoding() {
             "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
             addMarker.getPosition().lat()+","+addMarker.getPosition().lng()+"&sensor=false&key="+API_KEY,
             function(data) {
-                // Get the closest place name? within a certain radius
+                // Get the closest address within a certain radius
                 console.log(data);
                 
                 $('#add-name').val(data.results[0].formatted_address.split(",")[0]);

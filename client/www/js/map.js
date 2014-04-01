@@ -44,7 +44,7 @@ $(document).on('pageinit', '#main-app', function() {
         $('#account-page-link').addClass("ui-state-persist");
     });
     $('#uemail').text(window.localStorage.email); // set user email on account page
-    $('#update-email').val(window.localStorage.email);
+    $('#update-email').val(window.localStorage.email); // set user email on change email page
 });
 
 
