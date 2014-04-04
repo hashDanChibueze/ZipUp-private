@@ -48,7 +48,6 @@ app.use(express.session({
     secret: secrets.sessionSecret,
     store: new RedisStore({ client: redis })
 }));
-//app.use(express.csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
@@ -81,7 +80,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', function(req, res) {
     res.sendfile('./public/index.html');
-})
+});
 
 // register a new user
 app.post('/signup', user.signup);
