@@ -149,7 +149,7 @@ var getBathrooms = function(position, map) {
                         '<div id="bodyContent">' +
                         '<p>Gender: ' + gender + '<br/>' +
                         'Rating: <span style="' +style+'">' + netVotes +
-                        '</span></p></div></div>';
+                        '</span></p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' onclick='fillNamePlaces()' data-role='button' data-transition='slide'>Details</a></div></div>";
                     var markerClickCallback = function (marker, content, infowindow) {
                         return function() {
                             infowindow.setContent(content);

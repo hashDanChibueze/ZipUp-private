@@ -105,7 +105,7 @@ var addDeInit = function () {
 
 $('#add-page-link').click(addInit);
 $('#map-page-link').click(addDeInit);
-$('#add-details-page').click
+
 $('#add-form').submit(function (e) {
     e.stopImmediatePropagation();
     e.preventDefault();
