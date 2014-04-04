@@ -62,7 +62,7 @@ exports.signin = function(req, res, next) {
         });
     }
 
-    passport.authenticate('local', { session: false }, function(err, user, info) {
+    passport.authenticate('local', function(err, user, info) {
         if (err) {
             return res.send(500, {
                 'response': 'fail',
