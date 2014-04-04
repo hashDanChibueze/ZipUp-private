@@ -36,13 +36,10 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  * Login Required middleware.
  */
 
-exports.ensureAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        return res.send(401, {
-            'response': 'fail',
-            'errors': 'Login to access this area.'
-        });
-    }
+exports.isAuthenticated = function(req, res, next) {
+    if (req.isAuthenticated()) return next();
+    return res.send(401, {
+        'response': 'fail',
+        'errors': 'Login to access this area.'
+    });
 };

@@ -89,11 +89,11 @@ app.post('/signin', user.signin);
 // logout a logged in user
 app.get('/signout', user.signout);
 // get details about logged in user
-app.get('/account', pass.ensureAuthenticated, user.userDetails);
+app.get('/account', pass.isAuthenticated, user.userDetails);
 // update general profile info
-app.post('/account/profile', pass.ensureAuthenticated, user.postUpdateProfile);
+app.post('/account/profile', pass.isAuthenticated, user.postUpdateProfile);
 // change password
-app.post('/account/password', pass.ensureAuthenticated, user.postUpdatePassword);
+app.post('/account/password', pass.isAuthenticated, user.postUpdatePassword);
 // reset password
 app.post('/forgot', user.resetPassword);
 app.get('/reset/:token', user.getReset);
@@ -103,11 +103,11 @@ app.post('/reset/:token', user.postReset);
 // get details about a single bathroom
 app.get('/getbathroom/:bid', bathroom.getBathroom);
 // add a new bathroom
-app.post('/addbathroom', pass.ensureAuthenticated, bathroom.addBathroom);
+app.post('/addbathroom', pass.isAuthenticated, bathroom.addBathroom);
 // vote on a bathroom
-app.post('/addvote', pass.ensureAuthenticated, bathroom.addVote);
+app.post('/addvote', pass.isAuthenticated, bathroom.addVote);
 // post a new review for the bathroom
-app.post('/addreview', pass.ensureAuthenticated, bathroom.addReview);
+app.post('/addreview', pass.isAuthenticated, bathroom.addReview);
 // get reviews for a bathroom
 app.get('/getreviews/:bid', bathroom.getReviews);
 // get all bathrooms near the passed coordinate
