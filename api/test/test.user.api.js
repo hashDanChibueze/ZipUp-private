@@ -104,10 +104,10 @@ describe('User', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .get('/account')
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('user');
@@ -145,10 +145,10 @@ describe('User', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/account/profile')
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .send({'email': 'new@test.com',
                                 'name': 'Hello',
                                 'location': 'WA'})
@@ -174,10 +174,10 @@ describe('User', function() {
                         .send({'email': 'test2@test.com', 'password': 'password'})
                         .end(function(err, res) {
                             res.should.have.status(200);
-                            var cookie = res.headers['set-cookie'];
+                            var access = res.body.user.token;
                             request(api)
                                 .post('/account/profile')
-                                .set('cookie', cookie)
+                                .set('access', access)
                                 .send({'email': user.email})
                                 .end(function(e2, r2) {
                                     r2.should.have.status(400);
@@ -198,10 +198,10 @@ describe('User', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/account/password')
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .send({'password': 'newPassword'})
                         .end(function(e, r) {
                             r.should.have.status(200);
