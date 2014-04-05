@@ -29,15 +29,14 @@ $(document).on('pageinit', '#homepage', function() {
         // else show signin page
     // no credentials, show the homepage
 
-    if(window.localStorage["email"] != undefined && window.localStorage["password"] != undefined &&
-        window.localStorage['passwordChanged'] == "false") {
-        var email = window.localStorage["email"];
-        var password = window.localStorage["password"];
+    if(window.localStorage["token"] != undefined) {
+        var token = window.localStorage["token"];
         $.post(baseUrl+"signin", 
             {email:email, password:password}, function(res) {
                 console.log("signin successful");
                 console.log(res);
                 $.mobile.changePage("map.html");
+                location.refresh();
         });
     } else {
         console.log("no credentials found in localStorage");
@@ -64,7 +63,7 @@ $(document).on('pageinit', '#signup', function(e) {
         if (email.length > 0 && pass.length > 0) {
             $.post(baseUrl+"signup", {email: email, password: pass}, function(res) {
                 console.log("signup success");
-                storeCredsAndRedirect(email, pass);
+                storeCredsAndRedirect(res);
             })
             .fail(function(err) {
                 console.log("error");
@@ -96,7 +95,7 @@ $(document).on('pageinit', '#signin', function(e) {
         if (email.length > 0 && pass.length > 0) {
             $.post(baseUrl+"signin", {email: email, password: pass}, function(res) {
                 console.log("signin success");
-                storeCredsAndRedirect(email, pass);
+                storeCredsAndRedirect(res);
             })
             .fail(function(err) {
                 console.log("error");
@@ -109,11 +108,9 @@ $(document).on('pageinit', '#signin', function(e) {
     });
 });
 
-function storeCredsAndRedirect(email, pass) {
+function storeCredsAndRedirect(res) {
     console.log("storing creds and redirecting");
-    window.localStorage['email'] = email;
-    window.localStorage['password'] = pass;
-    window.localStorage['passwordChanged'] = "false"; // in case user later chances password
+    window.localStorage['token'] = res.user.token;
     // $("body").pagecontainer({defaults: true});
     // $("body").pagecontainer("change", "map.html");
     window.location.href = "map.html";

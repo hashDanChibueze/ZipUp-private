@@ -6,7 +6,9 @@ Make sure you have mongodb installed.
     mongod --dbpath data/
     node app.js
 
-#### All API methods require a valid user session.
+#### All API calls must have the following header:
+
+**`access: <user token returned during signup>`**
 
 **API base URL: [http://z-api.herokuapp.com/](http://z-api.herokuapp.com/)**
 
