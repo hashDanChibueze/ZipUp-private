@@ -44,16 +44,14 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(expressValidator());
 app.use(express.methodOverride());
-app.use(express.session({
-    secret: secrets.sessionSecret,
-    store: new RedisStore({ client: redis })
-}));
+// app.use(express.session({
+//     secret: secrets.sessionSecret,
+//     store: new RedisStore({ client: redis })
+// }));
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 app.use(function(req, res, next) {
     res.locals.user = req.user;
-    // res.locals.token = req.csrfToken();
-    // res.locals.secrets = secrets;
     next();
 });
 app.use(app.router);

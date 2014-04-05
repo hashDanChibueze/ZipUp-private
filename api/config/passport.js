@@ -65,11 +65,16 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  */
 
 exports.isAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) {
+    User.findOne({'token': req.headers.access}, function(err, user) {
+        console.log(user);
+        if (err || !user) {
+            return res.send(401, {
+                'response': 'fail',
+                'errors': 'Login to access this area.'
+            });
+        }
+
+        req.user = user;
         return next();
-    }
-    return res.send(401, {
-        'response': 'fail',
-        'errors': 'Login to access this area.'
     });
 };
