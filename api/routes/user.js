@@ -6,6 +6,30 @@ var passport = require('passport');
 var User = require('../models/user');
 var secrets = require('./../config/secrets');
 
+// validate an access token
+exports.validateToken = function(req, res) {
+    req.assert('token', 'Token is not valid.').notEmpty();
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        return res.send(400, {
+            'response': 'fail',
+            'errors': 'Invalid values passed, please fix these.'
+        });
+    }
+
+    User.findOne({'token': req.params.token}, function(err, user) {
+        if (err || !user) {
+            return res.send(404, {
+                'response': 'fail',
+                'errors': 'Invalid token.'
+            });
+        }
+        res.send(200);
+    });
+}
+
 // register a new user.
 exports.signup = function(req, res, next) {
     req.assert('email', 'Email is not valid.').isEmail();

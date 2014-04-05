@@ -20,6 +20,12 @@ Make sure you have mongodb installed.
 
 ## User authentication and account management
 
+### Validate an access token
+
+`GET /validatetoken/:token`
+
+Returns status `400` or `200` accordingly.
+
 ### Register a new user
 
 `POST /signup`

@@ -31,8 +31,9 @@ $(document).on('pageinit', '#homepage', function() {
 
     if(window.localStorage["token"] != undefined) {
         var token = window.localStorage["token"];
-        $.post(baseUrl+"signin", 
-            {email:email, password:password}, function(res) {
+        console.log("some token found: " + token);
+
+        $.get(baseUrl+"validatetoken/"+token, function(res) {
                 console.log("signin successful");
                 console.log(res);
                 $.mobile.changePage("map.html");

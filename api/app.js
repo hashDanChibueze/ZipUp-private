@@ -80,6 +80,8 @@ app.get('/', function(req, res) {
     res.sendfile('./public/index.html');
 });
 
+// validate a request token
+app.get('/validatetoken/:token', user.validateToken);
 // register a new user
 app.post('/signup', user.signup);
 // log a user in
