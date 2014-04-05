@@ -4,11 +4,39 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('./../models/user');
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    var createAccessToken = function() {
+        var token = user.generateRandomToken();
+        User.findOne({token: token}, function(err, existingUser) {
+            if (err) {
+                return res.send(500, {
+                    'response': 'fail',
+                    'errors': 'Something went wrong. Please try again later.'
+                });
+            }
+            if (existingUser) {
+                createAccessToken(); // Run the function again - the token has to be unique!
+            } else {
+                user.set('token', token);
+                user.save(function(err) {
+                    if (err) {
+                        return res.send(500, {
+                            'response': 'fail',
+                            'errors': 'Something went wrong. Please try again later.'
+                        });
+                    }
+                    return done(null, user.get('token'));
+                });
+            }
+        });
+    };
+
+    if (user._id) {
+        createAccessToken();
+    }
 });
 
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
+passport.deserializeUser(function(token, done) {
+    User.findOne({'token': token}, function(err, user) {
         done(err, user);
     });
 });
@@ -37,7 +65,9 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
  */
 
 exports.isAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) return next();
+    if (req.isAuthenticated()) {
+        return next();
+    }
     return res.send(401, {
         'response': 'fail',
         'errors': 'Login to access this area.'

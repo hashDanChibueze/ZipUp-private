@@ -29,6 +29,11 @@ var userSchema = new mongoose.Schema({
         ref: Bathroom
     }],
 
+    token: {
+        type: String,
+        unique: true
+    },
+
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });
@@ -64,6 +69,17 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
         if (err) return cb(err);
         cb(null, isMatch);
     });
+};
+
+userSchema.methods.generateRandomToken = function () {
+    var user = this,
+    chars = "_!abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+    token = new Date().getTime() + '_';
+    for ( var x = 0; x < 16; x++ ) {
+        var i = Math.floor( Math.random() * 62 );
+        token += chars.charAt( i );
+    }
+return token;
 };
 
 module.exports = mongoose.model('User', userSchema);
