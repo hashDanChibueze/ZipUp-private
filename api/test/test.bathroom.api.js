@@ -64,11 +64,11 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(bathroom)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(err, res) {
                             res.should.have.status(200);
                             res.body.should.have.property('response', 'ok');
@@ -83,11 +83,11 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(invalid_bathroom)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(err, res) {
                             res.should.have.status(400);
                             res.body.should.have.property('response', 'fail');
@@ -102,10 +102,10 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .get('/signout')
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             request(api)
@@ -130,17 +130,17 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(bathroom)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('response', 'ok');
                             request(api)
                                 .get('/getbathroom/'+r.body.bathroom._id)
-                                .set('cookie', cookie)
+                                .set('access', access)
                                 .end(function(e2, r2) {
                                     r2.should.have.status(200);
                                     r2.body.bathroom.should.have.property('_id', r.body.bathroom._id);
@@ -160,11 +160,11 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(bathroom)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('response', 'ok');
@@ -173,11 +173,11 @@ describe('Bathroom', function() {
                                 .send(user2)
                                 .end(function(e2, r2) {
                                     r2.should.have.status(200);
-                                    var cookie = res.headers['set-cookie'];
+                                    var access = res.body.user.token;
                                     request(api)
                                         .post('/addvote')
                                         .send({'bid': r.body.bathroom._id, 'voteDir': 1})
-                                        .set('cookie', cookie)
+                                        .set('access', access)
                                         .end(function(e3, r3) {
                                             r3.should.have.status(200);
                                             r3.body.user.voted_bathrooms.should.include(r.body.bathroom._id);
@@ -194,11 +194,11 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(bathroom)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('response', 'ok');
@@ -207,11 +207,11 @@ describe('Bathroom', function() {
                                 .send(user2)
                                 .end(function(e2, r2) {
                                     r2.should.have.status(200);
-                                    var cookie = res.headers['set-cookie'];
+                                    var access = res.body.user.token;
                                     request(api)
                                         .post('/addvote')
                                         .send({'bid': r.body.bathroom._id, 'voteDir': 2})
-                                        .set('cookie', cookie)
+                                        .set('access', access)
                                         .end(function(e3, r3) {
                                             r3.should.have.status(400);
                                             r3.body.should.have.property('response', 'fail');
@@ -232,18 +232,18 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(bathroom)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('response', 'ok');
                             request(api)
                                 .post('/addreview')
                                 .send({'bid': r.body.bathroom._id, 'cleanliness': 4, 'review': 'this was awesome'})
-                                .set('cookie', cookie)
+                                .set('access', access)
                                 .end(function(e2, r2) {
                                     r2.should.have.status(200);
                                     r2.body.bathroom.reviews.should.have.length(1);
@@ -262,24 +262,24 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(bathroom)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('response', 'ok');
                             request(api)
                                 .post('/addreview')
                                 .send({'bid': r.body.bathroom._id, 'cleanliness': 4, 'review': 'this was awesome'})
-                                .set('cookie', cookie)
+                                .set('access', access)
                                 .end(function(e2, r2) {
                                     r2.should.have.status(200);
                                     r2.body.bathroom.reviews.should.have.length(1);
                                     request(api)
                                         .get('/getreviews/'+r.body.bathroom._id)
-                                        .set('cookie', cookie)
+                                        .set('access', access)
                                         .end(function(e3, r3) {
                                             r3.should.have.status(200);
                                             r3.body.bathroom.reviews.should.have.length(1);
@@ -319,29 +319,29 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(b1)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('response', 'ok');
                             request(api)
                                 .post('/addbathroom')
                                 .send(b2)
-                                .set('cookie', cookie)
+                                .set('access', access)
                                 .end(function(e2, r2) {
                                     r2.should.have.status(200);
                                     request(api)
                                         .post('/addbathroom')
                                         .send(b3)
-                                        .set('cookie', cookie)
+                                        .set('access', access)
                                         .end(function(e3, r3) {
                                             r3.should.have.status(200);
                                             request(api)
                                                 .get('/getallnear/47.654184,-122.306306')
-                                                .set('cookie', cookie)
+                                                .set('access', access)
                                                 .end(function(e4, r4) {
                                                     r4.should.have.status(200);
                                                     r4.body.bathrooms.should.have.length(2);
@@ -359,29 +359,29 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(b1)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('response', 'ok');
                             request(api)
                                 .post('/addbathroom')
                                 .send(b2)
-                                .set('cookie', cookie)
+                                .set('access', access)
                                 .end(function(e2, r2) {
                                     r2.should.have.status(200);
                                     request(api)
                                         .post('/addbathroom')
                                         .send(b3)
-                                        .set('cookie', cookie)
+                                        .set('access', access)
                                         .end(function(e3, r3) {
                                             r3.should.have.status(200);
                                             request(api)
                                                 .get('/getallnear/47.655341,-122.318602')
-                                                .set('cookie', cookie)
+                                                .set('access', access)
                                                 .end(function(e4, r4) {
                                                     r4.should.have.status(200);
                                                     r4.body.bathrooms.should.have.length(1);
@@ -399,29 +399,29 @@ describe('Bathroom', function() {
                 .send(user)
                 .end(function(err, res) {
                     res.should.have.status(200);
-                    var cookie = res.headers['set-cookie'];
+                    var access = res.body.user.token;
                     request(api)
                         .post('/addbathroom')
                         .send(b1)
-                        .set('cookie', cookie)
+                        .set('access', access)
                         .end(function(e, r) {
                             r.should.have.status(200);
                             r.body.should.have.property('response', 'ok');
                             request(api)
                                 .post('/addbathroom')
                                 .send(b2)
-                                .set('cookie', cookie)
+                                .set('access', access)
                                 .end(function(e2, r2) {
                                     r2.should.have.status(200);
                                     request(api)
                                         .post('/addbathroom')
                                         .send(b3)
-                                        .set('cookie', cookie)
+                                        .set('access', access)
                                         .end(function(e3, r3) {
                                             r3.should.have.status(200);
                                             request(api)
                                                 .get('/getallnear/47,-abc')
-                                                .set('cookie', cookie)
+                                                .set('access', access)
                                                 .end(function(e4, r4) {
                                                     r4.should.have.status(400);
                                                     done();
