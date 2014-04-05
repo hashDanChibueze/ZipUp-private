@@ -15,12 +15,30 @@ var onUpdateProfileClick = function() {
     $.get(baseUrl + "account", function (data, status) {
         // if success
         $('#update-email').val(data.user.email);
-        $('#update-name').val(data.user.profile.name);
+        //$('#update-name').val(data.user.profile.name);
     });
 };
 
+// when submitting an email change
+var onUpdateEmail = function(e) {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    var form = $('#change-profile-form');
+    var email = $('#update-email').val();
+    var formData = {
+        "email": email
+    };
+    $.post(baseUrl + "account/profile/", formData, function() {
+        // TODO display some temporary success message or toast
+        console.log("succesfully changed email");
+        window.location.href = "map.html#account-page";
+    }).fail(function(err) {
+        console.log("error");
+        $(".error", form).text(err.responseJSON.errors);
+    });
+};
 
-// TODO make this be called when submit button is pressed on update profile
+// When submitting multiple changed values at once
 var onSubmitProfileUpdate = function() {
     var email = $('#update-email').val();
     var password = $('#update-password').val();
@@ -60,5 +78,5 @@ var onSignout = function() {
 
 $('#account-page-link').click(getAndShowAccountInfo);
 $('#update-profile-link').click(onUpdateProfileClick);
-$('#update-submit').click(onSubmitProfileUpdate);
+$('#change-profile-form').submit(onUpdateEmail);
 $('#signout-link').click(onSignout);
