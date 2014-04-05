@@ -36,8 +36,9 @@ $(document).on('pageinit', '#homepage', function() {
         $.get(baseUrl+"validatetoken/"+token, function(res) {
                 console.log("signin successful");
                 console.log(res);
-                $.mobile.changePage("map.html");
-                location.refresh();
+                // $.mobile.changePage("map.html");
+                window.location.replace('map.html');
+                // location.refresh();
         });
     } else {
         console.log("no credentials found in localStorage");
