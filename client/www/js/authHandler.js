@@ -65,7 +65,7 @@ $(document).on('pageinit', '#signup', function(e) {
         if (email.length > 0 && pass.length > 0) {
             $.post(baseUrl+"signup", {email: email, password: pass}, function(res) {
                 console.log("signup success");
-                storeCredsAndRedirect(res);
+                storeCredsAndRedirect(res, email);
             })
             .fail(function(err) {
                 console.log("error");
@@ -97,7 +97,7 @@ $(document).on('pageinit', '#signin', function(e) {
         if (email.length > 0 && pass.length > 0) {
             $.post(baseUrl+"signin", {email: email, password: pass}, function(res) {
                 console.log("signin success");
-                storeCredsAndRedirect(res);
+                storeCredsAndRedirect(res, email);
             })
             .fail(function(err) {
                 console.log("error");
@@ -110,9 +110,10 @@ $(document).on('pageinit', '#signin', function(e) {
     });
 });
 
-function storeCredsAndRedirect(res) {
+function storeCredsAndRedirect(res, email) {
     console.log("storing creds and redirecting");
     window.localStorage['token'] = res.user.token;
+    window.localStorage['email'] = email;
     // $("body").pagecontainer({defaults: true});
     // $("body").pagecontainer("change", "map.html");
     window.location.href = "map.html";

@@ -3,7 +3,7 @@ var addMarker;
 var placesService;
 var addListener;
 var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key (jeff's acc)
-var MAX_PLACE_DISTANCE = 160;
+var MAX_PLACE_DISTANCE = 160; // meters
 
 // Initalizes an event listener for dropping pins
 var addInit = function () {

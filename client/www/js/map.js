@@ -1,6 +1,7 @@
 var baseUrl = "http://z-api.herokuapp.com/";
 var map; // global for use in add.js may need to refactor
 var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key (jeff's acc)
+var currentBID;
 
 $(document).bind("mobileinit", function() {
     console.log("in mobileinit");
@@ -9,14 +10,14 @@ $(document).bind("mobileinit", function() {
 });
 
 $(document).ajaxStart(function() {
-    console.log("in loading animation");
+    // console.log("in loading animation");
     $.mobile.loading('show', {
         text: "Fetching..."
     });
 });
 
 $(document).ajaxStop(function() {
-    console.log("in stop animation");
+    // console.log("in stop animation");
     $.mobile.loading('hide');
 });
 
@@ -44,7 +45,7 @@ $(document).on('pageinit', '#main-app', function() {
         $('#account-page-link').addClass("ui-state-persist");
     });
     $('#uemail').text(window.localStorage.email); // set user email on account page
-    $('#update-email').val(window.localStorage.email); // set user email on change email page
+    $('#change-email').val(window.localStorage.email); // set user email on change email page
 });
 
 
@@ -88,7 +89,7 @@ var showOnMap = function(position) {
     getBathrooms(position, map);
 };
 
-// 
+// gets all bathrooms near position and displays them to map
 var getBathrooms = function(position, map) {
     console.log("getting nearby bathrooms");
     $.get(baseUrl+"getallnear/"+position.coords.latitude+","+position.coords.longitude, 
@@ -149,14 +150,15 @@ var getBathrooms = function(position, map) {
                         '<div id="bodyContent">' +
                         '<p>Gender: ' + gender + '<br/>' +
                         'Rating: <span style="' +style+'">' + netVotes +
-                        '</span></p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' onclick='fillNamePlaces()' data-role='button' data-transition='slide'>Details</a></div></div>";
-                    var markerClickCallback = function (marker, content, infowindow) {
+                        '</span></p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-btn-inline ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' onclick='onDetailsLoad()' style='color: #6F6F6F;' data-role='button' data-transition='slide'>Details</a></div></div>";
+                    var markerClickCallback = function (marker, content, infowindow, b_id) {
                         return function() {
                             infowindow.setContent(content);
                             infowindow.open(map, marker);
+                            currentBID = b_id;
                         };
                     };
-                    google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, infowindow));
+                    google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, infowindow, b_id));
                 }
 
             }

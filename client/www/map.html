@@ -43,7 +43,7 @@
                     <div id="account" data-role="content">
                         <ul data-role="listview">
                             <li data-role="list-divider">Email</li>
-                            <li data-icon="false"><a id="uemail" data-transition="pop"  href="#changeinfo"></a></li>
+                            <li data-icon="false"><a id="uemail" data-transition="pop"  href="#change-email-page"></a></li>
                             <li data-role="list-divider">Review Count</li>
                             <li id="ureviewcount">0</li> <!-- TODO make this count up from 0 animated --><!-- TODO Gold stars and stuff for > 50 or something -->
                             <li data-role="list-divider">Bathrooms added</li>
@@ -54,6 +54,8 @@
                             <li><!-- <a href="#"> --><h4>Full list</h4><p>Not yet implemented</p><!-- </a> --></li>
                             <li data-role="list-divider">Awards</li>
                             <li id="uawards"><h4>None</h4><p>Not yet implemented</p></li>
+                            <li data-role="list-divider">Location</li>
+                            <li data-icon="false"><a id="ulocation" data-transition="pop" href="#change-loc-page">None set</a></li>
                         </ul>
                         <br>
                         <p>
@@ -103,41 +105,68 @@
                 <h3>Bathroom details</h3>
             </div>
             <div data-role="content">
-                <ul data-role="listview">
-                    <li>Bathroom Name</li>
-                    <li>Net rating</li>
-                    <li>Reviews</li>
+                <ul data-role="listview" id="bdetailslist">
+                    <li data-role="list-divider">Bathroom Name</li>
+                    <li id="bname"></li>
+                    <li data-role="list-divider">Net rating</li>
+                    <li id="brating"></li>
+                    <li data-role="list-divider">Reviews</li>
+                    <!-- Reviews inserted here -->
 
                 </ul>
+                <div class="error"></div>
+                <br>
+                <form id = "review-form">
+                    <fieldset data-role="controlgroup">
+                        <label><input type="checkbox" name="clean">Clean</label>
+                        <label><input type="checkbox" name="amenities">Amenities Stocked</label>
+                        <label><input type="checkbox" name="nosmell">No Smell</label>  
+                    </fieldset>
+                    <textarea type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
+                    <input type="submit" value="Add Review" id="add-review-submit" data-icon="plus">
+                </form>
+                
             </div>
         </div>
 
         <!-- The page to change account info -->
-        <div data-role="page" id="changeinfo" class="center-wrapper">
+        <div data-role="page" id="change-email-page" class="center-wrapper">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
                 <h3>Change email</h3>
             </div>
             <div data-role="content">
-                <form id="change-profile-form">
+                <form id="change-email-form">
                 <div class="ui-field-contain">
                     <fieldset data-role="fieldcontain" class="ui-hide-label">
                         <label for="email">New email:</label>
-                        <input type="email" name="email" id="update-email" value="" placeholder="New email" />
+                        <input type="email" name="email" id="change-email" value="" placeholder="New email" />
                     </fieldset>
-                    <!-- <fieldset data-role="fieldcontain" class="ui-hide-label">
-                        <label for="password">Password:</label>
-                        <input type="password" name="password" id="update-password" value="" placeholder="current password" />
-                    </fieldset>
-                    <fieldset data-role="fieldcontain" class="ui-hide-label">
-                        <label for="name">Name:</label>
-                        <input type="text" name="name" id="update-name" value="" placeholder="Name" />
-                    </fieldset> -->
                     <div class="error"></div>
-                    <input type="submit" value="Confirm" id="update-submit" data-icon="check">
+                    <input type="submit" value="Confirm" id="change-email-submit" data-icon="check">
                     </div>
                 </form>
             </div>
         </div>
+
+        <!-- The page to change location info -->
+        <div data-role="page" id="change-loc-page" class="center-wrapper">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                <h3>Change location</h3>
+            </div>
+            <div data-role="content">
+                <form id="change-loc-form">
+                <div class="ui-field-contain">
+                    <fieldset data-role="fieldcontain" class="ui-hide-label">
+                        <label for="loc">New location:</label>
+                        <input name="loc" id="change-loc" value="" placeholder="Location" />
+                    </fieldset>
+                    <div class="error"></div>
+                    <input type="submit" value="Confirm" id="change-loc-submit" data-icon="check">
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <script type="text/javascript"
           src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC3clVyH1hk4gVznz4GfXv-gV0_ciXwv_w&sensor=true"></script>
         <script type="text/javascript" src="js/cordova.js"></script>
@@ -147,7 +176,7 @@
         <script type="text/javascript" src="js/map.js"></script>
         <script type="text/javascript" src="js/account.js"></script>
         <script type="text/javascript" src="js/add.js"></script>
-
+        <script type="text/javascript" src="js/bathroomdetails.js"></script>
     </body>
 
     <!--<script type="text/javascript">

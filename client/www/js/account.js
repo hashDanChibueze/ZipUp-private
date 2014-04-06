@@ -1,82 +1,89 @@
 var baseUrl = "http://z-api.herokuapp.com/";
 
-// TODO make this be called when user navigate to me tab
+// called when user navigate to me tab
 var getAndShowAccountInfo = function() {
     $.get(baseUrl + "account", function (data, status) {
-        $('#account #email').html = data.user.email;
-        $('#account #reviewcount').html = "Not implemented";
-        $('#account #location').html = data.user.location;
-    })
+        window.localStorage['email'] = data.user.email;
+        window.localStorage['loc'] = data.user.profile.location;
+        $('#uemail').text(data.user.email);
+        $('#ureviewcount').text(data.user.voted_bathrooms.length);
+        $('#ulocation').text(data.user.location);
+    });
 };
 
-// TODO make this be called
-var onUpdateProfileClick = function() {
-    // TODO make this local information shouldn't have to perform a request
+$(document).on('pageinit', '#account-page', function() {
+    console.log("account-page pageinit");
+});
+
+// called when user navigates to change email page
+var onUpdateEmailStart = function() {
+    var input = $('#change-email');
+    input.val(window.localStorage['email']);
     $.get(baseUrl + "account", function (data, status) {
         // if success
-        $('#update-email').val(data.user.email);
-        //$('#update-name').val(data.user.profile.name);
+        input.val(data.user.email);
     });
 };
 
 // when submitting an email change
-var onUpdateEmail = function(e) {
+var onUpdateEmailFinish = function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
-    var form = $('#change-profile-form');
-    var email = $('#update-email').val();
+    var form = $('#change-email-form');
+    var email = $('#change-email').val();
     var formData = {
         "email": email
     };
     $.post(baseUrl + "account/profile/", formData, function() {
         // TODO display some temporary success message or toast
         console.log("succesfully changed email");
-        window.location.href = "map.html#account-page";
+        window.localStorage['email'] = email;
+        $('#uemail').text(email);
+        history.back();
     }).fail(function(err) {
         console.log("error");
         $(".error", form).text(err.responseJSON.errors);
     });
 };
 
-// When submitting multiple changed values at once
-var onSubmitProfileUpdate = function() {
-    var email = $('#update-email').val();
-    var password = $('#update-password').val();
-    var name = $('#update-name').val();
-    var location = $('#update-location').val();
-    var formData = {
-        "email": email,
-        "name": name,
-        "location": location
-    };
-    if (email || name) {
-        $.ajax({
-            type: "POST",
-            url: baseUrl + "account/profile/",
-            data: formData,
-            success: function() {
-                // say success
-            }
-        });
-    }
-    if (password) {
-        $.ajax({
-            type: "POST",
-            url: baseUrl + "account/password/",
-            data: {"password": password},
-            success: function() {
-                // say success
-            }
-        });
-    }
+// called when user navigates to change location page
+var onUpdateLocationStart = function() {
+    var input = $('#change-loc');
+    input.val(window.localStorage['loc']);
+    $.get(baseUrl + "account", function (data, status) {
+        input.val(data.user.profile.location);
+    });
 };
+var onUpdateLocationFinish = function(e) {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    var form = $('#change-loc-form');
+    var loc = $('#change-loc').val();
+    var formData = {
+        "location": loc
+    };
+    $.post(baseUrl + "account/profile/", formData, function() {
+        // TODO display some temporary success message or toast
+        console.log("succesfully changed loc");
+        window.localStorage['loc'] = loc;
+        $('#ulocation').text(loc);
+        history.back();
+    }).fail(function(err) {
+        console.log("error");
+        $(".error", form).text(err.responseJSON.errors);
+    });
+};
+
 var onSignout = function() {
-    window.localStorage['email'] = null;
-    window.localStorage['password'] = null;
-    window.location.href = "/";
+    window.localStorage['token'] = null;
+    window.localStorage['email'] = "None";
+    $.get(baseUrl + "signout");
+    window.location.replace('/');
 };
 
 $('#account-page-link').click(getAndShowAccountInfo);
-$('#update-profile-link').click(onUpdateProfileClick);
-$('#change-profile-form').submit(onUpdateEmail);
+$('#change-email-link').click(onUpdateEmailStart);
+$('#change-email-form').submit(onUpdateEmailFinish);
+$('#change-loc-link').click(onUpdateLocationStart);
+$('#change-loc-form').submit(onUpdateLocationFinish);
 $('#signout-link').click(onSignout);
