@@ -132,7 +132,14 @@ $('#add-form').submit(function (e) {
     if (true) { // TODO validate input
         $.post(baseUrl+"addbathroom", postData, function(res) {
             console.log("addbathroom success");
-            //$.mobile.changePage("map.html"); // TODO go back to add tab
+            if (addMarker) {
+                addMarker.setMap(null);
+            }
+            navigator.geolocation.getCurrentPosition(function (position) {
+                getBathrooms(position, map);
+            });
+            form["0"].reset();
+            history.back();
         })
         .fail(function(err) {
             console.log("error");
