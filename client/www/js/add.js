@@ -26,8 +26,9 @@ var addInit = function () {
                 position: new google.maps.LatLng(lat, lng),
                 map: map,
                 title: "Selected",
+                animation: google.maps.Animation.DROP
             });
-            addinfowindow.open(map, addMarker);
+            setTimeout(function() {addinfowindow.open(map, addMarker);}, 300);
         });
     }
     if (!placesService) {
