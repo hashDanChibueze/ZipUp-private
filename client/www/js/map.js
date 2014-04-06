@@ -1,5 +1,7 @@
 var baseUrl = "http://z-api.herokuapp.com/";
 var map; // global for use in add.js may need to refactor
+var bathInfoWindow; // singleton
+var BIDSet;
 var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key (jeff's acc)
 var currentBID;
 
@@ -24,6 +26,8 @@ $(document).ajaxStop(function() {
 // Show the main map with user's position and bathrooms close to the user
 $(document).on('pageinit', '#main-app', function() {
     console.log("map page loaded");
+    BIDSet = new MiniSet();
+    bathInfoWindow = new google.maps.InfoWindow();
     // $("#map-page").click();
     navigator.geolocation.getCurrentPosition(showOnMap);
     $('#map-page-link').click(function() {
@@ -86,35 +90,40 @@ var showOnMap = function(position) {
         infowindow.open(map,marker);
     });
 
-    getBathrooms(position, map);
+    google.maps.event.addListener(map, "idle", function (event) {
+            console.log("idle");
+            getBathrooms(map.getCenter(), map);
+        });
+
+    getBathrooms(myLatlng, map);
 };
 
-// gets all bathrooms near position and displays them to map
-var getBathrooms = function(position, map) {
+// gets all bathrooms near LatLng position and displays them to map
+var getBathrooms = function(LatLng, map) {
     console.log("getting nearby bathrooms");
-    $.get(baseUrl+"getallnear/"+position.coords.latitude+","+position.coords.longitude, 
+    $.get(baseUrl+"getallnear/"+LatLng.lat()+","+LatLng.lng(), 
         function (data, status) {
             
-            var infowindow = new google.maps.InfoWindow();
             var marker;
 
             for (var i = 0; i < data.bathrooms.length; i++) {
                 var currentB = data.bathrooms[i];
-                if (currentB["location"] != undefined) {
-                    console.log("creating bathroom: " + data.bathrooms[i]["name"]);
-                    
+                var b_id = currentB._id;
+                if (currentB["location"] != undefined && !BIDSet.has(b_id)) {
+                    var name = currentB.name;
+                    console.log("creating bathroom: " + name);
+                    BIDSet.add(b_id);
+
                     // get details about each bathroom
                     var lat = currentB.location.lat;
                     var lng = currentB.location.lng;
-                    var name = currentB.name;
                     var genderNum = currentB.gender;
                     var upvotes = currentB.upvotes;
                     var downvotes = currentB.downvotes;
                     var gender;
                     var typeNum = currentB.access;
                     var type;
-                    var b_id = currentB._id;
-
+                    
                     if (genderNum == 0) {
                         gender = "Men's";
                     } else if (genderNum == 1) {
@@ -158,9 +167,8 @@ var getBathrooms = function(position, map) {
                             currentBID = b_id;
                         };
                     };
-                    google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, infowindow, b_id));
+                    google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, bathInfoWindow, b_id));
                 }
-
             }
     });
 };
