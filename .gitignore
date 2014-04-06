@@ -2,3 +2,4 @@ node_modules/
 api/data/
 .DS_Store
 client/platforms/
+api/*.log
