@@ -18,6 +18,9 @@ html, body {
 h1 {
     text-shadow: none;
 }
+q {
+    font-style: italic;
+}
 
 .green {
     color:green;

@@ -47,7 +47,7 @@
                             <li data-role="list-divider">Review Count</li>
                             <li id="ureviewcount">0</li> <!-- TODO make this count up from 0 animated --><!-- TODO Gold stars and stuff for > 50 or something -->
                             <li data-role="list-divider">Bathrooms added</li>
-                            <li id="ubathroomcount">0 <span style="font-weight: normal;"> (that have been reviewed)</span></li><!-- Only count bathrooms that have been reviewed by other people so that people dont spam -->
+                            <li id="ubathroomcount">0 <span style="font-weight: normal;"> (that have been reviewed)</span> Not yet implemented</li><!-- Only count bathrooms that have been reviewed by other people so that people dont spam -->
                             <li data-role="list-divider">Challenges</li>
                             
                             <li><h4 class="ui-li-heading">Review a bathroom</h4><p class="ui-li-desc">Just one bathroom!</p></li>
@@ -107,22 +107,24 @@
             <div data-role="content">
                 <ul data-role="listview" id="bdetailslist">
                     <li data-role="list-divider">Bathroom Name</li>
-                    <li id="bname"></li>
+                    <li id="bname">Hold on...</li>
                     <li data-role="list-divider">Net rating</li>
-                    <li id="brating"></li>
+                    <li id="brating">0</li>
                     <li data-role="list-divider">Reviews</li>
                     <!-- Reviews inserted here -->
-
+                    <li class="review ui-li-static ui-body-inherit">No reviews... yet!</li>
                 </ul>
                 <div class="error"></div>
+                <a href="#" data-role="button" style='display: none;' id="more-reviews" data-icon="arrow-d">More</a>
                 <br>
-                <form id = "review-form">
+                <form id="review-form">
                     <fieldset data-role="controlgroup">
                         <label><input type="checkbox" name="clean">Clean</label>
                         <label><input type="checkbox" name="amenities">Amenities Stocked</label>
                         <label><input type="checkbox" name="nosmell">No Smell</label>  
                     </fieldset>
                     <textarea type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
+                    <div class="error"></div>
                     <input type="submit" value="Add Review" id="add-review-submit" data-icon="plus">
                 </form>
                 
