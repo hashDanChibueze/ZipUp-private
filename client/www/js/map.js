@@ -146,8 +146,8 @@ var getBathrooms = function(LatLng, map) {
                     marker = new google.maps.Marker({
                         position: newBathPos,
                         map: map,
-                        title: name,
-                        animation: google.maps.Animation.DROP
+                        title: name
+                        //animation: google.maps.Animation.DROP
                     });
                     var netVotes = upvotes - downvotes;
                     var style = "";

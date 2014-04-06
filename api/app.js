@@ -59,7 +59,7 @@ app.use(app.router);
 app.all('*', function(req, res, next){
     if (!req.get('Origin')) return next();
     // use "*" here to accept any origin
-    res.set('Access-Control-Allow-Origin', 'http://localhost:8000');
+    res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Methods', 'GET, POST');
     res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type');
     // res.set('Access-Control-Allow-Max-Age', 3600);
