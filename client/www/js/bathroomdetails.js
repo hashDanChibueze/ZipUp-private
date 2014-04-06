@@ -1,6 +1,7 @@
 // called when details button is clicked
 function onDetailsLoad() {
     var list = $('#bdetailslist');
+    $('.error', list.parent()).text(""); // clear errors
     $.get(baseUrl + "getbathroom/" + currentBID, function (res) {
         $('#bname').text(res.bathroom.name);
         var netVotes = res.bathroom.upvotes - res.bathroom.downvotes;
@@ -42,7 +43,7 @@ var getReviews = function() {
             }
         }
     }).fail(function (err) {
-        $(".error")
+        $(".error", list.parent()).text(err.responseJSON.errors);
     })
 }
 function appendReview(list, myReview) {

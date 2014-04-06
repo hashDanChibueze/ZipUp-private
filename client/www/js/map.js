@@ -48,10 +48,15 @@ $(document).on('pageinit', '#main-app', function() {
         $('#header ul li a').removeClass("ui-state-persist");
         $('#account-page-link').addClass("ui-state-persist");
     });
+
     $('#uemail').text(window.localStorage.email); // set user email on account page
     $('#change-email').val(window.localStorage.email); // set user email on change email page
 });
-
+$(document).bind('pagechange', '#main-app', function (event, data) {
+    if (data.toPage[0].id == 'main-app') {
+        google.maps.event.trigger(map, 'resize'); // prevent greyboxes
+    }
+});
 
 // Draws a marker with the passed position on a map
 var showOnMap = function(position) {
