@@ -1,5 +1,3 @@
-var baseUrl = "http://z-api.herokuapp.com/";
-
 // called when user navigate to me tab
 var getAndShowAccountInfo = function() {
     $.get(baseUrl + "account", function (data, status) {

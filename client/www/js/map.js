@@ -74,7 +74,7 @@ var showOnMap = function(position) {
     var mapOptions = {
         center: myLatlng,
         mapTypeControl: false,
-        streetViewControl: false,
+        //streetViewControl: false,
         panControl: false,
         zoom: 17,
         tilt: 45,
