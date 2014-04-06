@@ -1,3 +1,5 @@
+var NUM_REVIEWS = 5; // max number of reviews to show initially
+
 // called when details button is clicked
 function onDetailsLoad() {
     var list = $('#bdetailslist');
@@ -32,10 +34,10 @@ var getReviews = function() {
             list.append($('<li class="review ui-li-static ui-body-inherit">No reviews... yet!</li>'));
             moreReviewsBtn.hide();
         } else {
-            for (var i = 0; i < Math.min(reviews.length, 3); i++) {
+            for (var i = 0; i < Math.min(reviews.length, NUM_REVIEWS); i++) {
                 appendReview(list, reviews[i]);
             }
-            if (reviews.length > 3) {
+            if (reviews.length > NUM_REVIEWS) {
                 moreReviewsBtn.show();
                 window.localStorage['reviews'] = JSON.stringify(reviews);
             } else {
@@ -79,7 +81,7 @@ $('#more-reviews').click(function() {
     var reviews = JSON.parse(window.localStorage['reviews']);
     var list = $('#bdetailslist');
     if (reviews) {
-        for (var i = 3; i < reviews.length; i++) {
+        for (var i = NUM_REVIEWS; i < reviews.length; i++) {
             appendReview(list, reviews[i]);
         }
     }
