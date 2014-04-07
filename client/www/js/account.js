@@ -9,14 +9,10 @@ var getAndShowAccountInfo = function() {
     });
 };
 
-$(document).on('pageinit', '#account-page', function() {
-    console.log("account-page pageinit");
-});
-
 // called when user navigates to change email page
 var onUpdateEmailStart = function() {
     var input = $('#change-email');
-    input.val(window.localStorage['email']);
+    input.val(window.localStorage.email);
     $.get(baseUrl + "account", function (data, status) {
         // if success
         input.val(data.user.email);
@@ -35,7 +31,7 @@ var onUpdateEmailFinish = function(e) {
     $.post(baseUrl + "account/profile/", formData, function() {
         // TODO display some temporary success message or toast
         console.log("succesfully changed email");
-        window.localStorage['email'] = email;
+        save('email', email);
         $('#uemail').text(email);
         history.back();
     }).fail(function(err) {
@@ -47,7 +43,7 @@ var onUpdateEmailFinish = function(e) {
 // called when user navigates to change location page
 var onUpdateLocationStart = function() {
     var input = $('#change-loc');
-    input.val(window.localStorage['loc']);
+    input.val(window.localStorage.loc);
     $.get(baseUrl + "account", function (data, status) {
         input.val(data.user.profile.location);
     });
@@ -63,7 +59,7 @@ var onUpdateLocationFinish = function(e) {
     $.post(baseUrl + "account/profile/", formData, function() {
         // TODO display some temporary success message or toast
         console.log("succesfully changed loc");
-        window.localStorage['loc'] = loc;
+        save('loc', loc);
         $('#ulocation').text(loc);
         history.back();
     }).fail(function(err) {
@@ -73,8 +69,8 @@ var onUpdateLocationFinish = function(e) {
 };
 
 var onSignout = function() {
-    window.localStorage['token'] = null;
-    window.localStorage['email'] = "None";
+    save('token', null);
+    save('email', null);
     $.get(baseUrl + "signout");
     window.location.replace('/');
 };

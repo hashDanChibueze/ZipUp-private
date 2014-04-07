@@ -1,6 +1,6 @@
 var NUM_REVIEWS = 5; // max number of reviews to show initially
 
-// called when details button is clicked
+// called when details button is clicked, gets bathroom info
 function onDetailsLoad() {
     var list = $('#bdetailslist');
     $('.error', list.parent()).text(""); // clear errors
@@ -19,11 +19,12 @@ function onDetailsLoad() {
         console.log("get bathroom error");
         $(".error", list.parent()).text(err.responseJSON.errors);
     });
-    window.localStorage['reviews'] = null;
+    save('reviews', null);
     getReviews();
     $('#review-form')[0].reset();
 };
 
+// Gets reviews and displays them in the bathroom details
 var getReviews = function() {
     var list = $('#bdetailslist');
     $.get(baseUrl+"getreviews/"+currentBID, function (res) {
@@ -39,7 +40,7 @@ var getReviews = function() {
             }
             if (reviews.length > NUM_REVIEWS) {
                 moreReviewsBtn.show();
-                window.localStorage['reviews'] = JSON.stringify(reviews);
+                window.localStorage.reviews = JSON.stringify(reviews);
             } else {
                 moreReviewsBtn.hide();
             }
@@ -52,6 +53,7 @@ function appendReview(list, myReview) {
     list.append($('<li class="review ui-li-static ui-body-inherit"><q>' + myReview.review + '</q></li>'));
 }
 
+// Handler upon submitting a new review for a bathroom
 $('#review-form').submit(function (e) {
     e.stopImmediatePropagation();
     e.preventDefault();
@@ -77,8 +79,9 @@ $('#review-form').submit(function (e) {
     });
 });
 
+// Handler for clicking the more button to show more reviews
 $('#more-reviews').click(function() {
-    var reviews = JSON.parse(window.localStorage['reviews']);
+    var reviews = JSON.parse(window.localStorage.reviews);
     var list = $('#bdetailslist');
     if (reviews) {
         for (var i = NUM_REVIEWS; i < reviews.length; i++) {
