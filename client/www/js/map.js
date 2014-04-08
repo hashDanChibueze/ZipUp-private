@@ -178,3 +178,6 @@ var getBathrooms = function(LatLng, map) {
             }
     });
 };
+function save (key, value) {
+    window.localStorage[key] = value;
+};

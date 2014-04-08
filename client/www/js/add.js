@@ -35,13 +35,14 @@ var addInit = function () {
         placesService = new google.maps.places.PlacesService(map);
     }
 };
+
+// Resets the form and adds a new name from google places
 function fillNamePlaces() {
     $('#add-form')[0].reset();
     var curPos = addMarker.getPosition();
     var request = {
         location: curPos,
         rankBy: google.maps.places.RankBy.DISTANCE,
-        //radius: '20',
         types: placeTypes
     };
     placesService.nearbySearch(request, function (results, status) {
@@ -82,6 +83,7 @@ function deg2rad(deg) {
   return deg * (Math.PI / 180)
 };
 
+// Gets the address of the lat/lng
 function fillNameGeocoding() {
         $.get(
             "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
@@ -93,9 +95,9 @@ function fillNameGeocoding() {
                 $('#add-name').val(data.results[0].formatted_address.split(",")[0]);
             }
         );
-    
 }
-// removes the pin dropping listener for the add page
+
+// removes the pin dropping listener for the add page and confirm pin
 var addDeInit = function () {
     if (addMarker) {
         addMarker.setMap(null);
@@ -107,6 +109,7 @@ var addDeInit = function () {
 $('#add-page-link').click(addInit);
 $('#map-page-link').click(addDeInit);
 
+// Handler for submitting the bathroom details to add a bathroom
 $('#add-form').submit(function (e) {
     e.stopImmediatePropagation();
     e.preventDefault();
@@ -127,9 +130,7 @@ $('#add-form').submit(function (e) {
         "gender": gender,
         "voteDir": voteDir
     };
-
     console.log(postData);
-
     if (true) { // TODO validate input
         $.post(baseUrl+"addbathroom", postData, function(res) {
             console.log("addbathroom success");
