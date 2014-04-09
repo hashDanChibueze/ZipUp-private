@@ -114,7 +114,5 @@ function storeCredsAndRedirect(res, email) {
     console.log("storing creds and redirecting");
     window.localStorage['token'] = res.user.token;
     window.localStorage['email'] = email;
-    // $("body").pagecontainer({defaults: true});
-    // $("body").pagecontainer("change", "map.html");
     window.location.href = "map.html";
 }
