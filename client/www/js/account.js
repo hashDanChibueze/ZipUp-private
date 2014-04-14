@@ -5,7 +5,7 @@ var getAndShowAccountInfo = function() {
         window.localStorage['loc'] = data.user.profile.location;
         $('#uemail').text(data.user.email);
         $('#ureviewcount').text(data.user.voted_bathrooms.length);
-        $('#ulocation').text(data.user.location);
+        $('#ulocation').text(data.user.profile.location);
     });
 };
 
@@ -13,7 +13,6 @@ var getAndShowAccountInfo = function() {
 var onUpdateEmailStart = function() {
     var input = $('#change-email');
     var form = $('#change-email-form');
-    $(".error", form).hide();
     $(".error", form).text("");
     input.val(window.localStorage.email);
 };
@@ -42,11 +41,11 @@ var onUpdateEmailFinish = function(e) {
 // called when user navigates to change location page
 var onUpdateLocationStart = function() {
     var input = $('#change-loc');
+    var form = $('#change-email-form');
+    $(".error", form).text("");
     input.val(window.localStorage.loc);
-    getReq(baseUrl + "account", function (data, status) {
-        input.val(data.user.profile.location);
-    });
 };
+
 var onUpdateLocationFinish = function(e) {
     e.stopImmediatePropagation();
     e.preventDefault();
@@ -75,8 +74,8 @@ var onSignout = function() {
 };
 
 $('#account-page-link').click(getAndShowAccountInfo);
-$('#change-email-link').click(onUpdateEmailStart);
+$('#uemail').click(onUpdateEmailStart);
 $('#change-email-form').submit(onUpdateEmailFinish);
-$('#change-loc-link').click(onUpdateLocationStart);
+$('#ulocation').click(onUpdateLocationStart);
 $('#change-loc-form').submit(onUpdateLocationFinish);
 $('#signout-link').click(onSignout);
