@@ -132,13 +132,16 @@ $('#add-form').submit(function (e) {
     };
     console.log(postData);
     if (true) { // TODO validate input
-        $.post(baseUrl+"addbathroom", postData, function(res) {
+        postReq(baseUrl+"addbathroom", postData, function(res) {
             console.log("addbathroom success");
             if (addMarker) {
                 addMarker.setMap(null);
             }
             navigator.geolocation.getCurrentPosition(function (position) {
-                getBathrooms(position, map);
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                var myLatlng = new google.maps.LatLng(latitude, longitude);
+                getBathrooms(myLatlng, map);
             });
             form["0"].reset();
             history.back();

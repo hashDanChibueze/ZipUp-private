@@ -1,6 +1,6 @@
 // called when user navigate to me tab
 var getAndShowAccountInfo = function() {
-    $.get(baseUrl + "account", function (data, status) {
+    getReq(baseUrl + "account", function (data, status) {
         window.localStorage['email'] = data.user.email;
         window.localStorage['loc'] = data.user.profile.location;
         $('#uemail').text(data.user.email);
@@ -12,11 +12,10 @@ var getAndShowAccountInfo = function() {
 // called when user navigates to change email page
 var onUpdateEmailStart = function() {
     var input = $('#change-email');
+    var form = $('#change-email-form');
+    $(".error", form).hide();
+    $(".error", form).text("");
     input.val(window.localStorage.email);
-    $.get(baseUrl + "account", function (data, status) {
-        // if success
-        input.val(data.user.email);
-    });
 };
 
 // when submitting an email change
@@ -28,7 +27,7 @@ var onUpdateEmailFinish = function(e) {
     var formData = {
         "email": email
     };
-    $.post(baseUrl + "account/profile/", formData, function() {
+    postReq(baseUrl + "account/profile/", formData, function() {
         // TODO display some temporary success message or toast
         console.log("succesfully changed email");
         save('email', email);
@@ -44,7 +43,7 @@ var onUpdateEmailFinish = function(e) {
 var onUpdateLocationStart = function() {
     var input = $('#change-loc');
     input.val(window.localStorage.loc);
-    $.get(baseUrl + "account", function (data, status) {
+    getReq(baseUrl + "account", function (data, status) {
         input.val(data.user.profile.location);
     });
 };
@@ -56,7 +55,7 @@ var onUpdateLocationFinish = function(e) {
     var formData = {
         "location": loc
     };
-    $.post(baseUrl + "account/profile/", formData, function() {
+    postReq(baseUrl + "account/profile/", formData, function() {
         // TODO display some temporary success message or toast
         console.log("succesfully changed loc");
         save('loc', loc);
@@ -71,7 +70,7 @@ var onUpdateLocationFinish = function(e) {
 var onSignout = function() {
     save('token', null);
     save('email', null);
-    $.get(baseUrl + "signout");
+    getReq(baseUrl + "signout");
     window.location.replace('/');
 };
 

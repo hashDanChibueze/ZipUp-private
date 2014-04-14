@@ -5,6 +5,24 @@ var BIDSet;
 var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key (jeff's acc)
 var currentBID;
 
+function getReq(url, success) {
+    return $.ajax({
+        url: url,
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('access', window.localStorage.token)},
+        success: success
+    });
+}
+function postReq(url, data, success) {
+    return $.ajax({
+        url: url,
+        type: "POST",
+        data: data,
+        beforeSend: function(xhr){xhr.setRequestHeader('access', window.localStorage.token)},
+        success: success
+    });
+}
+
 $(document).bind("mobileinit", function() {
     console.log("in mobileinit");
     $.support.cors = true;
@@ -106,7 +124,7 @@ var showOnMap = function(position) {
 // gets all bathrooms near LatLng position and displays them to map
 var getBathrooms = function(LatLng, map) {
     console.log("getting nearby bathrooms");
-    $.get(baseUrl+"getallnear/"+LatLng.lat()+","+LatLng.lng(), 
+    getReq(baseUrl+"getallnear/"+LatLng.lat()+","+LatLng.lng(),
         function (data, status) {
             
             var marker;
@@ -176,7 +194,7 @@ var getBathrooms = function(LatLng, map) {
                     google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, bathInfoWindow, b_id));
                 }
             }
-    });
+        });
 };
 function save (key, value) {
     window.localStorage[key] = value;
