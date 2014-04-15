@@ -44,7 +44,7 @@ $(document).ajaxStop(function() {
 // Show the main map with user's position and bathrooms close to the user
 $(document).on('pageinit', '#main-app', function() {
     console.log("map page loaded");
-    $('body').show()
+    $('body').show();
     BIDSet = new MiniSet();
     bathInfoWindow = new google.maps.InfoWindow();
     // $("#map-page").click();
@@ -62,6 +62,7 @@ $(document).on('pageinit', '#main-app', function() {
         }
         $('#header ul li a').removeClass("ui-state-persist");
         $('#add-page-link').addClass("ui-state-persist");
+        toast("Click on the map to add a bathroom");
     });
     $('#account-page-link').click(function() {
         $('#header ul li a').removeClass("ui-state-persist");
@@ -199,4 +200,10 @@ var getBathrooms = function(LatLng, map) {
 };
 function save (key, value) {
     window.localStorage[key] = value;
+};
+
+function toast(message) {
+    $('#toast').text(message);
+    $('#toast').fadeIn("slow");
+    setTimeout(function(){$('#toast').fadeOut("slow")}, 2000);
 };
