@@ -146,12 +146,7 @@ $('#add-form').submit(function (e) {
             if (addMarker) {
                 addMarker.setMap(null);
             }
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
-                var myLatlng = new google.maps.LatLng(latitude, longitude);
-                getBathrooms(myLatlng, map);
-            });
+            getBathrooms(map.getCenter(), map);
             form["0"].reset();
             history.back();
         })
