@@ -114,7 +114,18 @@ exports.signin = function(req, res, next) {
 // sign out a logged in user
 exports.signout = function(req, res) {
     req.logout();
-    return res.json({'response': 'ok'});
+    User.findOne({'token': req.headers.access}, function(err, user) {
+        user.token = '';
+        user.save(function(err) {
+            if (err) {
+                return res.send(500, {
+                    'response': 'fail',
+                    'errors': 'Something went wrong. Please try again later.'
+                });
+            }
+            return res.json({'response': 'ok'});
+        });
+    });
 };
 
 // get details about the logged in user
