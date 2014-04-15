@@ -68,7 +68,7 @@ $(document).on('pageinit', '#signup', function(e) {
                 storeCredsAndRedirect(res, email);
             })
             .fail(function(err) {
-                console.log("error");
+                console.log(err);
                 $(".error", form).text(err.responseJSON.errors);
             });
         } else {

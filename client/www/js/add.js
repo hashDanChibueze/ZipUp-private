@@ -38,6 +38,7 @@ var addInit = function () {
 
 // Resets the form and adds a new name from google places
 function fillNamePlaces() {
+    $('#namesuggestions').remove();
     $('#add-form')[0].reset();
     var curPos = addMarker.getPosition();
     var request = {
@@ -47,23 +48,31 @@ function fillNamePlaces() {
     };
     placesService.nearbySearch(request, function (results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            var topResult = results[0];
-            $('#add-name').val(topResult.name);
-            var distance = getDistanceFromLatLonInKm(curPos.lat(), curPos.lng(),
-                topResult.geometry.location.lat(), topResult.geometry.location.lng()) * 1000;
-            if (distance >= MAX_PLACE_DISTANCE) { // remove if distance is too great
-                $('#add-name').val("");
-                console.log("distance too great");
-            }
-            console.log("Top results:");
+            
+            var fieldset = $('<fieldset data-role="controlgroup" id="namesuggestions" ><h4>Is this...</h4><br></fieldset>');
             for (var i = 0; i < Math.min(results.length, 3); i++) {
-                console.log(results[i].name);
+                var curResult = results[i];
+                var distance = getDistanceFromLatLonInKm(curPos.lat(), curPos.lng(),
+                    curResult.geometry.location.lat(), curResult.geometry.location.lng()) * 1000;
+                if (distance <= MAX_PLACE_DISTANCE) {
+                    // var label = $('input[value="'+i+'"]', fieldset);
+                    // label.val(curResult.name);
+                    // label.append(curResult.name);
+                    // label.trigger("create");
+                    fieldset.append($('<label><input type="radio" onchange="pickPlace(this)" name="place" value="'+results[i].name+'">' + results[i].name + '</label>'));
+                }
             }
+            //$('input', fieldset).checkboxradio('refresh');
+            fieldset.hide().prependTo('#add-form div.ui-field-contain').trigger("create").slideDown();
+            
         } else {
-            $('#add-name').val("");
             console.log("error places " + status);
         }
     })
+};
+function pickPlace(tag) {
+    var fieldset = $('#namesuggestions').slideUp(function(){fieldset.remove();});
+    $('#add-name').val(tag.value);
 };
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {

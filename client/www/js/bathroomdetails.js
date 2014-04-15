@@ -50,7 +50,7 @@ var getReviews = function() {
     })
 }
 function appendReview(list, myReview) {
-    list.append($('<li class="review ui-li-static ui-body-inherit"><q>' + myReview.review + '</q></li>'));
+    $('<li class="review ui-li-static ui-body-inherit"><q>' + myReview.review + '</q></li>').hide().appendTo(list).slideDown();
 }
 
 // Handler upon submitting a new review for a bathroom

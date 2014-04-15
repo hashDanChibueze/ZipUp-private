@@ -84,6 +84,7 @@ q, #toast {
     top: 56px;
     width: 100%;
     bottom: 0px;
+    margin-left: -.2em; /* compensate for jquery padding for tabbed navigation */
     /*background-color: rgb(229, 227, 223);
     overflow: hidden;
     -webkit-transform: translateZ(0px);*/

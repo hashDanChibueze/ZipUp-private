@@ -30,9 +30,9 @@
                 <div id="header" data-role="header" data-position="fixed" data-tap-toggle="false" class="ui-body-a ui-body">
                     <div data-role="navbar">
                         <ul>
-                            <li><a id="map-page-link" href="#map-page"  class="ui-btn-active ui-state-persist" data-icon="navigation">Find</a></li>
-                            <li><a id="add-page-link" href="#map-page"  data-icon="plus" class="">Add</a></li>
-                            <li><a id="account-page-link" href="#account-page"  data-icon="user" class="">Me</a></li>
+                            <li><a id="map-page-link" href="#map-page"  class="ui-btn-active ui-state-persist" data-icon="navigation" >Find</a></li>
+                            <li><a id="add-page-link" href="#map-page"  data-icon="plus" >Add</a></li>
+                            <li><a id="account-page-link" href="#account-page"  data-icon="user" >Me</a></li>
                         </ul>
                     </div>
                 </div>
@@ -54,10 +54,11 @@
                             <li id="ubathroomcount">0 <span style="font-weight: normal;"> (that have been reviewed)</span> Not yet implemented</li><!-- Only count bathrooms that have been reviewed by other people so that people dont spam -->
                             <li data-role="list-divider">Challenges</li>
                             
-                            <li><h4 class="ui-li-heading">Review a bathroom</h4><p class="ui-li-desc">Just one bathroom!</p></li>
+                            <li><h4 class="ui-li-heading">Review a bathroom</h4><p class="ui-li-desc">Your very first!</p></li>
+                            <li><h4 class="ui-li-heading">Review 5 bathrooms</h4><p class="ui-li-desc">On your way to greatness</p></li>
                             <li><!-- <a href="#"> --><h4>Full list</h4><p>Not yet implemented</p><!-- </a> --></li>
                             <li data-role="list-divider">Awards</li>
-                            <li id="uawards"><h4>None</h4><p>Not yet implemented</p></li>
+                            <li id="uawards"><h4>Awesome ZipUp User</h4><p>Not yet implemented</p></li>
                             <li data-role="list-divider">Location</li>
                             <li data-icon="false"><a id="ulocation" data-transition="pop" href="#change-loc-page">None set</a></li>
                         </ul>
@@ -80,8 +81,10 @@
             <div data-role="content" class="form-box">
                 <form id="add-form">
                     <div class="ui-field-contain">
-                        <fieldset data-role="controlgroup">
+                        
                         <input type="text" placeholder="Name" name="name" id="add-name">
+                        
+                        <fieldset data-role="controlgroup" data-type="horizontal">
                         <label><input type="radio" name="gender" value="0" required="required">Male</label>
                         <label><input type="radio" name="gender" value="1">Female</label>
                         <label><input type="radio" name="gender" value="2">Unisex</label>

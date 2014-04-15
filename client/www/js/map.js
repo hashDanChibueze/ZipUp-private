@@ -71,6 +71,9 @@ $(document).on('pageinit', '#main-app', function() {
     });
     $('#toast').hide();
     $('#uemail').text(window.localStorage.email); // set user email on account page
+    if (window.localStorage.loc) {
+        $('#ulocation').text(window.localStorage.loc);
+    }
     $('#change-email').val(window.localStorage.email); // set user email on change email page
 });
 $(document).bind('pagechange', '#main-app', function (event, data) {
