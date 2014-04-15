@@ -28,7 +28,8 @@ $(document).on('pageinit', '#homepage', function() {
         // try to login, if successful, continue to map
         // else show signin page
     // no credentials, show the homepage
-    $('body').show();
+    $('#loading').hide();
+    $('#content').show();
     if(window.localStorage["token"] != undefined) {
         var token = window.localStorage["token"];
         console.log("some token found: " + token);

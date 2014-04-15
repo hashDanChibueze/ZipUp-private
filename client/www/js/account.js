@@ -4,7 +4,15 @@ var getAndShowAccountInfo = function() {
         window.localStorage['email'] = data.user.email;
         window.localStorage['loc'] = data.user.profile.location;
         $('#uemail').text(data.user.email);
-        $('#ureviewcount').text(data.user.voted_bathrooms.length);
+        var options = {
+            useEasing : true, 
+            useGrouping : true, 
+            separator : ',', 
+            decimal : '.' 
+        }
+        var demo = new countUp("ureviewcount", 0, data.user.voted_bathrooms.length, 0, 2, options);
+        demo.start();
+        //$('#ureviewcount').text(data.user.voted_bathrooms.length);
         $('#ulocation').text(data.user.profile.location);
     });
 };

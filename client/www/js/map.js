@@ -44,7 +44,8 @@ $(document).ajaxStop(function() {
 // Show the main map with user's position and bathrooms close to the user
 $(document).on('pageinit', '#main-app', function() {
     console.log("map page loaded");
-    $('body').show();
+    $('#loading').hide();
+    $('#content').show();
     BIDSet = new MiniSet();
     bathInfoWindow = new google.maps.InfoWindow();
     // $("#map-page").click();
