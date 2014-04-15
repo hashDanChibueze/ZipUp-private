@@ -73,6 +73,7 @@ $('#review-form').submit(function (e) {
     $.post(baseUrl + "addreview", formData, function(res) {
         $('#review-form')[0].reset();
         getReviews();
+        console.log("successfully added review");
     }).fail(function(err) {
         $("#review-form .error").text("Your review is too short!");
         console.log(err.responseJSON.errors);

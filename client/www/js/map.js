@@ -121,7 +121,7 @@ var showOnMap = function(position) {
     });
 
     google.maps.event.addListener(map, "idle", function (event) {
-            console.log("idle");
+            //console.log("idle");
             getBathrooms(map.getCenter(), map);
         });
 
@@ -130,7 +130,7 @@ var showOnMap = function(position) {
 
 // gets all bathrooms near LatLng position and displays them to map
 var getBathrooms = function(LatLng, map) {
-    console.log("getting nearby bathrooms");
+    //console.log("getting nearby bathrooms");
     getReq(baseUrl+"getallnear/"+LatLng.lat()+","+LatLng.lng(),
         function (data, status) {
             

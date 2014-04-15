@@ -139,7 +139,7 @@ $('#add-form').submit(function (e) {
         "gender": gender,
         "voteDir": voteDir
     };
-    console.log(postData);
+    //console.log(postData);
     if (true) { // TODO validate input
         postReq(baseUrl+"addbathroom", postData, function(res) {
             console.log("addbathroom success");
