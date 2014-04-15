@@ -43,27 +43,33 @@ var onUpdateLocationStart = function() {
     var input = $('#change-loc');
     var form = $('#change-email-form');
     $(".error", form).text("");
-    input.val(window.localStorage.loc);
+    if (window.localStorage.loc) {
+        input.val(window.localStorage.loc);
+    }
 };
 
 var onUpdateLocationFinish = function(e) {
+
     e.stopImmediatePropagation();
     e.preventDefault();
     var form = $('#change-loc-form');
     var loc = $('#change-loc').val();
-    var formData = {
-        "location": loc
-    };
-    postReq(baseUrl + "account/profile/", formData, function() {
-        // TODO display some temporary success message or toast
-        console.log("succesfully changed loc");
-        save('loc', loc);
-        $('#ulocation').text(loc);
-        history.back();
-    }).fail(function(err) {
-        console.log("error");
-        $(".error", form).text(err.responseJSON.errors);
-    });
+    if (loc) {
+        var formData = {
+            "location": loc
+        };
+        postReq(baseUrl + "account/profile/", formData, function() {
+            // TODO display some temporary success message or toast
+            console.log("succesfully changed loc");
+            save('loc', loc);
+            $('#ulocation').text(loc);
+            history.back();
+        }).fail(function(err) {
+            console.log("error");
+            $(".error", form).text(err.responseJSON.errors);
+        });
+    }
+    
 };
 
 var onSignout = function() {
