@@ -18,8 +18,24 @@ html, body {
 h1 {
     text-shadow: none;
 }
-q {
+q, #toast {
     font-style: italic;
+}
+#toast {
+    color: rgb(12,184,12);
+    display: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    /*text-shadow: 1px 1px 5px white;*/
+    position: absolute;
+    font-size: 150%;
+    top: 80px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 100;
+    text-align: center;
 }
 
 .green {
