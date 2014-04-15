@@ -76,7 +76,7 @@ var onSignout = function() {
     save('token', null);
     save('email', null);
     getReq(baseUrl + "signout");
-    window.location.replace('/');
+    window.location.replace('index.html');
 };
 
 $('#account-page-link').click(getAndShowAccountInfo);

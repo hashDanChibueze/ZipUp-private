@@ -55,6 +55,7 @@ $(document).on('pageinit', '#main-app', function() {
         }
         $('#header ul li a').removeClass("ui-state-persist");
         $('#map-page-link').addClass("ui-state-persist");
+        $('#toast').hide();
     });
     $('#add-page-link').click(function() {
         if ($('#account-page-link').hasClass("ui-state-persist")) {
@@ -68,6 +69,7 @@ $(document).on('pageinit', '#main-app', function() {
         $('#header ul li a').removeClass("ui-state-persist");
         $('#account-page-link').addClass("ui-state-persist");
     });
+    $('#toast').hide();
     $('#uemail').text(window.localStorage.email); // set user email on account page
     $('#change-email').val(window.localStorage.email); // set user email on change email page
 });
