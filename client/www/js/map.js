@@ -7,6 +7,7 @@ var currentBID;
 var addMarker; // marker for adding
 var addinfowindow;
 var placesService;
+var DEFAULT_ZOOM = 17;
 
 function getReq(url, success) {
     return $.ajax({
@@ -112,7 +113,7 @@ var showOnMap = function(position) {
         panControl: false,
         zoomControl: false,
         //minZoom: 12,
-        zoom: 17,
+        zoom: DEFAULT_ZOOM,
         tilt: 45,
         
     };
@@ -144,7 +145,12 @@ var showOnMap = function(position) {
     var marker = new google.maps.Marker({
         position: myLatlng,
         map: map,
-        icon: pinImage
+        icon: {path: google.maps.SymbolPath.CIRCLE,
+            fillColor: '#33CCFF',
+            fillOpacity: 0.8,
+            strokeWeight: 2,
+            strokeColor: 'silver',
+            scale: 8}
     });
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,marker);
@@ -249,7 +255,23 @@ function centerMap(position) {
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
     map.panTo(myLatlng);
+    var zoom = map.getZoom();
+    setTimeout(smoothZoom(map, DEFAULT_ZOOM, zoom), 150);
 }
+
+
+function smoothZoom (map, max, cnt) {
+    if (cnt >= max) {
+            return;
+        }
+    else {
+        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+            google.maps.event.removeListener(z);
+            smoothZoom(map, max, cnt + 1);
+        });
+        setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
+    }
+}  
 function save (key, value) {
     window.localStorage[key] = value;
 };
