@@ -52,7 +52,7 @@ function fillNamePlaces() {
                     // label.val(curResult.name);
                     // label.append(curResult.name);
                     // label.trigger("create");
-                    fieldset.append($('<label><input type="radio" onchange="pickPlace(this)" name="place" value="'+results[i].name+'">' + results[i].name + '</label>'));
+                    fieldset.append($('<label><input type="radio" onchange="pickPlace(this)" ref="'+ref+'"bid="'+id+'" name="place" value="'+results[i].name+'">' + results[i].name + '</label>'));
                 }
             }
             fieldset.hide().prependTo('#add-form div.ui-field-contain').trigger("create").slideDown();
@@ -65,6 +65,7 @@ function fillNamePlaces() {
 function pickPlace(tag) {
     var fieldset = $('#namesuggestions').slideUp(function(){fieldset.remove();});
     $('#add-name').val(tag.value);
+    tag.hide().appendTo('#add-form');
 };
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {

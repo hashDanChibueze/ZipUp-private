@@ -29,8 +29,7 @@ exports.addBathroom = function(req, res, next) {
     req.assert('bathroom_access', 'Access should be 1 or 2.').isInt();
     req.assert('gender', 'Gender must be provided.').isInt();
     req.assert('voteDir', 'Vote can be +1 or -1 only.').isInt();
-    req.assert('bathroomID', 'bathroomID has to be provided.').notEmpty();
-    req.assert('floor', 'bathroomID has to be provided.').notEmpty();
+    req.assert('floor', 'floor has to be provided.').notEmpty();
 
     var errors = req.validationErrors();
 
@@ -52,7 +51,8 @@ exports.addBathroom = function(req, res, next) {
                 "name": req.body.bathroom_name || '',
                 "access": +req.body.bathroom_access,
                 "gender": +req.body.gender,
-                "bathroomID": req.body.bathroomID,
+                "placesID": req.body.placesID || '',
+                "placesRef": req.body.placesRef || '',
                 "floor": req.body.floor
             });
 

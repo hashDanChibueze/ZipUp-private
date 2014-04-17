@@ -23,7 +23,10 @@ var bathroomSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    bathroomID: {
+    placesID: { // google places id for associated POI
+        type: String
+    },
+    placesRef: { // google places reference to get POI details
         type: String
     },
     floor: {

@@ -71,7 +71,7 @@ $(document).on('pageinit', '#main-app', function() {
         if (bathInfoWindow) {
             bathInfoWindow.close(); // hide the info window when going to add
         }
-        toast("Click on the map to add a bathroom");
+        toast("Tap a spot...");
     });
     $('#account-page-link').click(function() {
         $('#header ul li a').removeClass("ui-state-persist");
@@ -236,14 +236,12 @@ function save (key, value) {
 function toast(message) {
     $('#toast').text(message);
     $('#toast').fadeIn("slow");
-    setTimeout(function(){$('#toast').fadeOut("slow")}, 2000);
+    setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
 };
 
-//Magic fix:
+//infowindow fix:
 function fixInfoWindow() {
-    //Here we redefine set() method.
     //If it is called for map option, we hide InfoWindow, if "noSupress" option isnt true.
-    //As Google doesn't know about this option, its InfoWindows will not be opened.
     var set = google.maps.InfoWindow.prototype.set;
     google.maps.InfoWindow.prototype.set = function (key, val) {
         if (key === 'map') {
