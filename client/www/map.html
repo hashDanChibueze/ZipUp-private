@@ -25,12 +25,13 @@
         <div id="loading" class="ui-loader ui-corner-all ui-body-a ui-loader-default"><span class="ui-icon ui-icon-loading"></span></div>
         <div id="toast"></div>
         <div id="content" style="display: none;">
+            
             <div id="main-app" class="app" data-role="page">
 
                 <div class="contents" data-role="tabs">
 
-                    <div id="header" data-role="header" data-position="fixed" data-tap-toggle="false" class="ui-body-a ui-body">
-                        <div data-role="navbar">
+                    <div id="header" data-display="push" data-role="panel">
+                        <div data-role="navbar" data-type="vertical">
                             <ul>
                                 <li><a id="map-page-link" href="#map-page"  class="ui-btn-active ui-state-persist" data-icon="navigation" >Find</a></li>
                                 <li><a id="add-page-link" href="#map-page"  data-icon="plus" >Add</a></li>
@@ -43,6 +44,7 @@
                     <div id="map-page">
                         <div id="map_canvas"></div>
                         <div id="locate" onclick="locate()"><img height="28px" width="28px" src="img/geolocation.png" alt="locate"></div>
+                        <div date-position="fixed" id="panelbutton"><a href="#header"><img height="28px" width="28px" src="img/panel.png" alt="panel"></a></div>
                     </div>
 
                     <!-- Me page with information about the user -->
