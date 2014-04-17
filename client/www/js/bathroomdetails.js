@@ -4,6 +4,7 @@ var NUM_REVIEWS = 5; // max number of reviews to show initially
 function onDetailsLoad() {
     var list = $('#bdetailslist');
     $('.error', list.parent()).text(""); // clear errors
+    $('#bplace').hide();
     getReq(baseUrl + "getbathroom/" + currentBID, function (res) {
         $('#bname').text(res.bathroom.name);
         var netVotes = res.bathroom.upvotes - res.bathroom.downvotes;
@@ -15,6 +16,21 @@ function onDetailsLoad() {
             brating.css("color", "red");
         }
         $('#brating').text(netVotes);
+        console.log(res);
+        if (res.bathroom.placesRef) {
+            placesService.getDetails({key: API_KEY, reference: res.bathroom.placesRef, sensor: true}, function (res, status) {
+                console.log(res);
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    console.log("getDetails sucess");
+                    $('span', $('#bplace').slideDown()).empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
+                } else {
+                    console.log("error details");
+
+                }
+            });
+        } else {
+            console.log("no places ref");
+        }
     }).fail(function(err) {
         console.log("get bathroom error");
         $(".error", list.parent()).text(err.responseJSON.errors);

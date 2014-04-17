@@ -6,6 +6,7 @@ var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key 
 var currentBID;
 var addMarker; // marker for adding
 var addinfowindow;
+var placesService;
 
 function getReq(url, success) {
     return $.ajax({
@@ -53,7 +54,7 @@ $(document).on('pageinit', '#main-app', function() {
     // $("#map-page").click();
     fixInfoWindow();
     navigator.geolocation.getCurrentPosition(showOnMap);
-
+    
     $('#map-page-link').click(function() {
         if ($('#account-page-link').hasClass("ui-state-persist")) {
             google.maps.event.trigger(map, 'resize');
@@ -115,6 +116,7 @@ var showOnMap = function(position) {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),
         mapOptions);
+    placesService = new google.maps.places.PlacesService(map);
     var noPoi = [
     // {
     //     featureType: "poi",

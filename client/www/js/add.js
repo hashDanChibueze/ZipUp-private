@@ -1,10 +1,10 @@
 // TODO fix global variables
 
-var placesService;
+
 var addListener;
 var MAX_PLACE_DISTANCE = 160; // meters
 var placeTypes = [ 'accounting', 'airport', 'amusement_park', 'aquarium', 'art_gallery', 'atm', 'bakery', 'bank', 'bar', 'beauty_salon', 'bicycle_store', 'book_store', 'bowling_alley', 'bus_station', 'cafe', 'campground', 'car_dealer', 'car_rental', 'car_repair', 'car_wash', 'casino', 'cemetery', 'church', 'city_hall', 'clothing_store', 'convenience_store', 'courthouse', 'dentist', 'department_store', 'doctor', 'electrician', 'electronics_store', 'embassy', 'establishment', 'finance', 'fire_station', 'florist', 'food', 'funeral_home', 'furniture_store', 'gas_station', 'general_contractor', 'grocery_or_supermarket', 'gym', 'hair_care', 'hardware_store', 'health', 'hindu_temple', 'home_goods_store', 'hospital', 'insurance_agency', 'jewelry_store', 'laundry', 'lawyer', 'library', 'liquor_store', 'local_government_office', 'locksmith', 'lodging', 'meal_delivery', 'meal_takeaway', 'mosque', 'movie_rental', 'movie_theater', 'moving_company', 'museum', 'night_club', 'painter', 'park', 'parking', 'pet_store', 'pharmacy', 'physiotherapist', 'place_of_worship', 'plumber', 'police', 'post_office', 'real_estate_agency', 'restaurant', 'roofing_contractor', 'rv_park', 'school', 'shoe_store', 'shopping_mall', 'spa', 'stadium', 'storage', 'store', 'subway_station', 'synagogue', 'taxi_stand', 'train_station', 'travel_agency', 'university', 'veterinary_care', 'zoo'];
-
+var addPlace;
 // Initalizes an event listener for dropping pins
 var addInit = function () {
     if (!addListener) {
@@ -28,6 +28,7 @@ var addInit = function () {
 function fillNamePlaces() {
     $('#namesuggestions').remove();
     $('#add-form')[0].reset();
+    addPlace = null;
     var curPos = addMarker.getPosition();
     var request = {
         location: curPos,
@@ -62,10 +63,12 @@ function fillNamePlaces() {
         }
     })
 };
+
 function pickPlace(tag) {
     var fieldset = $('#namesuggestions').slideUp(function(){fieldset.remove();});
     $('#add-name').val(tag.value);
-    tag.hide().appendTo('#add-form');
+
+    addPlace = {id: $(tag).attr("bid"), ref: $(tag).attr("ref")};
 };
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -132,6 +135,10 @@ $('#add-form').submit(function (e) {
         "gender": gender,
         "voteDir": voteDir
     };
+    if (addPlace) {
+        postData.placesID = addPlace.id;
+        postData.placesRef = addPlace.ref;
+    }
     //console.log(postData);
     if (true) { // TODO validate input
         postReq(baseUrl+"addbathroom", postData, function(res) {
