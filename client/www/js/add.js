@@ -118,6 +118,7 @@ $('#map-page-link').click(addDeInit);
 $('#add-form').submit(function (e) {
     e.stopImmediatePropagation();
     e.preventDefault();
+    console.log("add-form submit");
     var form = $("#add-form");
     var bathroom_name = $('#add-name', form).val();
     var bathroom_access = $('input[name="access"]:checked').val();
