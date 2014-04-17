@@ -23,6 +23,12 @@ var bathroomSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    bathroomID: {
+        type: String
+    },
+    floor: {
+        type: String
+    },
     reviews: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Review'

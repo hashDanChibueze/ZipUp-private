@@ -29,6 +29,8 @@ exports.addBathroom = function(req, res, next) {
     req.assert('bathroom_access', 'Access should be 1 or 2.').isInt();
     req.assert('gender', 'Gender must be provided.').isInt();
     req.assert('voteDir', 'Vote can be +1 or -1 only.').isInt();
+    req.assert('bathroomID', 'bathroomID has to be provided.').notEmpty();
+    req.assert('floor', 'bathroomID has to be provided.').notEmpty();
 
     var errors = req.validationErrors();
 
@@ -49,7 +51,9 @@ exports.addBathroom = function(req, res, next) {
                 },
                 "name": req.body.bathroom_name || '',
                 "access": +req.body.bathroom_access,
-                "gender": +req.body.gender
+                "gender": +req.body.gender,
+                "bathroomID": req.body.bathroomID,
+                "floor": req.body.floor
             });
 
             voteDir = +req.body.voteDir;
@@ -281,9 +285,13 @@ exports.getAllNear = function(req, res) {
         var result = [];
 
         for (var i = 0; i < bathrooms.length; i++) {
-            var curBathroom = bathrooms[i];
-            if (getDistanceFromLatLonInM(lat, lng, curBathroom.location.lat, 
-                    curBathroom.location.lng) <= secrets.maxDistance) {
+            var curBathroom = bathrooms[i].toObject();
+            var distance = getDistanceFromLatLonInM(lat, lng, 
+                curBathroom.location.lat, curBathroom.location.lng);
+
+            if (distance <= secrets.maxDistance) {
+                console.log(distance);
+                curBathroom["distance"] = distance;
                 result.push(curBathroom);
             }
         }
