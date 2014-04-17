@@ -29,7 +29,7 @@ exports.addBathroom = function(req, res, next) {
     req.assert('bathroom_access', 'Access should be 1 or 2.').isInt();
     req.assert('gender', 'Gender must be provided.').isInt();
     req.assert('voteDir', 'Vote can be +1 or -1 only.').isInt();
-    req.assert('floor', 'floor has to be provided.').notEmpty();
+    //req.assert('floor', 'floor has to be provided.').notEmpty();
 
     var errors = req.validationErrors();
 
@@ -53,7 +53,7 @@ exports.addBathroom = function(req, res, next) {
                 "gender": +req.body.gender,
                 "placesID": req.body.placesID || '',
                 "placesRef": req.body.placesRef || '',
-                "floor": req.body.floor
+                "floor": req.body.floor || ''
             });
 
             voteDir = +req.body.voteDir;
@@ -259,8 +259,8 @@ exports.getReviews = function(req, res) {
 // get all bathrooms near the passed coordinate
 exports.getAllNear = function(req, res) {
 
-    req.assert('lat', 'Rating can only be from 1 to 5.').isFloat();
-    req.assert('lng', 'Review must be 10-2000 characters.').isFloat();
+    req.assert('lat', 'lat must be float.').isFloat();
+    req.assert('lng', 'lng must be float.').isFloat();
 
     var errors = req.validationErrors();
 
