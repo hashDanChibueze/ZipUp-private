@@ -33,11 +33,11 @@ header {
   background-size:cover;
 }
 
-input, .card {
+/*input,*/ .card {
   position:relative;
   z-index:2;
 }
-input {
+/*input {
   display:block;
   width:26rem;
   margin:4.5rem 1rem 2rem;
@@ -50,14 +50,14 @@ input {
 }
 
 input:focus {
-  margin:0 1rem 1rem;
+  /*margin:0 1rem 1rem;*/
   outline:0;
 }
 
 input:focus + header {
   transform:translate3d(0,-10rem,0);
   opacity:0;
-}
+}*/
 
 .card {
   padding:1.5rem;

@@ -18,6 +18,7 @@
         
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/cards.css" />
+        <link rel="stylesheet" type="text/css" href="css/nav.css" />
         <link href="//fonts.googleapis.com/css?family=Roboto:100italic,100,300italic,300,400italic,400,500italic,500,700italic,700,900italic,900" rel="stylesheet" type="text/css">
 
 
@@ -28,17 +29,15 @@
         <div id="content" style="display: none;">
             
             <div id="main-app" class="app" data-role="page">
-
                 <div class="contents" data-role="tabs">
-
-                    <div id="header" data-display="overlay" data-role="panel" data-position="left" style="width: 17em;">
-                        <div data-role="navbar" data-type="vertical">
+                    <div class="panel left" id="header" data-display="overlay" data-role="panel" data-position-fixed="true" data-position="left" style="width: 17em;">
+                        <!-- <div data-role="navbar" data-type="vertical"> -->
                             <ul>
-                                <li><a id="map-page-link" href="#map-page"  class="ui-btn-active ui-state-persist" data-icon="navigation" >Find</a></li>
-                                <li><a id="add-page-link" href="#map-page"  data-icon="plus" >Add</a></li>
-                                <li><a id="account-page-link" href="#account-page"  data-icon="user" >Me</a></li>
+                                <li class="find"><a id="map-page-link" href="#map-page"  class="ui-btn-active ui-state-persist" data-icon="navigation" >Find</a></li>
+                                <li class="add"><a id="add-page-link" href="#map-page"  data-icon="plus" >Add</a></li>
+                                <li class="me"><a id="account-page-link" href="#account-page"  data-icon="user" >Me</a></li>
                             </ul>
-                        </div>
+                        <!-- </div> -->
                     </div>
                     
                     <!-- Map page (find and add) -->
@@ -50,6 +49,10 @@
 
                     <!-- Me page with information about the user -->
                     <div id="account-page">
+                        <div data-role="header" data-tap-toggle="false" data-add-back-btn="true">
+                            <a href="#header">Back to map</a>
+                            <h3>Profile</h3>
+                        </div>
                         <div id="account" data-role="content">
                             <ul data-role="listview">
                                 <li data-role="list-divider">Email</li>
@@ -109,47 +112,44 @@
                 </div>
 
                 <!-- The bathroom details -->
-            <div data-role="panel" data-display="overlay" data-position="right" id="bathroom-details-page" style="max-width: 80%; ">
-               <!--  <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
-                    <h3>Bathroom details</h3>
-                </div> -->
-                <div data-role="content">
-                    <ul data-role="listview" id="bdetailslist">
-                        <section class="card">
-                        <li data-role="list-divider">Bathroom Name</li>
-                        <li id="bname">Hold on...</li>
-                        <li style="display:none;" id="bplace">At <span></span></li>
-                        <li data-role="list-divider">Net rating</li>
-                        <li id="brating">0</li>
-                        </section>
-                        <li data-role="list-divider">Reviews</li>
-                        <!-- Reviews inserted here -->
-                        <li class="review ui-li-static ui-body-inherit">No reviews... yet!</li>
-                    </ul>
-                    <div class="error"></div>
-                    <a href="#" data-role="button" style='display: none;' id="more-reviews" data-icon="arrow-d">More</a>
-                    <br>
-                    <form id="review-form">
-                        <fieldset data-role="controlgroup">
-                            <label><input type="checkbox" name="clean">Clean</label>
-                            <label><input type="checkbox" name="amenities">Amenities Stocked</label>
-                            <label><input type="checkbox" name="nosmell">No Smell</label>
-                        </fieldset>
-                        <fieldset data-role="controlgroup">
-                        <label><input type="radio" name="vote" required="required" value="1">Upvote</label>
-                        <label><input type="radio" name="vote" value="0">Downvote</label>
-                        </fieldset>
-                        <textarea required="required" type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
+                <div data-role="panel" data-display="overlay" data-position="right" id="bathroom-details-page" style="max-width: 80%; ">
+                   <!--  <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                        <h3>Bathroom details</h3>
+                    </div> -->
+                    <div data-role="content">
+                        <ul data-role="listview" id="bdetailslist">
+                            
+                            <li data-role="list-divider">Bathroom Name</li>
+                            <li id="bname">Hold on...</li>
+                            <li style="display:none;" id="bplace">At <span></span></li>
+                            <li data-role="list-divider">Net rating</li>
+                            <li id="brating">0</li>
+                            
+                            <li data-role="list-divider">Reviews</li>
+                            <!-- Reviews inserted here -->
+                            <li class="review ui-li-static ui-body-inherit">No reviews... yet!</li>
+                        </ul>
                         <div class="error"></div>
-                        <input type="submit" value="Add Review" id="add-review-submit" data-icon="plus">
-                    </form>
-                    
+                        <a href="#" data-role="button" style='display: none;' id="more-reviews" data-icon="arrow-d">More</a>
+                        <br>
+                        <form id="review-form">
+                            <fieldset data-role="controlgroup">
+                                <label><input type="checkbox" name="clean">Clean</label>
+                                <label><input type="checkbox" name="amenities">Amenities Stocked</label>
+                                <label><input type="checkbox" name="nosmell">No Smell</label>
+                            </fieldset>
+                            <fieldset data-role="controlgroup">
+                            <label><input type="radio" name="vote" required="required" value="1">Upvote</label>
+                            <label><input type="radio" name="vote" value="0">Downvote</label>
+                            </fieldset>
+                            <textarea required="required" type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
+                            <div class="error"></div>
+                            <input type="submit" value="Add Review" id="add-review-submit" data-icon="plus">
+                        </form>
+                        
+                    </div>
                 </div>
-            </div>
             </div><!-- main app -->
-
-            
-            
 
             
 

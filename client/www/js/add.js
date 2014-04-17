@@ -149,7 +149,7 @@ $('#add-form').submit(function (e) {
             }
             getBathrooms(map.getCenter(), map);
             form["0"].reset();
-            history.back();
+            $('#add-details-page').panel("close");
         })
         .fail(function(err) {
             console.log("error");

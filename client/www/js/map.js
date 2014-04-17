@@ -63,6 +63,7 @@ $(document).on('pageinit', '#main-app', function() {
         $('#header ul li a').removeClass("ui-state-persist");
         $('#map-page-link').addClass("ui-state-persist");
         $('#toast').hide();
+        $('#header').panel("close");
     });
     $('#add-page-link').click(function() {
         if ($('#account-page-link').hasClass("ui-state-persist")) {
@@ -73,12 +74,14 @@ $(document).on('pageinit', '#main-app', function() {
         if (bathInfoWindow) {
             bathInfoWindow.close(); // hide the info window when going to add
         }
-        toast("Tap a spot...");
+        toast("Tap to add...");
+        $('#header').panel("close");
     });
     $('#account-page-link').click(function() {
         $('#header ul li a').removeClass("ui-state-persist");
         $('#account-page-link').addClass("ui-state-persist");
         $('#toast').hide();
+        $('#header').panel("close");
     });
     $('#uemail').text(window.localStorage.email); // set user email on account page
     if (window.localStorage.loc) {
@@ -229,7 +232,7 @@ var getBathrooms = function(LatLng, map) {
                         '<h3 class="firstHeading">' + name + '</h3>' +
                         '<div id="bodyContent">' +
                         '<p>Gender: ' + gender + '<br/>' +
-                        'Repuation: <span style="' +style+'">' + netVotes +'</span><br/>Distance: '+ Math.round(distance) + 'm' +
+                        'Repuation: <span style="' +style+'">' + netVotes +'</span>' +
                         '</p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-btn-inline ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' style='color: #6F6F6F;' data-role='button' data-transition='slide'>Details</a></div></div>";
                     var markerClickCallback = function (marker, content, infowindow, b_id) {
                         return function() {
@@ -279,7 +282,7 @@ function save (key, value) {
 function toast(message) {
     $('#toast').text(message);
     $('#toast').fadeIn("slow");
-    setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
+    //setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
 };
 
 //infowindow fix:
