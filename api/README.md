@@ -212,6 +212,8 @@ Users click on this is the email, checks if token is valid or not. If valid,
     | bathroom_access | String | 0 public, 1 private | Y |
     | gender | String | 0 male, 1 female, 2 unisex | Y |
     | voteDir | String | -1 or 1 | Y |
+    | bathroomID | String | Google places bathroom ID | Y |
+    | floor | String | Floor of the bathroom | Y |
 
 **Success JSON:**
 
