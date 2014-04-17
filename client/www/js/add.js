@@ -1,5 +1,5 @@
 // TODO fix global variables
-var addMarker;
+
 var placesService;
 var addListener;
 var MAX_PLACE_DISTANCE = 160; // meters
@@ -8,28 +8,16 @@ var placeTypes = [ 'accounting', 'airport', 'amusement_park', 'aquarium', 'art_g
 // Initalizes an event listener for dropping pins
 var addInit = function () {
     if (!addListener) {
-        var addinfowindow = new google.maps.InfoWindow();
-        // TODO clean up contentstring button link is messy
-        var content = '<div class="content">' +
-            '<div id="place-name"></div>' +
-            '<div id="bodyContent">' +
-            "<a href='#add-details-page' id='add-confirm' data-theme='b' style='color:rgb(12,184,12);' role='button' data-icon='check' class='ui-link ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all' onclick='fillNamePlaces()' data-role='button' data-transition='slide'>Confirm</a>" + '</div></div>'
-        addinfowindow.setContent(content);
-        
-        addListener = google.maps.event.addListener(map, "click", function (event) {
-            var lat = event.latLng.lat();
-            var lng = event.latLng.lng();
-            if (addMarker) {
-                addMarker.setMap(null);
-            }
-            addMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat, lng),
-                map: map,
-                title: "Selected",
-                animation: google.maps.Animation.DROP
-            });
-            setTimeout(function() {addinfowindow.open(map, addMarker);}, 300);
-        });
+        if (!addinfowindow) {
+            addinfowindow = new google.maps.InfoWindow({noSupress:true});
+            // TODO clean up contentstring button link is messy
+            var content = '<div class="content">' +
+                '<div id="place-name"></div>' +
+                '<div id="bodyContent">' +
+                "<a href='#add-details-page' id='add-confirm' data-theme='b' style='color:rgb(12,184,12);' role='button' data-icon='check' class='ui-link ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all' onclick='fillNamePlaces()' data-role='button' data-transition='slide'>Confirm</a>" + '</div></div>'
+            addinfowindow.setContent(content);
+        }
+        addListener = google.maps.event.addListener(map, "click", confirmPopup);
     }
     if (!placesService) {
         placesService = new google.maps.places.PlacesService(map);
@@ -48,10 +36,15 @@ function fillNamePlaces() {
     };
     placesService.nearbySearch(request, function (results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            
+            console.log(results);
             var fieldset = $('<fieldset data-role="controlgroup" id="namesuggestions" ><h4>Is this...</h4><br></fieldset>');
             for (var i = 0; i < Math.min(results.length, 3); i++) {
                 var curResult = results[i];
+                var ref = curResult.reference;
+                var id = curResult.id;
+                if (curResult.opening_hours) {
+                    var openNow = curResult.opening_hours.open_now;
+                }
                 var distance = getDistanceFromLatLonInKm(curPos.lat(), curPos.lng(),
                     curResult.geometry.location.lat(), curResult.geometry.location.lng()) * 1000;
                 if (distance <= MAX_PLACE_DISTANCE) {
@@ -62,7 +55,6 @@ function fillNamePlaces() {
                     fieldset.append($('<label><input type="radio" onchange="pickPlace(this)" name="place" value="'+results[i].name+'">' + results[i].name + '</label>'));
                 }
             }
-            //$('input', fieldset).checkboxradio('refresh');
             fieldset.hide().prependTo('#add-form div.ui-field-contain').trigger("create").slideDown();
             
         } else {

@@ -4,7 +4,7 @@ var NUM_REVIEWS = 5; // max number of reviews to show initially
 function onDetailsLoad() {
     var list = $('#bdetailslist');
     $('.error', list.parent()).text(""); // clear errors
-    $.get(baseUrl + "getbathroom/" + currentBID, function (res) {
+    getReq(baseUrl + "getbathroom/" + currentBID, function (res) {
         $('#bname').text(res.bathroom.name);
         var netVotes = res.bathroom.upvotes - res.bathroom.downvotes;
         var brating = $('#brating');
@@ -27,7 +27,7 @@ function onDetailsLoad() {
 // Gets reviews and displays them in the bathroom details
 var getReviews = function() {
     var list = $('#bdetailslist');
-    $.get(baseUrl+"getreviews/"+currentBID, function (res) {
+    getReq(baseUrl+"getreviews/"+currentBID, function (res) {
         $('.review', list).remove();
         var moreReviewsBtn = $('#more-reviews');
         var reviews = res.bathroom.reviews.reverse();
@@ -57,26 +57,34 @@ function appendReview(list, myReview) {
 $('#review-form').submit(function (e) {
     e.stopImmediatePropagation();
     e.preventDefault();
-    $('#review-form .error').text("");
-    var cleanliness = $('#checkbox').prop('checked');
+    var form = $('#review-form');
+    $('.error', form).text("");
+    var cleanliness = $('input[name="clean"]', form).prop('checked');
     if (cleanliness) {
         cleanliness = 5;
     } else {
         cleanliness = 1;
     }
+    var vote = $('input[name="vote"]', form).val(); // TODO send vote to api
+    if (vote == '0') {
+        vote = "-1";
+    }
     var review = $('#add-review-text').val();
     var formData = {
         "bid": currentBID,
-        "cleanliness": 5,
+        "cleanliness": cleanliness,
         "review": review
     };
-    $.post(baseUrl + "addreview", formData, function(res) {
+    postReq(baseUrl + "addreview", formData, function(res) {
         $('#review-form')[0].reset();
         getReviews();
         console.log("successfully added review");
     }).fail(function(err) {
         $("#review-form .error").text("Your review is too short!");
         console.log(err.responseJSON.errors);
+    });
+    postReq(baseUrl + "addvote", {"bid": currentBID, "voteDir": vote}, function(res) {
+        console.log("succesfully added vote");
     });
 });
 

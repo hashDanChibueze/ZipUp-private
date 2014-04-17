@@ -130,9 +130,13 @@
                         <fieldset data-role="controlgroup">
                             <label><input type="checkbox" name="clean">Clean</label>
                             <label><input type="checkbox" name="amenities">Amenities Stocked</label>
-                            <label><input type="checkbox" name="nosmell">No Smell</label>  
+                            <label><input type="checkbox" name="nosmell">No Smell</label>
                         </fieldset>
-                        <textarea type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
+                        <fieldset data-role="controlgroup">
+                        <label><input type="radio" name="vote" required="required" value="1">Upvote</label>
+                        <label><input type="radio" name="vote" value="0">Downvote</label>
+                        </fieldset>
+                        <textarea required="required" type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
                         <div class="error"></div>
                         <input type="submit" value="Add Review" id="add-review-submit" data-icon="plus">
                     </form>

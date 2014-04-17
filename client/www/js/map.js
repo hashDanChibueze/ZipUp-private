@@ -4,6 +4,8 @@ var bathInfoWindow; // singleton
 var BIDSet;
 var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key (jeff's acc)
 var currentBID;
+var addMarker; // marker for adding
+var addinfowindow;
 
 function getReq(url, success) {
     return $.ajax({
@@ -47,9 +49,11 @@ $(document).on('pageinit', '#main-app', function() {
     $('#loading').hide();
     $('#content').show();
     BIDSet = new MiniSet();
-    bathInfoWindow = new google.maps.InfoWindow();
+    bathInfoWindow = new google.maps.InfoWindow({noSupress: true});
     // $("#map-page").click();
+    fixInfoWindow();
     navigator.geolocation.getCurrentPosition(showOnMap);
+
     $('#map-page-link').click(function() {
         if ($('#account-page-link').hasClass("ui-state-persist")) {
             google.maps.event.trigger(map, 'resize');
@@ -64,13 +68,16 @@ $(document).on('pageinit', '#main-app', function() {
         }
         $('#header ul li a').removeClass("ui-state-persist");
         $('#add-page-link').addClass("ui-state-persist");
+        if (bathInfoWindow) {
+            bathInfoWindow.close(); // hide the info window when going to add
+        }
         toast("Click on the map to add a bathroom");
     });
     $('#account-page-link').click(function() {
         $('#header ul li a').removeClass("ui-state-persist");
         $('#account-page-link').addClass("ui-state-persist");
+        $('#toast').hide();
     });
-    $('#toast').hide();
     $('#uemail').text(window.localStorage.email); // set user email on account page
     if (window.localStorage.loc) {
         $('#ulocation').text(window.localStorage.loc);
@@ -108,9 +115,27 @@ var showOnMap = function(position) {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),
         mapOptions);
+    var noPoi = [
+    // {
+    //     featureType: "poi",
+        
+    //     stylers: [
+    //       { visibility: "simplified" }
+    //     ]   
+    //   },
+      {
+        featureType: "road",
+        
+        stylers: [
+          { visibility: "simplified" }
+        ]   
+      }
+    ];
 
+    map.setOptions({styles: noPoi});
     var infowindow = new google.maps.InfoWindow({
-        content: 'You are here!'
+        content: 'You are here!',
+        noSupress: true
     });
     var marker = new google.maps.Marker({
         position: myLatlng,
@@ -212,4 +237,39 @@ function toast(message) {
     $('#toast').text(message);
     $('#toast').fadeIn("slow");
     setTimeout(function(){$('#toast').fadeOut("slow")}, 2000);
+};
+
+//Magic fix:
+function fixInfoWindow() {
+    //Here we redefine set() method.
+    //If it is called for map option, we hide InfoWindow, if "noSupress" option isnt true.
+    //As Google doesn't know about this option, its InfoWindows will not be opened.
+    var set = google.maps.InfoWindow.prototype.set;
+    google.maps.InfoWindow.prototype.set = function (key, val) {
+        if (key === 'map') {
+            if (!this.get('noSupress')) {
+                if (addListener) {
+                    var event = {latLng: this.position};
+                    confirmPopup(event);
+                }
+                return;
+            }
+        }
+        set.apply(this, arguments);
+    }
+};
+
+function confirmPopup(event) {
+    var lat = event.latLng.lat();
+    var lng = event.latLng.lng();
+    if (addMarker) {
+        addMarker.setMap(null);
+    }
+    addMarker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat, lng),
+        map: map,
+        title: "Selected",
+        animation: google.maps.Animation.DROP
+    });
+    setTimeout(function() {addinfowindow.open(map, addMarker);}, 300);
 };

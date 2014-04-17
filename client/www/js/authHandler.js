@@ -19,7 +19,20 @@ $(document).ajaxStop(function() {
     console.log("in stop animation");
     $.mobile.loading('hide');
 });
+if(window.localStorage["token"] != undefined) {
+    var token = window.localStorage["token"];
+    console.log("some token found: " + token);
 
+    $.get(baseUrl+"validatetoken/"+token, function(res) {
+            console.log("signin successful");
+            console.log(res);
+            // $.mobile.changePage("map.html");
+            window.location.replace('map.html');
+            // location.refresh();
+    });
+} else {
+    console.log("no credentials found in localStorage");
+}
 // This is the homepage handler, that either shows the homepage,
 // or redirects user to the homepage if the user is able to successfully login
 $(document).on('pageinit', '#homepage', function() {
@@ -30,20 +43,6 @@ $(document).on('pageinit', '#homepage', function() {
     // no credentials, show the homepage
     $('#loading').hide();
     $('#content').show();
-    if(window.localStorage["token"] != undefined) {
-        var token = window.localStorage["token"];
-        console.log("some token found: " + token);
-
-        $.get(baseUrl+"validatetoken/"+token, function(res) {
-                console.log("signin successful");
-                console.log(res);
-                // $.mobile.changePage("map.html");
-                window.location.replace('map.html');
-                // location.refresh();
-        });
-    } else {
-        console.log("no credentials found in localStorage");
-    }
 
 });
 
