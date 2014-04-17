@@ -14,7 +14,20 @@ html, body {
 * {
     font-family: Calibri,Helvetica,Arial,sans-serif!important;
 }
-
+#locate {
+    width: 32px;
+    height: 32px;
+    background-color: white;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 7px rgb(126, 126, 126);
+    text-align: center;
+}
+#locate img {
+    margin-top: 2px;
+}
 h1 {
     text-shadow: none;
 }

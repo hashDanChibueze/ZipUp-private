@@ -94,7 +94,7 @@ $(document).bind('pagechange', '#main-app', function (event, data) {
 // Draws a marker with the passed position on a map
 var showOnMap = function(position) {
     console.log("showing map");
-    var pinColor = "EEEEEE";
+    var pinColor = "33CCFF";
     var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" +
         pinColor,
         new google.maps.Size(21, 34),
@@ -110,6 +110,8 @@ var showOnMap = function(position) {
         mapTypeControl: false,
         //streetViewControl: false,
         panControl: false,
+        zoomControl: false,
+        //minZoom: 12,
         zoom: 17,
         tilt: 45,
         
@@ -152,6 +154,9 @@ var showOnMap = function(position) {
             //console.log("idle");
             getBathrooms(map.getCenter(), map);
         });
+    google.maps.event.addListener(map, "dragstart", function (event) {
+        $('#locate img').attr("src", "img/geolocation.png");
+    });
 
     getBathrooms(myLatlng, map);
 };
@@ -181,6 +186,7 @@ var getBathrooms = function(LatLng, map) {
                     var gender;
                     var typeNum = currentB.access;
                     var type;
+                    var distance = currentB.distance;
                     
                     if (genderNum == 0) {
                         gender = "Men's";
@@ -217,13 +223,14 @@ var getBathrooms = function(LatLng, map) {
                         '<h3 class="firstHeading">' + name + '</h3>' +
                         '<div id="bodyContent">' +
                         '<p>Gender: ' + gender + '<br/>' +
-                        'Rating: <span style="' +style+'">' + netVotes +
-                        '</span></p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-btn-inline ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' onclick='onDetailsLoad()' style='color: #6F6F6F;' data-role='button' data-transition='slide'>Details</a></div></div>";
+                        'Repuation: <span style="' +style+'">' + netVotes +'</span><br/>Distance: '+ Math.round(distance) + 'm' +
+                        '</p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-btn-inline ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' style='color: #6F6F6F;' data-role='button' data-transition='slide'>Details</a></div></div>";
                     var markerClickCallback = function (marker, content, infowindow, b_id) {
                         return function() {
                             infowindow.setContent(content);
                             infowindow.open(map, marker);
                             currentBID = b_id;
+                            onDetailsLoad();
                         };
                     };
                     google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, bathInfoWindow, b_id));
@@ -231,6 +238,18 @@ var getBathrooms = function(LatLng, map) {
             }
         });
 };
+
+// called when user clicks on locate div
+function locate() {
+    $('#locate img').attr("src", "img/geolocationblue.png");
+    navigator.geolocation.getCurrentPosition(centerMap);
+}
+function centerMap(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    var myLatlng = new google.maps.LatLng(latitude, longitude);
+    map.panTo(myLatlng);
+}
 function save (key, value) {
     window.localStorage[key] = value;
 };
@@ -273,3 +292,121 @@ function confirmPopup(event) {
     });
     setTimeout(function() {addinfowindow.open(map, addMarker);}, 300);
 };
+
+var NUM_REVIEWS = 5; // max number of reviews to show initially
+
+// called when details button is clicked, gets bathroom info
+function onDetailsLoad() {
+    var list = $('#bdetailslist');
+    $('.error', list.parent()).text(""); // clear errors
+    $('#bplace').hide();
+    getReq(baseUrl + "getbathroom/" + currentBID, function (res) {
+        $('#bname').text(res.bathroom.name);
+        var netVotes = res.bathroom.upvotes - res.bathroom.downvotes;
+        var brating = $('#brating');
+        brating.removeClass("red green");
+        if (netVotes > 0) {
+            brating.css("color", "green");
+        } else if (netVotes < 0) {
+            brating.css("color", "red");
+        }
+        $('#brating').text(netVotes);
+        console.log(res);
+        if (res.bathroom.placesRef) {
+            placesService.getDetails({key: API_KEY, reference: res.bathroom.placesRef, sensor: true}, function (res, status) {
+                console.log(res);
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    console.log("getDetails sucess");
+                    $('span', $('#bplace').slideDown()).empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
+                } else {
+                    console.log("error details");
+
+                }
+            });
+        } else {
+            console.log("no places ref");
+        }
+    }).fail(function(err) {
+        console.log("get bathroom error");
+        $(".error", list.parent()).text(err.responseJSON.errors);
+    });
+    save('reviews', null);
+    getReviews();
+    $('#review-form')[0].reset();
+};
+
+// Gets reviews and displays them in the bathroom details
+var getReviews = function() {
+    var list = $('#bdetailslist');
+    getReq(baseUrl+"getreviews/"+currentBID, function (res) {
+        $('.review', list).remove();
+        var moreReviewsBtn = $('#more-reviews');
+        var reviews = res.bathroom.reviews.reverse();
+        if (reviews.length == 0) {
+            list.append($('<li class="review ui-li-static ui-body-inherit">No reviews... yet!</li>'));
+            moreReviewsBtn.hide();
+        } else {
+            for (var i = 0; i < Math.min(reviews.length, NUM_REVIEWS); i++) {
+                appendReview(list, reviews[i]);
+            }
+            if (reviews.length > NUM_REVIEWS) {
+                moreReviewsBtn.show();
+                window.localStorage.reviews = JSON.stringify(reviews);
+            } else {
+                moreReviewsBtn.hide();
+            }
+        }
+    }).fail(function (err) {
+        $(".error", list.parent()).text(err.responseJSON.errors);
+    })
+}
+function appendReview(list, myReview) {
+    $('<li class="review ui-li-static ui-body-inherit"><q>' + myReview.review + '</q></li>').hide().appendTo(list).slideDown();
+}
+
+// Handler upon submitting a new review for a bathroom
+$('#review-form').submit(function (e) {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    var form = $('#review-form');
+    $('.error', form).text("");
+    var cleanliness = $('input[name="clean"]', form).prop('checked');
+    if (cleanliness) {
+        cleanliness = 5;
+    } else {
+        cleanliness = 1;
+    }
+    var vote = $('input[name="vote"]', form).val(); // TODO send vote to api
+    if (vote == '0') {
+        vote = "-1";
+    }
+    var review = $('#add-review-text').val();
+    var formData = {
+        "bid": currentBID,
+        "cleanliness": cleanliness,
+        "review": review
+    };
+    postReq(baseUrl + "addreview", formData, function(res) {
+        $('#review-form')[0].reset();
+        getReviews();
+        console.log("successfully added review");
+    }).fail(function(err) {
+        $("#review-form .error").text("Your review is too short!");
+        console.log(err.responseJSON.errors);
+    });
+    postReq(baseUrl + "addvote", {"bid": currentBID, "voteDir": vote}, function(res) {
+        console.log("succesfully added vote");
+    });
+});
+
+// Handler for clicking the more button to show more reviews
+$('#more-reviews').click(function() {
+    var reviews = JSON.parse(window.localStorage.reviews);
+    var list = $('#bdetailslist');
+    if (reviews) {
+        for (var i = NUM_REVIEWS; i < reviews.length; i++) {
+            appendReview(list, reviews[i]);
+        }
+    }
+    $('#more-reviews').hide();
+});
