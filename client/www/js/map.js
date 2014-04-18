@@ -169,7 +169,7 @@ var showOnMap = function(position) {
             strokeColor: 'silver',
             scale: 8}
     });
-    google.maps.event.addListener(marker, 'click', function() {
+    google.maps.event.addListener(currentLocationMarker, 'click', function() {
         infowindow.open(map,currentLocationMarker);
     });
 
