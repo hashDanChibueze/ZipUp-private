@@ -42,13 +42,16 @@ html, body {
 }
 #panelbutton {
     bottom: 16px;
-    left: -15px;
+    left: -20px;
 }
 .content {
     max-width: 220px;
 }
 #locate img, #panelbutton img {
     margin-top: 6px;
+}
+#panelbutton img {
+    margin-left: 6px;
 }
 h1 {
     text-shadow: none;
