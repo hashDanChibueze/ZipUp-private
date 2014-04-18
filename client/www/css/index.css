@@ -73,7 +73,7 @@ q, #toast, .toast {
     margin-right: auto;
     z-index: 100;
     text-align: center;
-    max-width: 15%;
+    max-width: 145px;
     padding: 5px;
     border-radius: 8px;
     background-color: #333;
