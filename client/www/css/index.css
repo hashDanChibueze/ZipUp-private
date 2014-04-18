@@ -12,20 +12,17 @@ html, body {
 }
 
 * {
-    font-family: Calibri,Helvetica,Arial,sans-serif!important;
+    font-family: Calibri,Helvetica,Arial,sans-serif;
 }
 .ui-panel.ui-panel-open {
     position:fixed;
 }
 .ui-panel-inner {
-    position: absolute;
-    top: 1px;
     left: 0;
     right: 0;
     bottom: 0px;
     overflow-y: scroll;
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 #locate, #panelbutton {
@@ -60,11 +57,10 @@ q, #toast {
     font-style: italic;
 }
 #toast {
-    color: rgb(12,184,12);
+    color: #fff;
     display: none;
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
-    /*text-shadow: 1px 1px 5px white;*/
     position: absolute;
     font-size: 150%;
     top: 30px;
@@ -74,7 +70,11 @@ q, #toast {
     margin-right: auto;
     z-index: 100;
     text-align: center;
-    max-width: 75%;
+    max-width: 15%;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: #333;
+    opacity: 0.7;
 }
 
 .green {
@@ -144,4 +144,44 @@ q, #toast {
 
 .white_font {
     color: white;
+}
+
+.rating {
+    margin: 10px;
+}
+
+.fa-thumbs-up {
+    color: #2ECC40;
+}
+
+.fa-thumbs-down {
+    color: #FF4136;
+}
+
+.fa-thumbs-down:before, .fa-thumbs-up:before {
+    margin-right: 5px;
+}
+
+.fa-male:before, .fa-female:before {
+    margin-right: 10px;
+}
+
+h3.firstHeading {
+    margin-top: 8px;
+    min-height: 30px;
+}
+
+div.gender {
+    float: left;
+    width: 20%;
+}
+
+div.name {
+    float: right;
+    width: 80%;
+}
+
+div.ratings {
+    display: inline-block;
+    font-size: 16px;
 }

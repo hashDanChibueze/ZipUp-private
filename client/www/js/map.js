@@ -209,11 +209,14 @@ var getBathrooms = function(LatLng, map) {
                     var typeNum = currentB.access;
                     var type;
                     var distance = currentB.distance;
+                    var genderFA;
                     
                     if (genderNum == 0) {
                         gender = "Men's";
+                        genderFA = '<i class="fa fa-male fa-2x"></i>'
                     } else if (genderNum == 1) {
                         gender = "Women's";
+                        genderFA = '<i class="fa fa-female fa-2x"></i>'
                     } else {
                         gender = "Unisex";
                     }
@@ -241,12 +244,14 @@ var getBathrooms = function(LatLng, map) {
                     } else if (netVotes < 0) {
                         style = "color: red;";
                     }
-                    var content = '<div class="content">' +
-                        '<h3 class="firstHeading">' + name + '</h3>' +
+
+                    var content = '<div class="content">' + parseInt(distance) + 'm' +
+                        '<h3 class="firstHeading"><div class="gender">' + genderFA + "</div>" + 
+                            '<div class="name">' + name + '</div></h3>' +
                         '<div id="bodyContent">' +
-                        '<p>Gender: ' + gender + '<br/>' +
-                        'Repuation: <span style="' +style+'">' + netVotes +'</span>' +
-                        '</p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-btn-inline ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' style='color: #6F6F6F;' data-role='button' data-transition='slide'>Details</a></div></div>";
+                        '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
+                        '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' + 
+                        "<br><a href='#bathroom-details-page' id='add-confirm' data-theme='b' class='ui-btn ui-btn-inline ui-icon-arrow-r ui-btn-icon-right ui-mini' data-transition='slide'>Reviews</a></div>";
                     var markerClickCallback = function (marker, content, infowindow, b_id) {
                         return function() {
                             infowindow.setContent(content);
@@ -295,7 +300,7 @@ function save (key, value) {
 function toast(message) {
     $('#toast').text(message);
     $('#toast').fadeIn("slow");
-    //setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
+    setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
 };
 
 //infowindow fix:
