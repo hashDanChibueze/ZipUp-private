@@ -55,7 +55,18 @@ $(document).on('pageinit', '#main-app', function() {
     // $("#map-page").click();
     fixInfoWindow();
     navigator.geolocation.getCurrentPosition(showOnMap);
-    
+     $( document ).on( "swipeleft swiperight", "#account-page", function( e ) {
+        // We check if there is no open panel on the page because otherwise
+        // a swipe to close the left panel would also open the right panel (and v.v.).
+        // We do this by checking the data that the framework stores on the page element (panel: open).
+        if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
+            if ( e.type === "swipeleft"  ) {
+                //$( "#right-panel" ).panel( "open" );
+            } else if ( e.type === "swiperight" ) {
+                $( "#header" ).panel( "open" );
+            }
+        }
+    });
     $('#map-page-link').click(function() {
         if ($('#account-page-link').hasClass("ui-state-persist")) {
             google.maps.event.trigger(map, 'resize');
