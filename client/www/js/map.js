@@ -245,14 +245,13 @@ var getBathrooms = function(LatLng, map) {
                         style = "color: red;";
                     }
 
-                    var content = '<div class="content">' +
-                        '<h3 class="firstHeading">' + '<br>' + name + '</h3>' +
+                    var content = '<div class="content">' + parseInt(distance) + 'm' +
+                        '<h3 class="firstHeading"><div class="gender">' + genderFA + "</div>" + 
+                            '<div class="name">' + name + '</div></h3>' +
                         '<div id="bodyContent">' +
-                         // '<br/>' +
-                         genderFA + '<i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
-                         '<i class="fa fa-thumbs-down rating">' + downvotes +'</i>' +
-                        // 'Repuation: <span style="' +style+'">' + netVotes +'</span>' +
-                        '</p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-btn-inline ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' style='color: #6F6F6F;' data-role='button' data-transition='slide'>Details</a></div></div>";
+                        '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
+                         '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' +
+                        '</p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-btn-inline ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' style='color: #6F6F6F;' data-transition='slide'>Reviews</a></div></div>";
                     var markerClickCallback = function (marker, content, infowindow, b_id) {
                         return function() {
                             infowindow.setContent(content);

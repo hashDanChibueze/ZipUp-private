@@ -155,3 +155,31 @@ q, #toast {
 .fa-thumbs-down {
     color: #FF4136;
 }
+
+.fa-thumbs-down:before, .fa-thumbs-up:before {
+    margin-right: 5px;
+}
+
+.fa-male:before, .fa-female:before {
+    margin-right: 10px;
+}
+
+h3.firstHeading {
+    margin-top: 8px;
+    min-height: 30px;
+}
+
+div.gender {
+    float: left;
+    width: 20%;
+}
+
+div.name {
+    float: right;
+    width: 80%;
+}
+
+div.ratings {
+    display: inline-block;
+    font-size: 16px;
+}
