@@ -8,6 +8,7 @@ var addMarker; // marker for adding
 var addinfowindow;
 var placesService;
 var DEFAULT_ZOOM = 17;
+var currentLocationMarker; // blue dot to show current location
 
 function getReq(url, success) {
     return $.ajax({
@@ -158,7 +159,7 @@ var showOnMap = function(position) {
         content: 'You are here!',
         noSupress: true
     });
-    var marker = new google.maps.Marker({
+    currentLocationMarker = new google.maps.Marker({
         position: myLatlng,
         map: map,
         icon: {path: google.maps.SymbolPath.CIRCLE,
@@ -169,7 +170,7 @@ var showOnMap = function(position) {
             scale: 8}
     });
     google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
+        infowindow.open(map,currentLocationMarker);
     });
 
     google.maps.event.addListener(map, "idle", function (event) {
@@ -275,6 +276,7 @@ function centerMap(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
+    currentLocationMarker.setPosition(myLatlng);
     map.panTo(myLatlng);
     var zoom = map.getZoom();
     setTimeout(smoothZoom(map, DEFAULT_ZOOM, zoom), 150);
