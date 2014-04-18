@@ -295,7 +295,7 @@ function save (key, value) {
 function toast(message) {
     $('#toast').text(message);
     $('#toast').fadeIn("slow");
-    //setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
+    setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
 };
 
 //infowindow fix:
