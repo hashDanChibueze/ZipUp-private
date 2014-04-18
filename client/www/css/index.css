@@ -53,10 +53,10 @@ html, body {
 h1 {
     text-shadow: none;
 }
-q, #toast {
+q, #toast, .toast {
     font-style: italic;
 }
-#toast {
+#toast, .toast {
     color: #fff;
     display: none;
     font-family: 'Roboto', sans-serif;
@@ -75,6 +75,10 @@ q, #toast {
     border-radius: 8px;
     background-color: #333;
     opacity: 0.7;
+}
+.toast {
+    max-width: 40%;
+    display: inline-block;
 }
 
 .green {
