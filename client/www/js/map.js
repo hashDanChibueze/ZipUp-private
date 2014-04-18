@@ -50,6 +50,7 @@ $(document).on('pageinit', '#main-app', function() {
     console.log("map page loaded");
     $('#loading').hide();
     $('#content').show();
+    setTimeout( function(){$('#map-page-link').click();}, 100);
     BIDSet = new MiniSet();
     bathInfoWindow = new google.maps.InfoWindow({noSupress: true});
     // $("#map-page").click();
@@ -67,6 +68,7 @@ $(document).on('pageinit', '#main-app', function() {
             }
         }
     });
+    $('#back-to-map').click(function() {$('#map-page-link').click();})
     $('#map-page-link').click(function() {
         if ($('#account-page-link').hasClass("ui-state-persist")) {
             google.maps.event.trigger(map, 'resize');

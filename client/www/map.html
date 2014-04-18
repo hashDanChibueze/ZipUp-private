@@ -18,7 +18,7 @@
         
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/cards.css" />
-        <link rel="stylesheet" type="text/css" href="css/nav.css" />
+        <!-- <link rel="stylesheet" type="text/css" href="css/nav.css" /> -->
         <link href="//fonts.googleapis.com/css?family=Roboto:100italic,100,300italic,300,400italic,400,500italic,500,700italic,700,900italic,900" rel="stylesheet" type="text/css">
 
 
@@ -30,10 +30,10 @@
             
             <div id="main-app" class="app" data-role="page">
                 <div class="contents" data-role="tabs">
-                    <div class="panel left" id="header" data-display="overlay" data-role="panel" data-position-fixed="true" data-position="left">
+                    <div class="panel left" id="header" data-display="overlay" data-role="panel" data-position="left">
                         <!-- <div data-role="navbar" data-type="vertical"> -->
-                            <ul>
-                                <li class="find"><a id="map-page-link" href="#map-page"  class="ui-btn-active ui-state-persist" data-icon="navigation" >Find</a></li>
+                            <ul data-role="listview">
+                                <li class="find"><a id="map-page-link" href="#map-page" data-icon="navigation" >Find</a></li>
                                 <li class="add"><a id="add-page-link" href="#map-page"  data-icon="plus" >Add</a></li>
                                 <li class="me"><a id="account-page-link" href="#account-page"  data-icon="user" >Me</a></li>
                             </ul>
@@ -50,7 +50,7 @@
                     <!-- Me page with information about the user -->
                     <div id="account-page">
                         <div data-role="header" data-tap-toggle="false" data-add-back-btn="true">
-                            <a href="#header">Back to map</a>
+                            <a href="#" id="back-to-map">Back to map</a>
                             <h3>Profile</h3>
                         </div>
                         <div id="account" data-role="content">
