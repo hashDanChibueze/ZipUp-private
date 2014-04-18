@@ -12,7 +12,7 @@ html, body {
 }
 
 * {
-    font-family: Calibri,Helvetica,Arial,sans-serif!important;
+    font-family: Calibri,Helvetica,Arial,sans-serif;
 }
 .ui-panel.ui-panel-open {
     position:fixed;
