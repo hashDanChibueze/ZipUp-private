@@ -36,6 +36,8 @@ html, body {
     border-radius: 5px;
     box-shadow: 0px 0px 7px rgb(126, 126, 126);
     text-align: center;
+    border: 1px solid gray;
+    cursor:pointer;
 }
 #locate {
     bottom: 16px;
