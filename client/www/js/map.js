@@ -213,10 +213,10 @@ var getBathrooms = function(LatLng, map) {
                     
                     if (genderNum == 0) {
                         gender = "Men's";
-                        genderFA = '<div><i class="fa fa-male fa-2x"></i></div>'
+                        genderFA = '<i class="fa fa-male fa-2x"></i>'
                     } else if (genderNum == 1) {
                         gender = "Women's";
-                        genderFA = '<div><i class="fa fa-female fa-2x"></i></div>'
+                        genderFA = '<i class="fa fa-female fa-2x"></i>'
                     } else {
                         gender = "Unisex";
                     }
@@ -246,10 +246,12 @@ var getBathrooms = function(LatLng, map) {
                     }
 
                     var content = '<div class="content">' +
-                        '<h3 class="firstHeading">' + genderFA + '<br>' + name + '</h3>' +
+                        '<h3 class="firstHeading">' + '<br>' + name + '</h3>' +
                         '<div id="bodyContent">' +
                          // '<br/>' +
-                        'Repuation: <span style="' +style+'">' + netVotes +'</span>' +
+                         genderFA + '<i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
+                         '<i class="fa fa-thumbs-down rating">' + downvotes +'</i>' +
+                        // 'Repuation: <span style="' +style+'">' + netVotes +'</span>' +
                         '</p>' + "<a href='#bathroom-details-page' id='add-confirm' data-theme='b' role='button' data-icon='arrow-r' class='ui-btn-inline ui-link ui-btn ui-icon-arrow-r ui-btn-icon-left ui-shadow ui-corner-all' style='color: #6F6F6F;' data-role='button' data-transition='slide'>Details</a></div></div>";
                     var markerClickCallback = function (marker, content, infowindow, b_id) {
                         return function() {

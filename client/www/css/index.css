@@ -143,3 +143,15 @@ q, #toast {
 .white_font {
     color: white;
 }
+
+.rating {
+    margin: 10px;
+}
+
+.fa-thumbs-up {
+    color: #2ECC40;
+}
+
+.fa-thumbs-down {
+    color: #FF4136;
+}
