@@ -179,10 +179,18 @@ var showOnMap = function(position) {
         });
     google.maps.event.addListener(map, "dragstart", function (event) {
         $('#locate img').attr("src", "img/geolocation.png");
+        closePanels();
     });
+    google.maps.event.addListener(map, "click", function (event) {
+        closePanels();
+    })
 
     getBathrooms(myLatlng, map);
 };
+
+function closePanels() {
+    $('.panel').panel("close");
+}
 
 // gets all bathrooms near LatLng position and displays them to map
 var getBathrooms = function(LatLng, map) {
@@ -436,8 +444,7 @@ $('#review-form').submit(function (e) {
         getReviews();
         console.log("successfully added review");
     }).fail(function(err) {
-        $("#review-form .error").text("Your review is too short!");
-        console.log(err.responseJSON.errors);
+        $("#review-form .error").text(err.responseJSON.errors);
     });
     postReq(baseUrl + "addvote", {"bid": currentBID, "voteDir": vote}, function(res) {
         console.log("succesfully added vote");
@@ -455,3 +462,13 @@ $('#more-reviews').click(function() {
     }
     $('#more-reviews').hide();
 });
+
+function tryLogin(err) {
+    if (err.status == 401) {
+        $.get(baseUrl+"validatetoken/"+window.localStorage.token, function(res) {
+            console.log("signin successful");
+        }).fail(function(err) {
+            window.location.replace('index.html');
+        });
+    }
+}

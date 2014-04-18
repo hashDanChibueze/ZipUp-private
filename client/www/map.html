@@ -31,7 +31,7 @@
             
             <div id="main-app" class="app" data-role="page">
                 <div class="contents" data-role="tabs">
-                    <div class="panel left" id="header" data-display="overlay" data-role="panel" data-position="left">
+                    <div class="panel left" id="header" data-display="overlay" data-dismissible="false" data-role="panel" data-position="left">
                         <!-- <div data-role="navbar" data-type="vertical"> -->
                             <ul data-role="listview" class="ui-nodisc-icon ui-alt-icon">
                                 <li class="find" data-icon="navigation"><a id="map-page-link" href="#map-page">Bathroom Finder</a></li>
@@ -82,7 +82,7 @@
                     </div>
                 </div> <!-- tabs -->
                 <!-- page to add info about a new bathroom -->
-                <div data-role="panel" data-display="overlay" data-position="right" id="add-details-page">
+                <div class="panel" data-role="panel" data-display="overlay" data-position="right" data-dismissible="false" id="add-details-page">
                     <!-- <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
                         <h3>Bathroom details</h3>
                     </div> -->
@@ -114,7 +114,7 @@
                 </div>
 
                 <!-- The bathroom details -->
-                <div data-role="panel" data-display="overlay" data-position="right" id="bathroom-details-page">
+                <div class="panel" data-role="panel" data-display="overlay" data-position="right" data-dismissible="false" id="bathroom-details-page">
                    <!--  <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
                         <h3>Bathroom details</h3>
                     </div> -->

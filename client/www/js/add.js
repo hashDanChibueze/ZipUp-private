@@ -152,7 +152,7 @@ $('#add-form').submit(function (e) {
             $('#add-details-page').panel("close");
         })
         .fail(function(err) {
-            console.log("error");
+            
             $(".error", form).text(err.responseJSON.errors);
         });
     } else {
