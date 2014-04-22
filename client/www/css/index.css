@@ -25,7 +25,7 @@ html, body {
     overflow: auto;
 }
 
-#locate, #panelbutton {
+.zipupbutton {
     width: 40px;
     height: 40px;
     background-color: white;
@@ -44,10 +44,14 @@ html, body {
     bottom: 16px;
     left: -20px;
 }
+#now {
+    bottom: 16px;
+    right: 72px;
+}
 .content {
     max-width: 220px;
 }
-#locate img, #panelbutton img {
+.zipupbutton img {
     margin-top: 6px;
 }
 #panelbutton img {
@@ -58,6 +62,9 @@ h1 {
 }
 q, #toast, .toast {
     font-style: italic;
+}
+q {
+    white-space: inital;
 }
 #toast, .toast {
     color: #fff;
@@ -78,6 +85,7 @@ q, #toast, .toast {
     border-radius: 8px;
     background-color: #333;
     opacity: 0.7;
+    text-shadow: none;
 }
 .toast {
     max-width: 40%;
@@ -122,6 +130,8 @@ q, #toast, .toast {
 #header {
     margin: 0;
     padding: 0;
+    min-height: 0;
+    width: 190px;
 }
 
 #map-page {

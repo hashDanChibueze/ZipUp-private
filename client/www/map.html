@@ -45,14 +45,15 @@
                     <!-- Map page (find and add) -->
                     <div id="map-page">
                         <div id="map_canvas"><div class="toast">Allow ZipUp to use your location to find some bathrooms!</div></div>
-                        <div id="locate" onclick="locate()"><img height="28px" width="28px" src="img/geolocation.png" alt="locate"></div>
-                        <a href="#header"><div date-position="fixed" id="panelbutton"><img height="28px" width="28px" src="img/panel.png" alt="panel"></div></a>
+                        <!-- <div id="now" class="zipupbutton" onclick="now()"><img height="28px" width="28px" src="css/lib/themes/images/icons-png/carat-u-black.png" alt="find"></div> -->
+                        <div id="locate" class="zipupbutton" onclick="locate()"><img height="28px" width="28px" src="img/geolocation.png" alt="locate"></div>
+                        <a href="#header"><div date-position="fixed" id="panelbutton" class="zipupbutton"><img height="28px" width="28px" src="img/panel.png" alt="panel"></div></a>
                     </div>
 
                     <!-- Me page with information about the user -->
                     <div id="account-page">
                         <div data-role="header" data-tap-toggle="false" data-add-back-btn="true">
-                            <a href="#" id="back-to-map">Back to map</a>
+                            <a href="#" id="back-to-map" data-role="button" data-icon="arrow-l">Map</a>
                             <h3>Profile</h3>
                         </div>
                         <div id="account" data-role="content">

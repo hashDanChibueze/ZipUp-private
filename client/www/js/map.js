@@ -266,6 +266,7 @@ var getBathrooms = function(LatLng, map) {
                             infowindow.setContent(content);
                             infowindow.open(map, marker);
                             currentBID = b_id;
+                            $('#header').panel("close");
                             onDetailsLoad();
                         };
                     };
@@ -457,7 +458,7 @@ $('#more-reviews').click(function() {
     var list = $('#bdetailslist');
     if (reviews) {
         for (var i = NUM_REVIEWS; i < reviews.length; i++) {
-            appendReview(list, reviews[i]);
+            setTimeout(function(){appendReview(list, reviews[i]);}, (i - NUM_REVIEWS) * 80);
         }
     }
     $('#more-reviews').hide();
