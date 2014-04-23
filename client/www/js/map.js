@@ -371,7 +371,7 @@ function onDetailsLoad() {
                 console.log(res);
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                     console.log("getDetails sucess");
-                    $('span', $('#bplace').slideDown()).empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
+                    $('#bplace').slideDown().empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
                 } else {
                     console.log("error details");
 
@@ -397,7 +397,7 @@ var getReviews = function() {
         var moreReviewsBtn = $('#more-reviews');
         var reviews = res.bathroom.reviews.reverse();
         if (reviews.length == 0) {
-            list.append($('<li class="review ui-li-static ui-body-inherit">No reviews... yet!</li>'));
+            list.append($('<li class="review"><div class="card"><p>No reviews... yet!</p></div></li>'));
             moreReviewsBtn.hide();
         } else {
             for (var i = 0; i < Math.min(reviews.length, NUM_REVIEWS); i++) {
@@ -415,7 +415,7 @@ var getReviews = function() {
     })
 }
 function appendReview(list, myReview) {
-    $('<li class="review ui-li-static ui-body-inherit"><q>' + myReview.review + '</q></li>').hide().appendTo(list).slideDown();
+    $('<li class="review"><div class="card"><q>'+myReview.review+'</q></div></li>').hide().appendTo(list).slideDown();
 }
 
 // Handler upon submitting a new review for a bathroom
@@ -458,7 +458,7 @@ $('#more-reviews').click(function() {
     var list = $('#bdetailslist');
     if (reviews) {
         for (var i = NUM_REVIEWS; i < reviews.length; i++) {
-            setTimeout(function(){appendReview(list, reviews[i]);}, (i - NUM_REVIEWS) * 80);
+            appendReview(list, reviews[i]);
         }
     }
     $('#more-reviews').hide();

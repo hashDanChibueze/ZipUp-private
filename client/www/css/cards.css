@@ -89,7 +89,7 @@ input:focus + header {
   }
 }
 
-.card:after {
+/*.card:after {
   position:absolute;
   font-size:.9rem;
   top:1.5rem;
@@ -102,7 +102,7 @@ input:focus + header {
   text-align:center;
   border-radius:50%;
   pointer-events:none;
-}
+}*/
 
 h1 {
   font-size:2rem;
