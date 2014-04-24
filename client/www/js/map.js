@@ -353,6 +353,8 @@ function onDetailsLoad() {
         } else if (netVotes < 0) {
             brating.css("color", "red");
         }
+        // '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
+        //                 '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' + 
         $('#brating').text(netVotes);
         console.log(res);
         if (res.bathroom.placesRef) {
