@@ -14,7 +14,7 @@
 
         <!-- DEFAULT THEME -->
         <link rel="stylesheet" type="text/css" href="css/lib/jquery.mobile-1.4.2.min.css" />
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <!-- /theme -->
         
         <link rel="stylesheet" type="text/css" href="css/index.css" />
@@ -137,14 +137,18 @@
                     <a href="#" data-role="button" style='display: none;' id="more-reviews" data-icon="arrow-d">More</a>
                     <br>
                     <form id="review-form">
+                        <center>
+                            <fieldset data-role="controlgroup" data-type="horizontal">
+                                <input type="radio" name="vote" id="radio-choice-h-2a" value="1">
+                                <label for="radio-choice-h-2a"><i class="fa fa-thumbs-up"></i></label>
+                                <input type="radio" name="vote" id="radio-choice-h-2b" value="0">
+                                <label for="radio-choice-h-2b"><i class="fa fa-thumbs-down"></i></label>
+                            </fieldset>
+                        </center>
                         <fieldset data-role="controlgroup">
                             <label><input type="checkbox" name="clean">Clean</label>
                             <label><input type="checkbox" name="amenities">Amenities Stocked</label>
                             <label><input type="checkbox" name="nosmell">No Smell</label>
-                        </fieldset>
-                        <fieldset data-role="controlgroup">
-                        <label><input type="radio" name="vote" required="required" value="1">Upvote</label>
-                        <label><input type="radio" name="vote" value="0">Downvote</label>
                         </fieldset>
                         <textarea required="required" type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
                         <div class="error"></div>

@@ -12,33 +12,92 @@ html, body {
 }
 
 * {
-    font-family: Calibri,Helvetica,Arial,sans-serif!important;
+    font-family: Calibri,Helvetica,Arial,sans-serif;
 }
-
+.ui-panel.ui-panel-open {
+    /*position:fixed;*/
+}
+.ui-panel-inner {
+    /*position: absolute;*/
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: scroll;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+/*#bathroom-details-page {
+    background: #e1e1e1;
+}*/
+.zipupbutton {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    border-radius: 5px;
+    box-shadow: 0px 0px 7px rgb(126, 126, 126);
+    text-align: center;
+    border: 1px solid gray;
+    cursor:pointer;
+}
+#locate {
+    bottom: 16px;
+    right: 16px;
+}
+#panelbutton {
+    bottom: 16px;
+    left: -17px;
+}
+#now {
+    bottom: 16px;
+    right: 72px;
+}
+.content {
+    max-width: 220px;
+}
+.zipupbutton img {
+    margin-top: 6px;
+}
+#panelbutton img {
+    margin-left: 6px;
+}
 h1 {
     text-shadow: none;
 }
-q, #toast {
+q, #toast, .toast {
     font-style: italic;
 }
-#toast {
-    color: rgb(12,184,12);
+q {
+    white-space: inital;
+}
+#toast, .toast {
+    color: #fff;
     display: none;
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
-    /*text-shadow: 1px 1px 5px white;*/
     position: absolute;
     font-size: 150%;
-    top: 80px;
+    top: 30px;
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
     z-index: 100;
     text-align: center;
-    max-width: 75%;
+    max-width: 145px;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: #333;
+    opacity: 0.7;
+    text-shadow: none;
 }
-
+.toast {
+    max-width: 40%;
+    display: inline-block;
+}
+#review-form {
+    clear: both;
+}
 .green {
     color:green;
 }
@@ -77,13 +136,18 @@ q, #toast {
 #header {
     margin: 0;
     padding: 0;
+    min-height: 0;
+    width: 190px;
+    border-radius: .3125em;
+    -webkit-border-radius: .3125em;
 }
 
 #map-page {
     position: absolute;
-    top: 56px;
+    top: 0px;
     width: 100%;
     bottom: 0px;
+    margin-left: -.2em; /* compensate for jquery padding for tabbed navigation */
     /*background-color: rgb(229, 227, 223);
     overflow: hidden;
     -webkit-transform: translateZ(0px);*/
@@ -105,4 +169,44 @@ q, #toast {
 
 .white_font {
     color: white;
+}
+
+.rating {
+    margin: 10px;
+}
+
+.fa-thumbs-up {
+    color: #2ECC40;
+}
+
+.fa-thumbs-down {
+    color: #FF4136;
+}
+
+.fa-thumbs-down:before, .fa-thumbs-up:before {
+    margin-right: 5px;
+}
+
+.fa-male:before, .fa-female:before {
+    margin-right: 10px;
+}
+
+h3.firstHeading {
+    margin-top: 8px;
+    min-height: 30px;
+}
+
+div.gender {
+    float: left;
+    width: 20%;
+}
+
+div.name {
+    float: right;
+    width: 80%;
+}
+
+div.ratings {
+    display: inline-block;
+    font-size: 16px;
 }
