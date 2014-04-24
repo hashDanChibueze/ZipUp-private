@@ -8,6 +8,7 @@ var addMarker; // marker for adding
 var addinfowindow;
 var placesService;
 var DEFAULT_ZOOM = 17;
+var currentLocationMarker; // blue dot to show current location
 
 function getReq(url, success) {
     return $.ajax({
@@ -158,7 +159,7 @@ var showOnMap = function(position) {
         content: 'You are here!',
         noSupress: true
     });
-    var marker = new google.maps.Marker({
+    currentLocationMarker = new google.maps.Marker({
         position: myLatlng,
         map: map,
         icon: {path: google.maps.SymbolPath.CIRCLE,
@@ -168,8 +169,8 @@ var showOnMap = function(position) {
             strokeColor: 'silver',
             scale: 8}
     });
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
+    google.maps.event.addListener(currentLocationMarker, 'click', function() {
+        infowindow.open(map,currentLocationMarker);
     });
 
     google.maps.event.addListener(map, "idle", function (event) {
@@ -178,10 +179,18 @@ var showOnMap = function(position) {
         });
     google.maps.event.addListener(map, "dragstart", function (event) {
         $('#locate img').attr("src", "img/geolocation.png");
+        closePanels();
     });
+    google.maps.event.addListener(map, "click", function (event) {
+        closePanels();
+    })
 
     getBathrooms(myLatlng, map);
 };
+
+function closePanels() {
+    $('.panel').panel("close");
+}
 
 // gets all bathrooms near LatLng position and displays them to map
 var getBathrooms = function(LatLng, map) {
@@ -257,6 +266,7 @@ var getBathrooms = function(LatLng, map) {
                             infowindow.setContent(content);
                             infowindow.open(map, marker);
                             currentBID = b_id;
+                            $('#header').panel("close");
                             onDetailsLoad();
                         };
                     };
@@ -275,6 +285,7 @@ function centerMap(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
+    currentLocationMarker.setPosition(myLatlng);
     map.panTo(myLatlng);
     var zoom = map.getZoom();
     setTimeout(smoothZoom(map, DEFAULT_ZOOM, zoom), 150);
@@ -362,7 +373,7 @@ function onDetailsLoad() {
                 console.log(res);
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                     console.log("getDetails sucess");
-                    $('span', $('#bplace').slideDown()).empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
+                    $('#bplace').slideDown().empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
                 } else {
                     console.log("error details");
 
@@ -388,7 +399,7 @@ var getReviews = function() {
         var moreReviewsBtn = $('#more-reviews');
         var reviews = res.bathroom.reviews.reverse();
         if (reviews.length == 0) {
-            list.append($('<li class="review ui-li-static ui-body-inherit">No reviews... yet!</li>'));
+            list.append($('<li class="review"><div class="card"><p>No reviews... yet!</p></div></li>'));
             moreReviewsBtn.hide();
         } else {
             for (var i = 0; i < Math.min(reviews.length, NUM_REVIEWS); i++) {
@@ -406,7 +417,7 @@ var getReviews = function() {
     })
 }
 function appendReview(list, myReview) {
-    $('<li class="review ui-li-static ui-body-inherit"><q>' + myReview.review + '</q></li>').hide().appendTo(list).slideDown();
+    $('<li class="review"><div class="card"><q>'+myReview.review+'</q></div></li>').hide().appendTo(list).slideDown();
 }
 
 // Handler upon submitting a new review for a bathroom
@@ -436,8 +447,7 @@ $('#review-form').submit(function (e) {
         getReviews();
         console.log("successfully added review");
     }).fail(function(err) {
-        $("#review-form .error").text("Your review is too short!");
-        console.log(err.responseJSON.errors);
+        $("#review-form .error").text(err.responseJSON.errors);
     });
     postReq(baseUrl + "addvote", {"bid": currentBID, "voteDir": vote}, function(res) {
         console.log("succesfully added vote");
@@ -455,3 +465,13 @@ $('#more-reviews').click(function() {
     }
     $('#more-reviews').hide();
 });
+
+function tryLogin(err) {
+    if (err.status == 401) {
+        $.get(baseUrl+"validatetoken/"+window.localStorage.token, function(res) {
+            console.log("signin successful");
+        }).fail(function(err) {
+            window.location.replace('index.html');
+        });
+    }
+}

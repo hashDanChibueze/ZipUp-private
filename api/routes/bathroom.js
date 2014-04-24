@@ -172,16 +172,16 @@ exports.addVote = function(req, res, next) {
 
 // add a review for the given bathroom
 exports.addReview = function(req, res, next) {
-
+    var minChar = 4;
     req.assert('cleanliness', 'Rating can only be from 1 to 5.').isInt();
-    req.assert('review', 'Review must be 10-2000 characters.').len(10, 2000);
+    req.assert('review', 'Review must be 4-2000 characters.').len(minChar, 2000);
 
     var errors = req.validationErrors();
 
     if (errors) {
         return res.send(400, {
             'response': 'fail',
-            'errors': 'Invalid values passed, please fix these.'
+            'errors': 'Write more than '+minChar+' characters please!'
             });
     }
 

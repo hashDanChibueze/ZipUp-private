@@ -19,6 +19,8 @@
         
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/cards.css" />
+        <link rel="stylesheet" type="text/css" href="css/dabblet.css" />
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:500,400,300" rel="stylesheet" type="text/css">
         <!-- <link rel="stylesheet" type="text/css" href="css/nav.css" /> -->
         <link href="//fonts.googleapis.com/css?family=Roboto:100italic,100,300italic,300,400italic,400,500italic,500,700italic,700,900italic,900" rel="stylesheet" type="text/css">
 
@@ -31,7 +33,7 @@
             
             <div id="main-app" class="app" data-role="page">
                 <div class="contents" data-role="tabs">
-                    <div class="panel left" id="header" data-display="overlay" data-role="panel" data-position="left">
+                    <div class="panel left" id="header" data-display="overlay" data-dismissible="false" data-role="panel" data-position="left">
                         <!-- <div data-role="navbar" data-type="vertical"> -->
                             <ul data-role="listview" class="ui-nodisc-icon ui-alt-icon">
                                 <li class="find" data-icon="navigation"><a id="map-page-link" href="#map-page">Bathroom Finder</a></li>
@@ -44,15 +46,16 @@
                     
                     <!-- Map page (find and add) -->
                     <div id="map-page">
-                        <div id="map_canvas"></div>
-                        <div id="locate" onclick="locate()"><img height="28px" width="28px" src="img/geolocation.png" alt="locate"></div>
-                        <div date-position="fixed" id="panelbutton"><a href="#header"><img height="28px" width="28px" src="img/panel.png" alt="panel"></a></div>
+                        <div id="map_canvas"><div class="toast">Allow ZipUp to use your location to find some bathrooms!</div></div>
+                        <!-- <div id="now" class="zipupbutton" onclick="now()"><img height="28px" width="28px" src="css/lib/themes/images/icons-png/carat-u-black.png" alt="find"></div> -->
+                        <div id="locate" class="zipupbutton" onclick="locate()"><img height="28px" width="28px" src="img/geolocation.png" alt="locate"></div>
+                        <a href="#header"><div date-position="fixed" id="panelbutton" class="zipupbutton"><img height="28px" width="28px" src="img/panel.png" alt="panel"></div></a>
                     </div>
 
                     <!-- Me page with information about the user -->
                     <div id="account-page">
                         <div data-role="header" data-tap-toggle="false" data-add-back-btn="true">
-                            <a href="#" id="back-to-map">Back to map</a>
+                            <a href="#" id="back-to-map" data-role="button" data-icon="arrow-l">Map</a>
                             <h3>Profile</h3>
                         </div>
                         <div id="account" data-role="content">
@@ -82,7 +85,7 @@
                     </div>
                 </div> <!-- tabs -->
                 <!-- page to add info about a new bathroom -->
-                <div data-role="panel" data-display="overlay" data-position="right" id="add-details-page">
+                <div class="panel" data-role="panel" data-display="overlay" data-position="right" data-dismissible="false" id="add-details-page">
                     <!-- <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
                         <h3>Bathroom details</h3>
                     </div> -->
@@ -114,42 +117,41 @@
                 </div>
 
                 <!-- The bathroom details -->
-                <div data-role="panel" data-display="overlay" data-position="right" id="bathroom-details-page">
+                <div class="panel" data-role="panel" data-display="overlay" data-position="right" data-dismissible="false" id="bathroom-details-page">
                    <!--  <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
                         <h3>Bathroom details</h3>
                     </div> -->
-                    <div data-role="content">
-                        <ul data-role="listview" id="bdetailslist">
-                            
-                            <!-- <li data-role="list-divider">Bathroom Name</li> -->
-                            <li id="bname">Hold on...</li>
-                            <li style="display:none;" id="bplace">At <span></span></li>
-                            <!-- <li data-role="list-divider">Net rating</li> -->
-                            <li id="brating">0</li>
-                            
-                            <li data-role="list-divider">Reviews</li>
-                            <!-- Reviews inserted here -->
-                            <li class="review ui-li-static ui-body-inherit">No reviews... yet!</li>
-                        </ul>
+                    
+                    <ul class="gNow" data-role="none" id="bdetailslist">
+                        <li><div class="card">
+                        <p class="card-title"><strong id="brating">0</strong> <span id="bname">Fetching...</span></p>
+                        <p class="url" style="display:none;" id="bplace"></p>
+                        </div></li>
+
+                        <!-- Reviews inserted here -->
+                        <li class="review"><div class="card">
+                        <p>No reviews... yet!</p>
+                        </div></li>
+                    </ul>
+                    <div class="error"></div>
+                    <a href="#" data-role="button" style='display: none;' id="more-reviews" data-icon="arrow-d">More</a>
+                    <br>
+                    <form id="review-form">
+                        <fieldset data-role="controlgroup">
+                            <label><input type="checkbox" name="clean">Clean</label>
+                            <label><input type="checkbox" name="amenities">Amenities Stocked</label>
+                            <label><input type="checkbox" name="nosmell">No Smell</label>
+                        </fieldset>
+                        <fieldset data-role="controlgroup">
+                        <label><input type="radio" name="vote" required="required" value="1">Upvote</label>
+                        <label><input type="radio" name="vote" value="0">Downvote</label>
+                        </fieldset>
+                        <textarea required="required" type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
                         <div class="error"></div>
-                        <a href="#" data-role="button" style='display: none;' id="more-reviews" data-icon="arrow-d">More</a>
-                        <br>
-                        <form id="review-form">
-                            <fieldset data-role="controlgroup">
-                                <label><input type="checkbox" name="clean">Clean</label>
-                                <label><input type="checkbox" name="amenities">Amenities Stocked</label>
-                                <label><input type="checkbox" name="nosmell">No Smell</label>
-                            </fieldset>
-                            <fieldset data-role="controlgroup">
-                            <label><input type="radio" name="vote" required="required" value="1">Upvote</label>
-                            <label><input type="radio" name="vote" value="0">Downvote</label>
-                            </fieldset>
-                            <textarea required="required" type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
-                            <div class="error"></div>
-                            <input type="submit" value="Add Review" id="add-review-submit" data-icon="plus">
-                        </form>
+                        <input type="submit" value="Add Review" id="add-review-submit" data-icon="plus">
+                    </form>
                         
-                    </div>
+                    
                 </div>
             </div><!-- main app -->
 

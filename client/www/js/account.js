@@ -14,7 +14,7 @@ var getAndShowAccountInfo = function() {
         demo.start();
         //$('#ureviewcount').text(data.user.voted_bathrooms.length);
         $('#ulocation').text(data.user.profile.location);
-    });
+    }).fail(tryLogin);
 };
 
 // called when user navigates to change email page
@@ -41,6 +41,7 @@ var onUpdateEmailFinish = function(e) {
         $('#uemail').text(email);
         history.back();
     }).fail(function(err) {
+        tryLogin(err);
         console.log("error");
         $(".error", form).text(err.responseJSON.errors);
     });

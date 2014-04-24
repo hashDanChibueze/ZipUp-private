@@ -15,17 +15,21 @@ html, body {
     font-family: Calibri,Helvetica,Arial,sans-serif;
 }
 .ui-panel.ui-panel-open {
-    position:fixed;
+    /*position:fixed;*/
 }
 .ui-panel-inner {
+    /*position: absolute;*/
     left: 0;
     right: 0;
-    bottom: 0px;
+    bottom: 0;
     overflow-y: scroll;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
-
-#locate, #panelbutton {
+/*#bathroom-details-page {
+    background: #e1e1e1;
+}*/
+.zipupbutton {
     width: 40px;
     height: 40px;
     background-color: white;
@@ -33,6 +37,8 @@ html, body {
     border-radius: 5px;
     box-shadow: 0px 0px 7px rgb(126, 126, 126);
     text-align: center;
+    border: 1px solid gray;
+    cursor:pointer;
 }
 #locate {
     bottom: 16px;
@@ -40,21 +46,31 @@ html, body {
 }
 #panelbutton {
     bottom: 16px;
-    left: -15px;
+    left: -17px;
+}
+#now {
+    bottom: 16px;
+    right: 72px;
 }
 .content {
     max-width: 220px;
 }
-#locate img, #panelbutton img {
+.zipupbutton img {
     margin-top: 6px;
+}
+#panelbutton img {
+    margin-left: 6px;
 }
 h1 {
     text-shadow: none;
 }
-q, #toast {
+q, #toast, .toast {
     font-style: italic;
 }
-#toast {
+q {
+    white-space: inital;
+}
+#toast, .toast {
     color: #fff;
     display: none;
     font-family: 'Roboto', sans-serif;
@@ -68,13 +84,20 @@ q, #toast {
     margin-right: auto;
     z-index: 100;
     text-align: center;
-    max-width: 15%;
+    max-width: 145px;
     padding: 5px;
     border-radius: 8px;
     background-color: #333;
     opacity: 0.7;
+    text-shadow: none;
 }
-
+.toast {
+    max-width: 40%;
+    display: inline-block;
+}
+#review-form {
+    clear: both;
+}
 .green {
     color:green;
 }
@@ -113,6 +136,10 @@ q, #toast {
 #header {
     margin: 0;
     padding: 0;
+    min-height: 0;
+    width: 190px;
+    border-radius: .3125em;
+    -webkit-border-radius: .3125em;
 }
 
 #map-page {

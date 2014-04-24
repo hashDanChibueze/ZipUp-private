@@ -3,3 +3,5 @@ api/data/
 .DS_Store
 client/platforms/
 api/*.log
+client/www/index.php
+client/www/.htaccess
