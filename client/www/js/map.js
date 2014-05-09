@@ -6,27 +6,10 @@ var API_KEY = "AIzaSyA_3-FTpr5X41YFGR-xFHVZMbjcU-BJp1Q"; // google maps api key 
 var currentBID;
 var addMarker; // marker for adding
 var addinfowindow;
+var bathrooms = {};
 var placesService;
 var DEFAULT_ZOOM = 17;
 var currentLocationMarker; // blue dot to show current location
-
-function getReq(url, success) {
-    return $.ajax({
-        url: url,
-        type: "GET",
-        beforeSend: function(xhr){xhr.setRequestHeader('access', window.localStorage.token)},
-        success: success
-    });
-}
-function postReq(url, data, success) {
-    return $.ajax({
-        url: url,
-        type: "POST",
-        data: data,
-        beforeSend: function(xhr){xhr.setRequestHeader('access', window.localStorage.token)},
-        success: success
-    });
-}
 
 $(document).bind("mobileinit", function() {
     console.log("in mobileinit");
@@ -47,7 +30,7 @@ $(document).ajaxStop(function() {
 });
 
 // Show the main map with user's position and bathrooms close to the user
-$(document).on('pageinit', '#main-app', function() {
+$(document).ready(function() {
     console.log("map page loaded");
     $('#loading').hide();
     $('#content').show();
@@ -56,7 +39,8 @@ $(document).on('pageinit', '#main-app', function() {
     bathInfoWindow = new google.maps.InfoWindow({noSupress: true});
     // $("#map-page").click();
     fixInfoWindow();
-    navigator.geolocation.getCurrentPosition(showOnMap);
+    showOnMap();
+    navigator.geolocation.getCurrentPosition(centerMap);
      $( document ).on( "swipeleft swiperight", "#account-page", function( e ) {
         // We check if there is no open panel on the page because otherwise
         // a swipe to close the left panel would also open the right panel (and v.v.).
@@ -103,93 +87,78 @@ $(document).on('pageinit', '#main-app', function() {
     }
     $('#change-email').val(window.localStorage.email); // set user email on change email page
 });
-$(document).bind('pagechange', '#main-app', function (event, data) {
+$(document).bind('pagechange', '#content', function (event, data) {
     if (data.toPage[0].id == 'main-app') {
         google.maps.event.trigger(map, 'resize'); // prevent greyboxes
     }
 });
 
 // Draws a marker with the passed position on a map
-var showOnMap = function(position) {
+var showOnMap = function() {
     console.log("showing map");
-    var pinColor = "33CCFF";
-    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" +
-        pinColor,
-        new google.maps.Size(21, 34),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(10, 34));
+    $.get("http://ipinfo.io", function (response) {
+        //console.log(response);
+        var loc = response.loc.split(',');
+        //console.log(loc);
+        var latitude = loc[0];
+        var longitude = loc[1];
+        var myLatlng = new google.maps.LatLng(latitude, longitude);
+        var location = latitude + "," + longitude;
+        var mapOptions = {
+            center: myLatlng,
+            mapTypeControl: false,
+            streetViewControl: false,
+            panControl: false,
+            zoomControl: false,
+            //minZoom: 12,
+            zoom: DEFAULT_ZOOM,
+            tilt: 45,  
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+        placesService = new google.maps.places.PlacesService(map);
+        var noPoi = [
+        // {
+        //     featureType: "poi",
+            
+        //     stylers: [
+        //       { visibility: "simplified" }
+        //     ]   
+        //   },
+          // {
+          //   featureType: "road",
+            
+          //   stylers: [
+          //     { visibility: "simplified" }
+          //   ]   
+          // }
+        ];
 
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    var myLatlng = new google.maps.LatLng(latitude, longitude);
-    var location = latitude + "," + longitude;
-    var mapOptions = {
-        center: myLatlng,
-        mapTypeControl: false,
-        //streetViewControl: false,
-        panControl: false,
-        zoomControl: false,
-        //minZoom: 12,
-        zoom: DEFAULT_ZOOM,
-        tilt: 45,
+        map.setOptions({styles: noPoi});
         
-    };
-    map = new google.maps.Map(document.getElementById("map_canvas"),
-        mapOptions);
-    placesService = new google.maps.places.PlacesService(map);
-    var noPoi = [
-    // {
-    //     featureType: "poi",
-        
-    //     stylers: [
-    //       { visibility: "simplified" }
-    //     ]   
-    //   },
-      {
-        featureType: "road",
-        
-        stylers: [
-          { visibility: "simplified" }
-        ]   
-      }
-    ];
 
-    map.setOptions({styles: noPoi});
-    var infowindow = new google.maps.InfoWindow({
-        content: 'You are here!',
-        noSupress: true
-    });
-    currentLocationMarker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        icon: {path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#33CCFF',
-            fillOpacity: 0.8,
-            strokeWeight: 2,
-            strokeColor: 'silver',
-            scale: 8}
-    });
-    google.maps.event.addListener(currentLocationMarker, 'click', function() {
-        infowindow.open(map,currentLocationMarker);
-    });
-
-    google.maps.event.addListener(map, "idle", function (event) {
-            //console.log("idle");
-            getBathrooms(map.getCenter(), map);
+        google.maps.event.addListener(map, "idle", function (event) {
+                //console.log("idle");
+                getBathrooms(map.getCenter(), map);
+            });
+        google.maps.event.addListener(map, "dragstart", function (event) {
+            $('#locate img').attr("src", "img/geolocation.png");
+            closePanels();
         });
-    google.maps.event.addListener(map, "dragstart", function (event) {
-        $('#locate img').attr("src", "img/geolocation.png");
-        closePanels();
-    });
-    google.maps.event.addListener(map, "click", function (event) {
-        closePanels();
-    })
+        google.maps.event.addListener(map, "click", function (event) {
+            closePanels();
+        });
 
-    getBathrooms(myLatlng, map);
+        getBathrooms(myLatlng, map);
+    }, "jsonp");
 };
 
 function closePanels() {
-    $('.panel').panel("close");
+    if ($(window).width() > 600) {
+        $('#header').panel("close");
+    } else {
+        $('.panel').panel("close");
+    }
 }
 
 // gets all bathrooms near LatLng position and displays them to map
@@ -215,8 +184,7 @@ var getBathrooms = function(LatLng, map) {
                     var upvotes = currentB.upvotes;
                     var downvotes = currentB.downvotes;
                     var gender;
-                    var typeNum = currentB.access;
-                    var type;
+                    var type = typeNumToString(currentB.access);
                     var distance = currentB.distance;
                     var genderFA;
                     
@@ -230,14 +198,6 @@ var getBathrooms = function(LatLng, map) {
                         gender = "Unisex";
                     }
                     
-                    if (typeNum == 0) {
-                        type = "Public";
-                    } else if (typeNum == 1) {
-                        type = "Private";
-                    } else {
-                        type = "Customers Only";
-                    }
-
                     var newBathPos = new google.maps.LatLng(lat, lng);
                     
                     marker = new google.maps.Marker({
@@ -276,61 +236,56 @@ var getBathrooms = function(LatLng, map) {
         });
 };
 
+function typeNumToString(num) {
+    if (num == 0) {
+        return "Public";
+    } else if (num == 1) {
+        return "Private";
+    } else {
+        return "Customers Only";
+    }
+}
+
 // called when user clicks on locate div
 function locate() {
     $('#locate img').attr("src", "img/geolocationblue.png");
     navigator.geolocation.getCurrentPosition(centerMap);
 }
-function centerMap(position) {
+
+//centers map on position
+function centerMap(position, ignoreMarker) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
     var myLatlng = new google.maps.LatLng(latitude, longitude);
-    currentLocationMarker.setPosition(myLatlng);
+    if (!ignoreMarker) {
+        if (!currentLocationMarker) {
+            var infowindow = new google.maps.InfoWindow({
+                content: 'You are here!',
+                noSupress: true
+            });
+            currentLocationMarker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                icon: {path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#33CCFF',
+                    fillOpacity: 0.9,
+                    strokeWeight: 2,
+                    strokeColor: 'silver',
+                    scale: 8}
+            });
+            google.maps.event.addListener(currentLocationMarker, 'click', function() {
+                infowindow.open(map,currentLocationMarker);
+            });
+        }
+        currentLocationMarker.setPosition(myLatlng);
+    }
     map.panTo(myLatlng);
     var zoom = map.getZoom();
     setTimeout(smoothZoom(map, DEFAULT_ZOOM, zoom), 150);
 }
 
 
-function smoothZoom (map, max, cnt) {
-    if (cnt >= max) {
-            return;
-        }
-    else {
-        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
-            google.maps.event.removeListener(z);
-            smoothZoom(map, max, cnt + 1);
-        });
-        setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
-    }
-}  
-function save (key, value) {
-    window.localStorage[key] = value;
-};
 
-function toast(message) {
-    $('#toast').text(message);
-    $('#toast').fadeIn("slow");
-    setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
-};
-
-//infowindow fix:
-function fixInfoWindow() {
-    //If it is called for map option, we hide InfoWindow, if "noSupress" option isnt true.
-    var set = google.maps.InfoWindow.prototype.set;
-    google.maps.InfoWindow.prototype.set = function (key, val) {
-        if (key === 'map') {
-            if (!this.get('noSupress')) {
-                if (addListener) {
-                    var event = {latLng: this.position};
-                    confirmPopup(event);
-                }
-                return;
-            }
-        }
-        set.apply(this, arguments);
-    }
-};
 
 function confirmPopup(event) {
     var lat = event.latLng.lat();
@@ -349,43 +304,65 @@ function confirmPopup(event) {
 
 var NUM_REVIEWS = 5; // max number of reviews to show initially
 
-// called when details button is clicked, gets bathroom info
-function onDetailsLoad() {
-    var list = $('#bdetailslist');
-    $('.error', list.parent()).text(""); // clear errors
-    $('#bplace').hide();
-    getReq(baseUrl + "getbathroom/" + currentBID, function (res) {
-        $('#bname').text(res.bathroom.name);
-        var netVotes = res.bathroom.upvotes - res.bathroom.downvotes;
-        var brating = $('#brating');
-        brating.removeClass("red green");
-        if (netVotes > 0) {
-            brating.css("color", "green");
-        } else if (netVotes < 0) {
-            brating.css("color", "red");
-        }
-        // '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
-        //                 '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' + 
-        $('#brating').text(netVotes);
-        console.log(res);
-        if (res.bathroom.placesRef) {
-            placesService.getDetails({key: API_KEY, reference: res.bathroom.placesRef, sensor: true}, function (res, status) {
-                console.log(res);
-                if (status == google.maps.places.PlacesServiceStatus.OK) {
-                    console.log("getDetails sucess");
-                    $('#bplace').slideDown().empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
-                } else {
-                    console.log("error details");
 
-                }
-            });
-        } else {
-            console.log("no places ref");
-        }
-    }).fail(function(err) {
-        console.log("get bathroom error");
-        $(".error", list.parent()).text(err.responseJSON.errors);
-    });
+// if boolCenter is true it will center the map on this ID marker if it exists
+function onDetailsLoad(boolCenter) {
+    var currentBath = bathrooms[currentBID];
+    if (!currentBath) {
+        getReq(baseUrl + "getbathroom/" + currentBID, function (res, status) {
+            bathrooms[currentBID] = res.bathroom;
+            currentBath = dates[currentBID];
+            actuallyLoadDetails(currentBath, boolCenter);
+        }).fail(function (err) {
+            console.log("couldn't find date: " + currentBID);
+            return;
+        });
+    } else {
+        actuallyLoadDetails(currentBath, boolCenter);
+    }
+}
+
+// called when details button is clicked, gets bathroom info
+function actuallyLoadDetails(currentBath, boolCenter) {
+    var list = $('#bdetailslist');
+    var panel = $('#bathroom-details-page');
+    $('.error', panel).text(""); // clear errors
+    panel.panel("open");
+    var res = {};
+    res.bathroom = currentBath;
+    if (boolCenter) {
+        var lat = res.date.location.lat;
+        var lng = res.date.location.lng;
+        setTimeout(function(){centerMap({coords: {latitude: lat, longitude: lng}}, true);}, 1500);
+    }
+    $('#bplace').hide();
+    $('#bname').text(res.bathroom.name);
+    var netVotes = res.bathroom.upvotes - res.bathroom.downvotes;
+    var brating = $('#brating');
+    brating.removeClass("red green");
+    if (netVotes > 0) {
+        brating.css("color", "green");
+    } else if (netVotes < 0) {
+        brating.css("color", "red");
+    }
+    // '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
+    //                 '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' + 
+    $('#brating').text(netVotes);
+    console.log(res);
+    if (res.bathroom.placesRef) {
+        placesService.getDetails({key: API_KEY, reference: res.bathroom.placesRef, sensor: true}, function (res, status) {
+            console.log(res);
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                console.log("getDetails sucess");
+                $('#bplace').slideDown().empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
+            } else {
+                console.log("error details");
+
+            }
+        });
+    } else {
+        console.log("no places ref");
+    }
     save('reviews', null);
     getReviews();
     $('#review-form')[0].reset();
@@ -393,6 +370,7 @@ function onDetailsLoad() {
 
 // Gets reviews and displays them in the bathroom details
 var getReviews = function() {
+    $('#bathroom-details-page').animate({scrollTop:0}, '500', 'swing');
     var list = $('#bdetailslist');
     getReq(baseUrl+"getreviews/"+currentBID, function (res) {
         $('.review', list).remove();
@@ -463,6 +441,7 @@ $('#more-reviews').click(function() {
             appendReview(list, reviews[i]);
         }
     }
+    list.listview("refresh");
     $('#more-reviews').hide();
 });
 
@@ -475,3 +454,68 @@ function tryLogin(err) {
         });
     }
 }
+
+// EXTRA STUFF
+
+function getReq(url, success) {
+    return $.ajax({
+        url: url,
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('access', window.localStorage.token)},
+        success: success
+    });
+}
+function postReq(url, data, success) {
+    return $.ajax({
+        url: url,
+        type: "POST",
+        data: data,
+        beforeSend: function(xhr){xhr.setRequestHeader('access', window.localStorage.token)},
+        success: success
+    });
+}
+//gets a get parameter
+function get(name){
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.href))
+      return decodeURIComponent(name[1]);
+}
+function smoothZoom (map, max, cnt) {
+    if (cnt >= max) {
+            return;
+        }
+    else {
+        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+            google.maps.event.removeListener(z);
+            smoothZoom(map, max, cnt + 1);
+        });
+        setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
+    }
+}
+
+function save (key, value) {
+    window.localStorage[key] = value;
+};
+
+function toast(message) {
+    $('#toast').text(message);
+    $('#toast').fadeIn("slow");
+    setTimeout(function(){$('#toast').fadeOut("slow")}, 2500);
+};
+
+//infowindow fix:
+function fixInfoWindow() {
+    //If it is called for map option, we hide InfoWindow, if "noSupress" option isnt true.
+    var set = google.maps.InfoWindow.prototype.set;
+    google.maps.InfoWindow.prototype.set = function (key, val) {
+        if (key === 'map') {
+            if (!this.get('noSupress')) {
+                if (addListener) {
+                    var event = {latLng: this.position};
+                    confirmPopup(event);
+                }
+                return;
+            }
+        }
+        set.apply(this, arguments);
+    }
+};

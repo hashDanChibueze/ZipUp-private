@@ -16,5 +16,5 @@ module.exports = {
     },
 
     // distance in meters for the range of search
-    maxDistance: 500
+    maxDistance: 3500
 };
