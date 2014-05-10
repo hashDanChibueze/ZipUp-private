@@ -29,6 +29,18 @@ $(document).ajaxStop(function() {
     $.mobile.loading('hide');
 });
 
+$(document).on('pageinit', '#main-app', function (event) {
+    var getBid = get("bid");
+    if (getBid) {
+        currentBID = getBid;
+        onDetailsLoad(true);
+    }
+    if(navigator.userAgent.match('CriOS')) {
+        setTimeout(function(){ 
+            navigator.geolocation.getCurrentPosition(centerMap);
+        }, 3000);
+    }
+});
 // Show the main map with user's position and bathrooms close to the user
 $(document).ready(function() {
     console.log("map page loaded");
@@ -52,6 +64,11 @@ $(document).ready(function() {
                 $( "#header" ).panel( "open" );
             }
         }
+    });
+    $('#linkclick').click(function() {
+        $('#linktext').show().val(window.location.href.split("?")[0] + "?bid="+currentBID).select();
+        $('#linkclick').hide();
+        toast("Hit Ctrl+C now to copy the link.")
     });
     $('#back-to-map').click(function() {$('#map-page-link').click();})
     $('#map-page-link').click(function() {
@@ -168,15 +185,14 @@ var getBathrooms = function(LatLng, map) {
         function (data, status) {
             
             var marker;
-
             for (var i = 0; i < data.bathrooms.length; i++) {
                 var currentB = data.bathrooms[i];
-                var b_id = currentB._id;
-                if (currentB["location"] != undefined && !BIDSet.has(b_id)) {
+                var bid = currentB._id;
+                if (!BIDSet.has(bid)) {
                     var name = currentB.name;
                     console.log("creating bathroom: " + name);
-                    BIDSet.add(b_id);
-
+                    BIDSet.add(bid);
+                    bathrooms[bid] = currentB;
                     // get details about each bathroom
                     var lat = currentB.location.lat;
                     var lng = currentB.location.lng;
@@ -206,6 +222,7 @@ var getBathrooms = function(LatLng, map) {
                         title: name
                         //animation: google.maps.Animation.DROP
                     });
+                    bathrooms[bid].marker = marker;
                     var netVotes = upvotes - downvotes;
                     var style = "";
                     if (netVotes > 0) {
@@ -221,16 +238,16 @@ var getBathrooms = function(LatLng, map) {
                         '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
                         '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' + 
                         "<br><a href='#bathroom-details-page' id='add-confirm' data-theme='b' class='ui-btn ui-btn-inline ui-icon-arrow-r ui-btn-icon-right ui-mini' data-transition='slide'>Reviews</a></div>";
-                    var markerClickCallback = function (marker, content, infowindow, b_id) {
+                    var markerClickCallback = function (marker, content, infowindow, bid) {
                         return function() {
                             infowindow.setContent(content);
                             infowindow.open(map, marker);
-                            currentBID = b_id;
+                            currentBID = bid;
                             $('#header').panel("close");
                             onDetailsLoad();
                         };
                     };
-                    google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, bathInfoWindow, b_id));
+                    google.maps.event.addListener(marker, 'click', markerClickCallback(marker, content, bathInfoWindow, bid));
                 }
             }
         });
@@ -311,10 +328,10 @@ function onDetailsLoad(boolCenter) {
     if (!currentBath) {
         getReq(baseUrl + "getbathroom/" + currentBID, function (res, status) {
             bathrooms[currentBID] = res.bathroom;
-            currentBath = dates[currentBID];
+            currentBath = bathrooms[currentBID];
             actuallyLoadDetails(currentBath, boolCenter);
         }).fail(function (err) {
-            console.log("couldn't find date: " + currentBID);
+            console.log("couldn't find bathroom: " + currentBID);
             return;
         });
     } else {
@@ -331,12 +348,18 @@ function actuallyLoadDetails(currentBath, boolCenter) {
     var res = {};
     res.bathroom = currentBath;
     if (boolCenter) {
-        var lat = res.date.location.lat;
-        var lng = res.date.location.lng;
+        var lat = res.bathroom.location.lat;
+        var lng = res.bathroom.location.lng;
         setTimeout(function(){centerMap({coords: {latitude: lat, longitude: lng}}, true);}, 1500);
     }
-    $('#bplace').hide();
-    $('#bname').text(res.bathroom.name);
+    var bname = $('#bname', panel);
+    var oldName = bname.text();
+
+    bname.text(res.bathroom.name);
+    bname.attr("href", "");
+    bname.addClass("nopoint");
+    $('#baccess', panel).text(typeNumToString(res.bathroom.access));
+
     var netVotes = res.bathroom.upvotes - res.bathroom.downvotes;
     var brating = $('#brating');
     brating.removeClass("red green");
@@ -354,10 +377,10 @@ function actuallyLoadDetails(currentBath, boolCenter) {
             console.log(res);
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 console.log("getDetails sucess");
-                $('#bplace').slideDown().empty().append($('<a target="_blank" href="'+res.url+'">'+res.name+'</a>'));
+                bname.attr("href", res.url);
+                bname.removeClass("nopoint");
             } else {
                 console.log("error details");
-
             }
         });
     } else {
@@ -377,7 +400,7 @@ var getReviews = function() {
         var moreReviewsBtn = $('#more-reviews');
         var reviews = res.bathroom.reviews.reverse();
         if (reviews.length == 0) {
-            list.append($('<li class="review"><div class="card"><p>No reviews... yet!</p></div></li>'));
+            list.append($('<li class="review">No reviews... yet!</li>'));
             moreReviewsBtn.hide();
         } else {
             for (var i = 0; i < Math.min(reviews.length, NUM_REVIEWS); i++) {
@@ -390,9 +413,10 @@ var getReviews = function() {
                 moreReviewsBtn.hide();
             }
         }
+        list.listview("refresh");
     }).fail(function (err) {
         $(".error", list.parent()).text(err.responseJSON.errors);
-    })
+    });
 }
 function appendReview(list, myReview) {
     $('<li class="review"><div class="card"><q>'+myReview.review+'</q></div></li>').hide().appendTo(list).slideDown();

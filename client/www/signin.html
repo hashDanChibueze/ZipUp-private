@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html class="ui-mobile ui-loading">
+    <head>
+        <title>ZipUp</title>
+
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <!-- theme -->
+        <!-- GREEN THEME -->
+        <!-- <link rel="stylesheet" href="css/lib/themes/green.min.css" />
+        <link rel="stylesheet" href="css/lib/jquery.mobile.structure-1.4.2.min.css" />
+        <link rel="stylesheet" href="css/lib/themes/jquery.mobile.icons.min.css" /> -->
+
+        <!-- DEFAULT THEME -->
+        <link rel="stylesheet" type="text/css" href="css/lib/jquery.mobile-1.4.2.min.css" />
+        <!-- /theme -->
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+
+    </head>
+    <body>
+        <div id="loading" class="ui-loader ui-corner-all ui-body-a ui-loader-default"><span class="ui-icon ui-icon-loading"></span></div>
+        <!-- The main auth part of the app -->
+                <div id="signin-page" data-role="page">
+                    <div id="homepage" class="center-wrapper" data-role="page">
+                        <!-- User sees the into homepage first -->
+                        <div data-role="header" data-position="fixed" data-tap-toggle="false">
+                            <h1>ZipUp</h1>
+                        </div>
+                        <div data-role="content">
+                            <img src="img/logo-text.png" alt="zipup">
+                            <p>
+                                <a href="#signup" data-role="button" data-icon="user" data-transition="slide">Sign up</a>
+                            </p>
+                            <p id="home-signin">
+                                <a href="#signin" data-transition="slide">I already have an account</a>
+                            </p>
+                            <!-- <p><a href="map.html">See the map (dev)</a></p> -->
+                        </div>
+                    </div>
+
+                    <!-- The page that shows and works on sign up -->
+                    <div data-role="page" id="signup" class="center-wrapper">
+                        <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                            <h3>Sign up</h3>
+                        </div>
+                        <div data-role="content">
+                            <form id="signup-form">
+                                <fieldset data-role="fieldcontain" class="ui-hide-label">
+                                    <label for="email">Email:</label>
+                                    <input type="email" name="email" id="email" value="" placeholder="Email" />
+                                </fieldset>
+                                <fieldset data-role="fieldcontain" class="ui-hide-label">
+                                    <label for="password">Password:</label>
+                                    <input type="password" name="password" id="password" value="" placeholder="Password" />
+                                </fieldset>
+                                <div class="error"></div>
+                                <input type="submit" value="Sign up" id="submitButton" data-icon="user">
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- The page that shows and works on sign in -->
+                    <div data-role="page" id="signin" class="center-wrapper">
+                        <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
+                            <h3>Sign in</h3>
+                        </div>
+                        <div data-role="content">
+                            <form id="signin-form">
+                                <fieldset data-role="fieldcontain" class="ui-hide-label">
+                                    <label for="email">Email:</label>
+                                    <input type="email" name="email" id="email" value="" placeholder="Email" />
+                                </fieldset>
+                                <fieldset data-role="fieldcontain" class="ui-hide-label">
+                                    <label for="password">Password:</label>
+                                    <input type="password" name="password" id="password" value="" placeholder="Password" />
+                                </fieldset>
+                                <div class="error"></div>
+                                <input type="submit" value="Sign in" id="submitButton" data-icon="arrow-r">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+        <script type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3clVyH1hk4gVznz4GfXv-gV0_ciXwv_w&sensor=true"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.mobile-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/authHandler.js"></script>
+
+    </body>
+
+</html>

@@ -100,25 +100,34 @@
 
                         <!-- The bathroom details -->
                         <div class="panel" data-role="panel" data-display="overlay" data-position="right" data-dismissible="false" id="bathroom-details-page">
-                           <!--  <div data-role="header" data-position="fixed" data-tap-toggle="false" data-add-back-btn="true">
-                                <h3>Bathroom details</h3>
-                            </div> -->
-                            
-                            <ul class="gNow" data-role="none" id="bdetailslist">
-                                <li><div class="card">
-                                <p class="card-title"><strong id="brating">0</strong> <span id="bname">Fetching...</span></p>
-                                <p class="url" style="display:none;" id="bplace"></p>
-                                </div></li>
+                           
+                            <span id="btitle" class="title"><strong><span id="brating"></span> </strong><a target="_blank" data-role="none" id="bname"></a><span id="baccess"></span></span>
+                            <div data-role="none" id="dcont" style="display: none; background-color: #111111;"><!-- space for a picture from google places -->
+                                <a target="_blank" id="dpicture" href=""><img style="width: 100%; " src=''alt="photo"></a>
+                            </div>
 
-                                <!-- Reviews inserted here -->
-                                <li class="review"><div class="card">
-                                <p>No reviews... yet!</p>
-                                </div></li>
+                            <ul data-role="listview" id="bdetailslist">
+                                
+                                <li data-role="list-divider">Reviews...</li>
+
+                                <!-- Advice inserted here -->
+                                <li class="review">
+                                <p>Nothing... yet!</p>
+                                </li>
                             </ul>
+
                             <div class="error"></div>
                             <a href="#" data-role="button" style='display: none;' id="more-reviews" data-icon="arrow-d">More</a>
                             <br>
                             <form id="review-form">
+                                <div id="details-menu">
+                                    <input id="linktext" type="text" data-role="none">
+                                    <img src="img/link.png" id="linkclick" title="Get link " alt="link">
+                                    <div id="flagclick">
+                                        <img src="img/flag.png" title="Flag unbroworthy" alt="flag">
+                                    </div>
+                                </div>
+                                <h1 class="subtitle">Your opinion</h1>
                                 <center>
                                     <fieldset data-role="controlgroup" data-type="horizontal">
                                         <input type="radio" name="vote" id="radio-choice-h-2a" value="1">
