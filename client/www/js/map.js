@@ -18,15 +18,15 @@ $(document).bind("mobileinit", function() {
     $.mobile.allowCrossDomainPages = true;
 });
 
-$(document).ajaxStart(function() {
-    $.mobile.loading('show', {
-        text: "Fetching..."
-    });
-});
+// $(document).ajaxStart(function() {
+//     $.mobile.loading('show', {
+//         text: "Fetching..."
+//     });
+// });
 
-$(document).ajaxStop(function() {
-    $.mobile.loading('hide');
-});
+// $(document).ajaxStop(function() {
+//     $.mobile.loading('hide');
+// });
 
 $(document).on('pageinit', '#main-app', function (event) {
     var getBid = get("bid");
@@ -34,25 +34,18 @@ $(document).on('pageinit', '#main-app', function (event) {
         currentBID = getBid;
         onDetailsLoad(true);
     }
-    if(navigator.userAgent.match('CriOS')) {
-        setTimeout(function(){ 
-            navigator.geolocation.getCurrentPosition(centerMap);
-        }, 3000);
-    }
 });
 // Show the main map with user's position and bathrooms close to the user
 $(document).ready(function() {
     console.log("map page loaded");
     $('#loading').hide();
     $('#content').show();
-    setTimeout( function(){$('#map-page-link').click();}, 100);
+    
     BIDSet = new MiniSet();
     bathInfoWindow = new google.maps.InfoWindow({noSupress: true});
-    // $("#map-page").click();
     fixInfoWindow();
     showOnMap();
-    navigator.geolocation.getCurrentPosition(centerMap);
-     $( document ).on( "swipeleft swiperight", "#account-page", function( e ) {
+    $( document ).on( "swipeleft swiperight", "#account-page", function( e ) {
         // We check if there is no open panel on the page because otherwise
         // a swipe to close the left panel would also open the right panel (and v.v.).
         // We do this by checking the data that the framework stores on the page element (panel: open).
@@ -69,43 +62,73 @@ $(document).ready(function() {
         $('#linkclick').hide();
         toast("Hit Ctrl+C now to copy the link.")
     });
-    $('#back-to-map').click(function() {$('#map-page-link').click();})
-    $('#map-page-link').click(function() {
-        if ($('#account-page-link').hasClass("ui-state-persist")) {
-            google.maps.event.trigger(map, 'resize');
-        }
-        $('#header ul li a').removeClass("ui-state-persist");
-        $('#map-page-link').addClass("ui-state-persist");
-        $('#toast').hide();
-        $('#header').panel("close");
+
+    $('#back-to-map').click(function() {$('#map-page-link').click();});
+    $('#closebutton').click(function() {
+        $('#bathroom-details-page').panel("close");
     });
-    $('#add-page-link').click(function() {
-        if ($('#account-page-link').hasClass("ui-state-persist")) {
-            google.maps.event.trigger(map, 'resize');
-        }
-        $('#header ul li a').removeClass("ui-state-persist");
-        $('#add-page-link').addClass("ui-state-persist");
+    // NAVBAR HACKS =================================
+
+    var navlist = $('#header ul');
+    $('li', navlist).click(function() {
+        console.log("clicked a navbutton");
+        $('#header').panel("close");
+        google.maps.event.trigger(map, 'resize');
+        console.log("triggered resize nalist");
+    });
+    $('#add-page-link', navlist).click(function() {
         if (bathInfoWindow) {
             bathInfoWindow.close(); // hide the info window when going to add
         }
         toast("Tap to add...");
-        $('#header').panel("close");
     });
-    $('#account-page-link').click(function() {
-        $('#header ul li a').removeClass("ui-state-persist");
-        $('#account-page-link').addClass("ui-state-persist");
-        $('#toast').hide();
-        $('#header').panel("close");
-    });
+    // $('#map-page-link').click(function() {
+    //     if ($('#account-page-link').hasClass("ui-state-persist")) {
+    //         google.maps.event.trigger(map, 'resize');
+    //     }
+    //     $('#header ul li a').removeClass("ui-state-persist");
+    //     $('#map-page-link').addClass("ui-state-persist");
+    //     $('#toast').hide();
+    //     $('#header').panel("close");
+    // });
+    // $('#add-page-link').click(function() {
+    //     if ($('#account-page-link').hasClass("ui-state-persist")) {
+    //         google.maps.event.trigger(map, 'resize');
+    //     }
+    //     $('#header ul li a').removeClass("ui-state-persist");
+    //     $('#add-page-link').addClass("ui-state-persist");
+
+    // });
+
+    // $('#account-page-link').click(function() {
+    //     $('#header ul li a').removeClass("ui-state-persist");
+    //     $('#account-page-link').addClass("ui-state-persist");
+    //     $('#toast').hide();
+    //     $('#header').panel("close");
+    // });
+    
+    // END NAVBAR HACKS =================================
+
     $('#uemail').text(window.localStorage.email); // set user email on account page
     if (window.localStorage.loc) {
         $('#ulocation').text(window.localStorage.loc);
     }
     $('#change-email').val(window.localStorage.email); // set user email on change email page
+    waitToLocate();
 });
+function waitToLocate() {
+    if (map == null) {
+        setTimeout(waitToLocate, 50);
+    } else {
+        locate();
+    }
+}
 $(document).bind('pagechange', '#content', function (event, data) {
     if (data.toPage[0].id == 'main-app') {
         google.maps.event.trigger(map, 'resize'); // prevent greyboxes
+        console.log("triggered resize pagechange");
+        $('#map-page-link').click();
+        locate();
     }
 });
 
@@ -189,7 +212,7 @@ var getBathrooms = function(LatLng, map) {
                 var bid = currentB._id;
                 if (!BIDSet.has(bid)) {
                     var name = currentB.name;
-                    console.log("creating bathroom: " + name);
+                    //console.log("creating bathroom: " + name);
                     BIDSet.add(bid);
                     bathrooms[bid] = currentB;
                     // get details about each bathroom
@@ -343,7 +366,9 @@ function actuallyLoadDetails(currentBath, boolCenter) {
     var list = $('#bdetailslist');
     var panel = $('#bathroom-details-page');
     $('.error', panel).text(""); // clear errors
-    panel.panel("open");
+    if ($(window).width() > 600) {
+       panel.panel("open"); 
+   }
     $('#linkclick', panel).show();
     $('#linktext', panel).hide();
     var res = {};
@@ -476,6 +501,7 @@ function tryLogin(err) {
             console.log("signin successful");
         }).fail(function(err) {
             window.location.replace('index.html');
+            console.log("failed to login");
         });
     }
 }

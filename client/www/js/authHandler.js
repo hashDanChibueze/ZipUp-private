@@ -24,9 +24,6 @@ if(window.localStorage["token"] != undefined) {
     getReq(baseUrl+"validatetoken/"+token, function(res) {
             console.log("signin successful");
             console.log(res);
-            // $.mobile.changePage("map.html");
-            //window.location.replace('map.html');
-            
     });
 } else {
     console.log("no credentials found in localStorage");
@@ -46,8 +43,26 @@ if(window.localStorage["token"] != undefined) {
 
 // Handles the signup page. Tries to sign up the user, and save credentials in
 // local storage
-$(document).on('pageinit', '#signup', function(e) {
-    console.log("singup page loaded");
+$(document).on('pageinit', '#landing-page', function(e) {
+    console.log("landing page loaded");
+
+    $('#login-button').click(function() {
+        $('#login-button').slideUp(400, function() {
+            $('#signup').slideDown(400, function() {
+                $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, '1000', 'swing');
+            });
+        });
+
+    });
+
+    $('#skipsignup').click(function() {
+        $('#signup').fadeOut(200, function() {$('#signin').fadeIn(200);});
+        
+    });
+    $('#skipsignin').click(function() {
+        $('#signin').fadeOut(200, function() {$('#signup').fadeIn(200);});
+        
+    });
 
     $("#signup-form").submit(function(e) {
         e.stopImmediatePropagation();
@@ -78,7 +93,7 @@ $(document).on('pageinit', '#signup', function(e) {
 
 // Handles signing in the user. On successful sign in, saves credentials in
 // local storage
-$(document).on('pageinit', '#signin', function(e) {
+$(document).on('pageinit', '#landing-page', function(e) {
     console.log("singin page loaded");
 
     $("#signin-form").submit(function(e) {
@@ -112,5 +127,5 @@ function storeCredsAndRedirect(res, email) {
     console.log("storing creds and redirecting");
     window.localStorage['token'] = res.user.token;
     window.localStorage['email'] = email;
-    //window.location.href = "map.html";
+    $('#continue-button').click();
 }

@@ -38,7 +38,7 @@ function fillNamePlaces() {
     placesService.nearbySearch(request, function (results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             console.log(results);
-            var fieldset = $('<fieldset data-role="controlgroup" id="namesuggestions" ><h4>Is this...</h4><br></fieldset>');
+            var fieldset = $('<fieldset data-role="controlgroup" id="namesuggestions" ><h4>Is this...</h4></fieldset>');
             for (var i = 0; i < Math.min(results.length, 3); i++) {
                 var curResult = results[i];
                 var ref = curResult.reference;
