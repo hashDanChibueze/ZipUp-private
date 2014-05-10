@@ -9,6 +9,7 @@ var addinfowindow;
 var bathrooms = {};
 var placesService;
 var DEFAULT_ZOOM = 17;
+var NUM_REVIEWS = 5; // max number of reviews to show initially
 var currentLocationMarker; // blue dot to show current location
 
 $(document).bind("mobileinit", function() {
@@ -18,14 +19,12 @@ $(document).bind("mobileinit", function() {
 });
 
 $(document).ajaxStart(function() {
-    // console.log("in loading animation");
     $.mobile.loading('show', {
         text: "Fetching..."
     });
 });
 
 $(document).ajaxStop(function() {
-    // console.log("in stop animation");
     $.mobile.loading('hide');
 });
 
@@ -257,7 +256,7 @@ function typeNumToString(num) {
     if (num == 0) {
         return "Public";
     } else if (num == 1) {
-        return "Private";
+        return "Customers";
     } else {
         return "Customers Only";
     }
@@ -319,13 +318,12 @@ function confirmPopup(event) {
     setTimeout(function() {addinfowindow.open(map, addMarker);}, 300);
 };
 
-var NUM_REVIEWS = 5; // max number of reviews to show initially
-
 
 // if boolCenter is true it will center the map on this ID marker if it exists
 function onDetailsLoad(boolCenter) {
     var currentBath = bathrooms[currentBID];
     if (!currentBath) {
+        // bathroom doesnt exist in our local array, we have to fetch it
         getReq(baseUrl + "getbathroom/" + currentBID, function (res, status) {
             bathrooms[currentBID] = res.bathroom;
             currentBath = bathrooms[currentBID];
@@ -335,6 +333,7 @@ function onDetailsLoad(boolCenter) {
             return;
         });
     } else {
+        // bathroom exists locally
         actuallyLoadDetails(currentBath, boolCenter);
     }
 }
@@ -345,6 +344,8 @@ function actuallyLoadDetails(currentBath, boolCenter) {
     var panel = $('#bathroom-details-page');
     $('.error', panel).text(""); // clear errors
     panel.panel("open");
+    $('#linkclick', panel).show();
+    $('#linktext', panel).hide();
     var res = {};
     res.bathroom = currentBath;
     if (boolCenter) {

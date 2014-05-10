@@ -13,19 +13,7 @@ body {
 .ui-mobile body {
   height: 100%;
 }
-.ui-listview>.ui-li-static {
-  white-space: normal;
-}
-#brating {
-  white-space: normal;
-  margin-left: -.5em;
-}
-.nopoint {
-  cursor: default;
-}
-#bdetailslist {
-    clear: both;
-}
+
 strong {
   font-weight:300;
   color:#539D00;
@@ -333,6 +321,19 @@ div.ratings {
   color: #444 !important;
   font-weight: 200 !important;
   text-decoration: none;
+}
+.ui-listview>.ui-li-static {
+  white-space: normal;
+}
+#brating {
+  white-space: normal;
+  margin-left: -.5em;
+}
+.nopoint {
+  cursor: default;
+}
+#bdetailslist {
+    clear: both;
 }
 #baccess {
   float: right;
