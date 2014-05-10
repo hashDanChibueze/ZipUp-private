@@ -67,11 +67,12 @@ $(document).ready(function() {
     $('#closebutton').click(function() {
         $('#bathroom-details-page').panel("close");
     });
-    // NAVBAR HACKS =================================
+    // NAVBAR =================================
 
     var navlist = $('#header ul');
     $('li', navlist).click(function() {
         console.log("clicked a navbutton");
+        $('#toast').hide();
         $('#header').panel("close");
         google.maps.event.trigger(map, 'resize');
         console.log("triggered resize nalist");
@@ -82,32 +83,8 @@ $(document).ready(function() {
         }
         toast("Tap to add...");
     });
-    // $('#map-page-link').click(function() {
-    //     if ($('#account-page-link').hasClass("ui-state-persist")) {
-    //         google.maps.event.trigger(map, 'resize');
-    //     }
-    //     $('#header ul li a').removeClass("ui-state-persist");
-    //     $('#map-page-link').addClass("ui-state-persist");
-    //     $('#toast').hide();
-    //     $('#header').panel("close");
-    // });
-    // $('#add-page-link').click(function() {
-    //     if ($('#account-page-link').hasClass("ui-state-persist")) {
-    //         google.maps.event.trigger(map, 'resize');
-    //     }
-    //     $('#header ul li a').removeClass("ui-state-persist");
-    //     $('#add-page-link').addClass("ui-state-persist");
 
-    // });
-
-    // $('#account-page-link').click(function() {
-    //     $('#header ul li a').removeClass("ui-state-persist");
-    //     $('#account-page-link').addClass("ui-state-persist");
-    //     $('#toast').hide();
-    //     $('#header').panel("close");
-    // });
-    
-    // END NAVBAR HACKS =================================
+    // END NAVBAR =================================
 
     $('#uemail').text(window.localStorage.email); // set user email on account page
     if (window.localStorage.loc) {

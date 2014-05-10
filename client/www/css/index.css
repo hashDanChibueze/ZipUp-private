@@ -74,6 +74,7 @@ div#details-menu {
     width: 270px;
     max-width: 100%;
 }
+
 #details-menu img {
   opacity: 0.7;
   cursor: pointer;
@@ -206,7 +207,7 @@ margin-top: 50px;
     bottom: 0px;
     width: 100%;
     min-height:100vh !important;
-    min-width: 100vh !important;
+    min-width: 100vw !important;
 }
 #map-page {
     margin-left: -.2em; /* compensate for jquery padding for tabbed navigation */
@@ -222,7 +223,7 @@ margin-top: 50px;
     margin-bottom: 20px;
 }
 #signup, #signin {
-    max-width: 400px;
+    max-width: 350px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -372,19 +373,22 @@ h4 {
     .hometitle {
         font-size: 80px;
         margin-top: 20px;
-    position: relative;
-    top: -40px;
-    line-height: 1;
+        position: relative;
+        top: -20px;
+        line-height: 1;
+        bottom: -30px;
     }
-
+    #login-button {
+        margin-top: 20px;
+    }
     .homesubtitle {
-        font-size: 36px;
-    position: relative;
-    top: -80px;
-    margin-bottom: -50px;
+        font-size: 28px;
+        position: relative;
+        top: -20px;
+        margin-bottom: -10px;
     }
-  #details-menu {
-    display: none;
+  #login-button, #continue-button {
+    width: 80%;
   }
 
 }
