@@ -98,7 +98,7 @@ div#details-menu {
 }
 #content {
     height: 100vh;
-    width: 100vh;
+    width: 100vw;
 }
 #panelbutton img {
     margin-left: 6px;
