@@ -72,7 +72,6 @@ $(document).ready(function() {
     var navlist = $('#header ul');
     $('li', navlist).click(function() {
         console.log("clicked a navbutton");
-        $('#toast').hide();
         $('#header').panel("close");
         google.maps.event.trigger(map, 'resize');
         console.log("triggered resize nalist");
