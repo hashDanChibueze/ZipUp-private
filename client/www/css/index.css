@@ -174,7 +174,7 @@ q {
     margin-bottom: 20px;
     color: #FF4136;
 }
-#closebutton {
+#closebutton, #closebuttonadd {
 margin-top: 50px;
 }
 .ui-tabs {

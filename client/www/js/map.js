@@ -67,6 +67,9 @@ $(document).ready(function() {
     $('#closebutton').click(function() {
         $('#bathroom-details-page').panel("close");
     });
+    $('#closebuttonadd').click(function() {
+        $('#add-details-page').panel("close");
+    })
     // NAVBAR =================================
 
     var navlist = $('#header ul');
@@ -235,7 +238,7 @@ var getBathrooms = function(LatLng, map) {
                         '<div id="bodyContent">' +
                         '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
                         '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' + 
-                        "<br><a href='#bathroom-details-page' id='add-confirm' data-theme='b' class='ui-btn ui-btn-inline ui-icon-arrow-r ui-btn-icon-right ui-mini' data-transition='slide'>Reviews</a></div>";
+                        "<br><a href='#' data-theme='b' class='ui-btn ui-btn-inline ui-icon-arrow-r ui-btn-icon-right ui-mini' data-transition='slide'>Reviews</a></div>";
                     var markerClickCallback = function (marker, content, infowindow, bid) {
                         return function() {
                             infowindow.setContent(content);

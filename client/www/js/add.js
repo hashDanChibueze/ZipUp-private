@@ -14,7 +14,7 @@ var addInit = function () {
             var content = '<div class="content">' +
                 '<div id="place-name"></div>' +
                 '<div id="bodyContent">' +
-                "<a href='#add-details-page' id='add-confirm' data-theme='b' style='color:rgb(12,184,12);' role='button' data-icon='check' class='ui-link ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all' onclick='fillNamePlaces()' data-role='button' data-transition='slide'>Confirm</a>" + '</div></div>'
+                "<a href='#' id='add-confirm' data-theme='b' style='color:rgb(12,184,12);' role='button' data-icon='check' class='ui-link ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all' onclick='fillNamePlaces()' data-role='button' data-transition='slide'>Confirm</a>" + '</div></div>'
             addinfowindow.setContent(content);
         }
         addListener = google.maps.event.addListener(map, "click", confirmPopup);
@@ -28,6 +28,7 @@ var addInit = function () {
 function fillNamePlaces() {
     $('#namesuggestions').remove();
     $('#add-form')[0].reset();
+    $('#add-details-page').panel("open");
     addPlace = null;
     var curPos = addMarker.getPosition();
     var request = {
