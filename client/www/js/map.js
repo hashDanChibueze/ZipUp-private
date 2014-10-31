@@ -18,16 +18,6 @@ $(document).bind("mobileinit", function() {
     $.mobile.allowCrossDomainPages = true;
 });
 
-// $(document).ajaxStart(function() {
-//     $.mobile.loading('show', {
-//         text: "Fetching..."
-//     });
-// });
-
-// $(document).ajaxStop(function() {
-//     $.mobile.loading('hide');
-// });
-
 $(document).on('pageinit', '#main-app', function (event) {
     var getBid = get("bid");
     if (getBid) {
@@ -40,7 +30,6 @@ $(document).ready(function() {
     console.log("map page loaded");
     $('#loading').hide();
     $('#content').show();
-    
     BIDSet = new MiniSet();
     bathInfoWindow = new google.maps.InfoWindow({noSupress: true});
     fixInfoWindow();
@@ -69,7 +58,7 @@ $(document).ready(function() {
     });
     $('#closebuttonadd').click(function() {
         $('#add-details-page').panel("close");
-    })
+    });
     // NAVBAR =================================
 
     var navlist = $('#header ul');
@@ -114,12 +103,15 @@ $(document).bind('pagechange', '#content', function (event, data) {
 // Draws a marker with the passed position on a map
 var showOnMap = function() {
     console.log("showing map");
-    $.get("http://ipinfo.io", function (response) {
-        //console.log(response);
-        var loc = response.loc.split(',');
-        //console.log(loc);
-        var latitude = loc[0];
-        var longitude = loc[1];
+    var setup = function (response) {
+        if (response.loc != undefined) {
+            var loc = response.loc.split(',');
+            var latitude = loc[0];
+            var longitude = loc[1];
+        } else {
+            var latitude = "47.6097";
+            var longitude = "-122.3331";
+        }
         var myLatlng = new google.maps.LatLng(latitude, longitude);
         var location = latitude + "," + longitude;
         var mapOptions = {
@@ -130,7 +122,7 @@ var showOnMap = function() {
             zoomControl: false,
             //minZoom: 12,
             zoom: DEFAULT_ZOOM,
-            tilt: 45,  
+            tilt: 45,
         };
         map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
@@ -138,22 +130,21 @@ var showOnMap = function() {
         var noPoi = [
         // {
         //     featureType: "poi",
-            
+
         //     stylers: [
         //       { visibility: "simplified" }
-        //     ]   
+        //     ]
         //   },
           // {
           //   featureType: "road",
-            
+
           //   stylers: [
           //     { visibility: "simplified" }
-          //   ]   
+          //   ]
           // }
         ];
 
         map.setOptions({styles: noPoi});
-        
 
         google.maps.event.addListener(map, "idle", function (event) {
                 //console.log("idle");
@@ -168,7 +159,8 @@ var showOnMap = function() {
         });
 
         getBathrooms(myLatlng, map);
-    }, "jsonp");
+    };
+    $.get("http://ipinfo.io", setup, "jsonp").fail(setup);
 };
 
 function closePanels() {
@@ -184,7 +176,6 @@ var getBathrooms = function(LatLng, map) {
     //console.log("getting nearby bathrooms");
     getReq(baseUrl+"getallnear/"+LatLng.lat()+","+LatLng.lng(),
         function (data, status) {
-            
             var marker;
             for (var i = 0; i < data.bathrooms.length; i++) {
                 var currentB = data.bathrooms[i];
@@ -204,7 +195,6 @@ var getBathrooms = function(LatLng, map) {
                     var type = typeNumToString(currentB.access);
                     var distance = currentB.distance;
                     var genderFA;
-                    
                     if (genderNum == 0) {
                         gender = "Men's";
                         genderFA = '<i class="fa fa-male fa-2x"></i>'
@@ -214,9 +204,9 @@ var getBathrooms = function(LatLng, map) {
                     } else {
                         gender = "Unisex";
                     }
-                    
+
                     var newBathPos = new google.maps.LatLng(lat, lng);
-                    
+
                     marker = new google.maps.Marker({
                         position: newBathPos,
                         map: map,
@@ -233,12 +223,13 @@ var getBathrooms = function(LatLng, map) {
                     }
 
                     var content = '<div class="content">' + parseInt(distance) + 'm' +
-                        '<h3 class="firstHeading"><div class="gender">' + genderFA + "</div>" + 
+                        '<h3 class="firstHeading"><div class="gender">' + genderFA + "</div>" +
                             '<div class="name">' + name + '</div></h3>' +
                         '<div id="bodyContent">' +
                         '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
-                        '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' + 
+                        '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' +
                         "<br><a href='#' data-theme='b' class='ui-btn ui-btn-inline ui-icon-arrow-r ui-btn-icon-right ui-mini' data-transition='slide'>Reviews</a></div>";
+
                     var markerClickCallback = function (marker, content, infowindow, bid) {
                         return function() {
                             infowindow.setContent(content);
@@ -346,7 +337,7 @@ function actuallyLoadDetails(currentBath, boolCenter) {
     var panel = $('#bathroom-details-page');
     $('.error', panel).text(""); // clear errors
     if ($(window).width() > 600) {
-       panel.panel("open"); 
+       panel.panel("open");
    }
     $('#linkclick', panel).show();
     $('#linktext', panel).hide();
@@ -374,7 +365,7 @@ function actuallyLoadDetails(currentBath, boolCenter) {
         brating.css("color", "red");
     }
     // '<div class="ratings"><i class="fa fa-thumbs-up rating">' + upvotes +'</i>' +
-    //                 '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' + 
+    //                 '<i class="fa fa-thumbs-down rating">' + downvotes +'</i></div>' +
     $('#brating').text(netVotes);
     console.log(res);
     if (res.bathroom.placesRef) {

@@ -15,6 +15,7 @@ var addInit = function () {
                 '<div id="place-name"></div>' +
                 '<div id="bodyContent">' +
                 "<a href='#' id='add-confirm' data-theme='b' style='color:rgb(12,184,12);' role='button' data-icon='check' class='ui-link ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all' onclick='fillNamePlaces()' data-role='button' data-transition='slide'>Confirm</a>" + '</div></div>'
+
             addinfowindow.setContent(content);
         }
         addListener = google.maps.event.addListener(map, "click", confirmPopup);
@@ -28,7 +29,7 @@ var addInit = function () {
 function fillNamePlaces() {
     $('#namesuggestions').remove();
     $('#add-form')[0].reset();
-    $('#add-details-page').panel("open");
+    $('#add-details-page').panel("open");]
     addPlace = null;
     var curPos = addMarker.getPosition();
     var request = {
@@ -58,7 +59,7 @@ function fillNamePlaces() {
                 }
             }
             fieldset.hide().prependTo('#add-form div.ui-field-contain').trigger("create").slideDown();
-            
+
         } else {
             console.log("error places " + status);
         }
@@ -97,7 +98,6 @@ function fillNameGeocoding() {
             function(data) {
                 // Get the closest address within a certain radius
                 console.log(data);
-                
                 $('#add-name').val(data.results[0].formatted_address.split(",")[0]);
             }
         );
@@ -153,7 +153,6 @@ $('#add-form').submit(function (e) {
             $('#add-details-page').panel("close");
         })
         .fail(function(err) {
-            
             $(".error", form).text(err.responseJSON.errors);
         });
     } else {

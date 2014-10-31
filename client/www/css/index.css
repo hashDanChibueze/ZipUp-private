@@ -41,7 +41,7 @@ div#details-menu {
   background-color: #e9e9e9;
   border: 1px solid #eee;
   overflow: hidden;
-  -webkit-transition: height 0.5s, width 0.5s, padding-top 0.5s; 
+  -webkit-transition: height 0.5s, width 0.5s, padding-top 0.5s;
   transition: height 0.5s, width 0.5s, padding-top 0.5s;*/
   height: auto;
   width: auto;
@@ -178,7 +178,7 @@ q {
 margin-top: 50px;
 }
 .ui-tabs {
-    position: static; 
+    position: static;
     padding: .2em;
 }
 

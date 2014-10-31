@@ -18,7 +18,7 @@
         <!-- /theme -->
         <link rel="image_src" href="img/splash.jpg" /><!-- TODO set splash -->
 
-        <link rel="stylesheet" type="text/css" href="css/index.css" /><!-- 
+        <link rel="stylesheet" type="text/css" href="css/index.css" /><!--
         <link rel="stylesheet" type="text/css" href="css/cards.css" />
         <link rel="stylesheet" type="text/css" href="css/dabblet.css" /> -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:500,400,300" rel="stylesheet" type="text/css">
@@ -90,7 +90,7 @@
                             </ul>
                         <!-- </div> -->
                     </div>
-                    
+
                     <!-- Map page (find and add) -->
                     <div id="map-page">
                         <div id="map_canvas"><div class="toast">Please allow ZipUp to use your location.</div></div>
@@ -100,12 +100,12 @@
 
                         <!-- page to add info about a new bathroom -->
                         <div class="panel" data-role="panel" data-display="overlay" data-position="right" data-dismissible="false" id="add-details-page">
-                            
+
                             <h1 class="title"><strong>Add</strong> bathroom</h1>
                             <form id="add-form">
                                 <div class="ui-field-contain">
                                     <input type="text" placeholder="Name" name="name" id="add-name">
-                                    
+
                                     <fieldset data-role="controlgroup" data-type="horizontal">
                                     <label><input type="radio" name="gender" value="0" required="required">Male</label>
                                     <label><input type="radio" name="gender" value="1">Female</label>
@@ -124,21 +124,22 @@
                                     <div class="error"></div>
                                     <input type="submit" id="add-button" value="Add bathroom"data-role="button" data-icon="plus">
                                     <a href="#" data-role="button" data-icon="arrow-r" data-mini="true" id="closebuttonadd">Swipe anywhere to cancel</a>
-                                </div>  
+
+                                </div>
                             </form>
-                            
+
                         </div>
 
                         <!-- The bathroom details -->
                         <div class="panel" data-role="panel" data-display="overlay" data-position="right" data-dismissible="false" id="bathroom-details-page">
-                           
+
                             <span id="btitle" class="title"><strong><span id="brating"></span> </strong><a target="_blank" data-role="none" id="bname"></a><span id="baccess"></span></span>
                             <div data-role="none" id="dcont" style="display: none; background-color: #111111;"><!-- space for a picture from google places -->
                                 <a target="_blank" id="dpicture" href=""><img style="width: 100%; " src=''alt="photo"></a>
                             </div>
 
                             <ul data-role="listview" id="bdetailslist">
-                                
+
                                 <li data-role="list-divider">Reviews</li>
 
                                 <!-- Advice inserted here -->
@@ -197,7 +198,7 @@
                                             <option value="on">Yes</option>
                                         </select>
                                     </div> -->
-                                    
+
                                 </fieldset>
                                 <textarea required="required" type="text" placeholder="Comments" name="review" id="add-review-text"></textarea>
                                 <div class="error"></div>
@@ -220,9 +221,9 @@
                                 <li data-role="list-divider">Bragging rights</li>
                                 <li><span style="font-weight: bold;" id="ureviewcount">0</span> reviews added</li><!-- TODO Gold stars and stuff for > 50 or something -->
                                 <li><span style="font-weight: bold;" id="ubathroomcount">0</span> bathrooms added<span style="font-weight: normal;"> (that have been reviewed)</span> Not yet implemented</li><!-- Only count bathrooms that have been reviewed by other people so that people dont spam -->
-                                
+
                                 <li data-role="list-divider">Challenges</li>
-                                
+
                                 <li><h4 class="ui-li-heading">Review a bathroom</h4><p class="ui-li-desc">Your very first!</p></li>
                                 <li><h4 class="ui-li-heading">Review 5 bathrooms</h4><p class="ui-li-desc">On your way to greatness</p></li>
                                 <li><!-- <a href="#"> --><h4>Full list</h4><p>Not yet implemented</p><!-- </a> --></li>
@@ -235,13 +236,13 @@
                             <p>
                                 <a href="#" id="signout-link" data-role="button" data-icon="back">Sign out</a>
                             </p>
-                            
+
                         </div>
                     </div>
                 </div><!-- tabs -->
             </div><!-- main app -->
 
-            
+
 
             <!-- The page to change account info -->
             <div data-role="page" id="change-email-page" class="center-wrapper">
